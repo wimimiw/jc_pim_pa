@@ -5,7 +5,7 @@ pnlBottomDragV=1
 ChipName=P89LPC938FDH @ICPLine
 Manufactory=NXP
 [Path]
-OpenSave=D:\Work\公司资料\PA\Jointcom_DuaPA_firmware_V2.0\OUTPUT\ZGRF_V10_20130830_16-13-28_0FB7.hex
+OpenSave=D:\Work\公司资料\PA\Jointcom_DuaPA_firmware_V3.0_1157\OUTPUT\ZGRF_V10_20131022_09-07-11_1157.hex
 [ProgramFormC]
 ckbSound=1
 ckbINC=0
@@ -13,11 +13,11 @@ ckbCode=1
 ckbParameter1=1
 ckbParameter2=1
 ckbParameter3=1
-ckbParameter4=0
+ckbParameter4=1
 [ProgramFormT]
 edBgnAdr=00000000
-edEndAdr=00001FFF
-edCNT=1
+edEndAdr=00001DFF
+edCNT=0
 [ProgramSetupFormC]
 ckbEraseFir=1
 ckbBlankFir=0
@@ -178,9 +178,8 @@ Index29=255
 Index30=255
 Index31=255
 [Secrity]
-Key=!0)J679%l*.=(78%r
-Description=ms
-CRC=5A A1 91 46
+Description=
+CRC=E2 0A 90 AA
 [Setting]
 PinsCheck=1
 CheckSumIncludeSN=1

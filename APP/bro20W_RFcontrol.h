@@ -59,8 +59,8 @@ sbit  LE1=P2^7;
 #define SRC_INTERNAL	0
 #define SRC_EXTERNAL 	1
 
-#define	 Ver_High  0x02
-#define  Ver_Low  0x03
+#define	 Ver_High  0x03
+#define  Ver_Low  0x00
 
 //#define	WAKE_UP	0x3C04				//ADÐ¾Æ¬MAX5741»½ÐÑ	
 

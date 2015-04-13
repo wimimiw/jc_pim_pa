@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 1   
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE BRO20W_RFCONTROL
@@ -62,7 +62,7 @@ line level    source
   51   1        gtestRfTemp = 50;               //初始化测试温度值
   52   1        gpreRfTemp = 50;                  //初始化温度状态
   53   1        gcurRfTemp = 50;
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 2   
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 2   
 
   54   1        gAtttempval = 0;
   55   1      
@@ -126,7 +126,7 @@ line level    source
  113   2          temp[1] = value;                //高字节在前
  114   2          temp[2] = 0x00;                 //低字节在后
  115   2        }
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 3   
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 3   
 
  116   1        watchdog();                  //这里似乎没必要喂狗
  117   1        ISendStrExt(0x90,temp,num);
@@ -190,7 +190,7 @@ line level    source
  175          
  176              case  'C':
  177                value |= 0x2000;  //高4位为模式控制位Shift data from input register to DAC register, OUTC updated
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 4   
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 4   
 
  178                break;
  179          
@@ -254,7 +254,7 @@ line level    source
  237   1        LE1 = 1;
  238   1        LE1 = 0;
  239   1      }
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 5   
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 5   
 
  240            /*
  241          //设置总的衰减值
@@ -318,7 +318,7 @@ line level    source
  297   3            calVal += (gPBmFreq - gCenFreq) * gPALimNumerN / (gPequDenomi * 1000);
  298   3          }
  299   2          else
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 6   
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 6   
 
  300   2          {
  301   3            calVal -= (gPBmFreq - gCenFreq) * gPALimNumer / (gPequDenomi * 1000);
@@ -382,7 +382,7 @@ line level    source
  357   1        else if(gtestflag == 2)
  358   1        {
  359   1          gainCo = gtestRfTemp - gBaseTemp*2;             
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 7   
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 7   
 
  360   1        } */
  361   1      }
@@ -446,7 +446,7 @@ line level    source
  417          }*/
  418          
  419          /*写锁相环4350*/
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 8   
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 8   
 
  420          void progPLL(unsigned long value)
  421          { 
@@ -510,7 +510,7 @@ line level    source
  476   1          #define R0_INIT   0x00000000
  477   1        //
  478   1        //DB31             ～                  DB4 DB3 DB2 DB1 DB0
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 9   
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 9   
 
  479   1        //0    0    0    0    0    0    0          0
  480   1        //0                ～                  0   0   0   0   0
@@ -574,7 +574,7 @@ line level    source
               #endif
  531   1      
  532   1        if (freqStep == 0) 
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 10  
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 10  
 
  533   1        {
  534   2          freqStep = 25;
@@ -638,7 +638,7 @@ line level    source
  592   1        AD0MODA |= 0x10;            //单次转换
  593   1        AD0MODB |= 0x20;            // ADC时钟=CCLK/2,即2分频
  594   1        AD0CON = 0x05;              //立即启动
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 11  
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 11  
 
  595   1        while(!AD0CON&0x08);          //等待转换完毕
  596   1          //while(!AD0CON&0x08);          //等待转换完毕
@@ -702,7 +702,7 @@ line level    source
                   #endif 
  655   2          default:
  656   2            break;
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 12  
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 12  
 
  657   2        }
  658   1          //AD0CON = 0x01;              //关闭转换，以防止出现的管脚相互影响现象。add by dw   20090623
@@ -766,7 +766,7 @@ line level    source
  716   1        unsigned char i;
  717   1      
  718   1        for(i=7;i>0;i--)
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      08/30/2013 16:13:26 PAGE 13  
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 13  
 
  719   1        {
  720   2          if((value & MASQUE)==0x80)

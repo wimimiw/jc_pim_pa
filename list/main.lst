@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   MAIN                                                                  08/30/2013 16:13:26 PAGE 1   
+C51 COMPILER V9.51   MAIN                                                                  10/22/2013 09:07:10 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   52          /*
   53          *********************************************************************************************************
   54          *                         主函数
-C51 COMPILER V9.51   MAIN                                                                  08/30/2013 16:13:26 PAGE 2   
+C51 COMPILER V9.51   MAIN                                                                  10/22/2013 09:07:10 PAGE 2   
 
   55          *
   56          * Description: 初始化系统后，进入主循环，按顺序执行各个任务
@@ -126,7 +126,7 @@ line level    source
  114   2          watchdog();
  115   2      
  116   2          
-C51 COMPILER V9.51   MAIN                                                                  08/30/2013 16:13:26 PAGE 3   
+C51 COMPILER V9.51   MAIN                                                                  10/22/2013 09:07:10 PAGE 3   
 
  117   2          if(PktHandle2S_time < PktHandleTimeOut)
  118   2          {           //没有超时则发包
@@ -190,7 +190,7 @@ line level    source
  176   1          unsigned int data vcc_in = 0;
  177   1        unsigned char data i;
  178   1        if( softDownLoad != DOING )
-C51 COMPILER V9.51   MAIN                                                                  08/30/2013 16:13:26 PAGE 4   
+C51 COMPILER V9.51   MAIN                                                                  10/22/2013 09:07:10 PAGE 4   
 
  179   1          {
  180   2            //对AD转换后的电压进行判别，并对P2.6输出一个电平     
@@ -254,7 +254,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-C51 COMPILER V9.51   MAIN                                                                  08/30/2013 16:13:26 PAGE 5   
+C51 COMPILER V9.51   MAIN                                                                  10/22/2013 09:07:10 PAGE 5   
 
    CODE SIZE        =    281    ----
    CONSTANT SIZE    =   ----    ----

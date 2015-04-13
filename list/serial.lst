@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   SERIAL                                                                08/30/2013 16:13:27 PAGE 1   
+C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE SERIAL
@@ -62,7 +62,7 @@ line level    source
   51          {
   52   1        // 初始化串口 
   53   1                //485接收有效，发送禁止
-C51 COMPILER V9.51   SERIAL                                                                08/30/2013 16:13:27 PAGE 2   
+C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 2   
 
   54   1        Rx_state = STA_ADDRESS1;  //初始化接收状态,第一个字节为
   55   1        pack_valid = 0;
@@ -126,7 +126,7 @@ line level    source
  113   3          } 
  114   2        }   
  115   1      }
-C51 COMPILER V9.51   SERIAL                                                                08/30/2013 16:13:27 PAGE 3   
+C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 3   
 
  116          
  117          /*
@@ -190,7 +190,7 @@ line level    source
  175   3              else                  //非本模块数据，则不接收
  176   3              {
  177   4                Rx_state = STA_ADDRESS1;
-C51 COMPILER V9.51   SERIAL                                                                08/30/2013 16:13:27 PAGE 4   
+C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 4   
 
  178   4              } 
  179   3              break; 
@@ -254,7 +254,7 @@ line level    source
  237   3               else                     
  238   3               {
  239   4                Rx_state = STA_ADDRESS1;    
-C51 COMPILER V9.51   SERIAL                                                                08/30/2013 16:13:27 PAGE 5   
+C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 5   
 
  240   4               }
  241   3               break;
@@ -319,7 +319,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
-C51 COMPILER V9.51   SERIAL                                                                08/30/2013 16:13:27 PAGE 6   
+C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 6   
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
