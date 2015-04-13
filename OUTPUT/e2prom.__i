@@ -1,1 +1,0 @@
-"drive\e2prom.c" OPTIMIZE (9,SIZE) REGFILE (.\OUTPUT\my_project.ORC) BROWSE INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\e2prom.lst) TABS (2) OBJECT(.\OUTPUT\e2prom.obj)

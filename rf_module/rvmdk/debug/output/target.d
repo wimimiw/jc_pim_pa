@@ -1,0 +1,47 @@
+.\debug\output\target.o: ..\app\target.c
+.\debug\output\target.o: ..\app\config.h
+.\debug\output\target.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\debug\output\target.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\debug\output\target.o: ..\cpu\stm32f10x.h
+.\debug\output\target.o: ..\cpu\core_cm3.h
+.\debug\output\target.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\debug\output\target.o: ..\cpu\system_stm32f10x.h
+.\debug\output\target.o: ..\app\stm32f10x_conf.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_adc.h
+.\debug\output\target.o: ..\cpu\stm32f10x.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_bkp.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_can.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_cec.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_crc.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_dac.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_dbgmcu.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_dma.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_exti.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_flash.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_fsmc.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_gpio.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_i2c.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_iwdg.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_pwr.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_rcc.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_rtc.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_sdio.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_spi.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_tim.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_usart.h
+.\debug\output\target.o: ..\driver\inc\stm32f10x_wwdg.h
+.\debug\output\target.o: ..\driver\inc\misc.h
+.\debug\output\target.o: ..\driver\user_adc.h
+.\debug\output\target.o: ..\driver\user_i2c.h
+.\debug\output\target.o: ..\driver\user_uart.h
+.\debug\output\target.o: ..\driver\user_timer.h
+.\debug\output\target.o: ..\driver\user_flash.h
+.\debug\output\target.o: ..\device\dev_spi.h
+.\debug\output\target.o: ..\device\dev_e2prom.h
+.\debug\output\target.o: ..\device\dev_att.h
+.\debug\output\target.o: ..\device\dev_temp.h
+.\debug\output\target.o: ..\app\task.h
+.\debug\output\target.o: ..\app\target.h
+.\debug\output\target.o: ..\app\rf_protocol.h
+.\debug\output\target.o: ..\app\rf_parameter.h
+.\debug\output\target.o: ..\app\rf_control.h

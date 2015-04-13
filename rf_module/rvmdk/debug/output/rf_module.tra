@@ -1,0 +1,49 @@
+*** Creating Trace Output File '.\debug\output\rf_module.tra' Ok.
+### Preparing for ADS-LD.
+### Creating ADS-LD Command Line
+### List of Objects: adding '".\debug\output\main.o"'
+### List of Objects: adding '".\debug\output\rf_control.o"'
+### List of Objects: adding '".\debug\output\rf_protocol.o"'
+### List of Objects: adding '".\debug\output\rf_parameter.o"'
+### List of Objects: adding '".\debug\output\task.o"'
+### List of Objects: adding '".\debug\output\target.o"'
+### List of Objects: adding '".\debug\output\stm32f10x_it.o"'
+### List of Objects: adding '".\debug\output\system_stm32f10x.o"'
+### List of Objects: adding '".\debug\output\dev_spi.o"'
+### List of Objects: adding '".\debug\output\dev_att.o"'
+### List of Objects: adding '".\debug\output\dev_e2prom.o"'
+### List of Objects: adding '".\debug\output\dev_temp.o"'
+### List of Objects: adding '".\debug\output\user_timer.o"'
+### List of Objects: adding '".\debug\output\user_adc.o"'
+### List of Objects: adding '".\debug\output\user_i2c.o"'
+### List of Objects: adding '".\debug\output\user_uart.o"'
+### List of Objects: adding '".\debug\output\user_flash.o"'
+### List of Objects: adding '".\debug\output\misc.o"'
+### List of Objects: adding '".\debug\output\stm32f10x_adc.o"'
+### List of Objects: adding '".\debug\output\stm32f10x_gpio.o"'
+### List of Objects: adding '".\debug\output\stm32f10x_i2c.o"'
+### List of Objects: adding '".\debug\output\stm32f10x_rcc.o"'
+### List of Objects: adding '".\debug\output\stm32f10x_tim.o"'
+### List of Objects: adding '".\debug\output\stm32f10x_usart.o"'
+### List of Objects: adding '".\debug\output\stm32f10x_flash.o"'
+### List of Objects: adding '".\debug\output\stm32f10x_iwdg.o"'
+### List of Objects: adding '".\debug\output\stm32f10x_pwr.o"'
+### List of Objects: adding '".\debug\output\core_cm3.o"'
+### List of Objects: adding '".\debug\output\startup_stm32f10x_md_vl.o"'
+### ADS-LD Command completed:
+--cpu Cortex-M3 ".\debug\output\main.o" ".\debug\output\rf_control.o" ".\debug\output\rf_protocol.o" ".\debug\output\rf_parameter.o" ".\debug\output\task.o" ".\debug\output\target.o" ".\debug\output\stm32f10x_it.o" ".\debug\output\system_stm32f10x.o" ".\debug\output\dev_spi.o" ".\debug\output\dev_att.o" ".\debug\output\dev_e2prom.o" ".\debug\output\dev_temp.o" ".\debug\output\user_timer.o" ".\debug\output\user_adc.o" ".\debug\output\user_i2c.o" ".\debug\output\user_uart.o" ".\debug\output\user_flash.o" ".\debug\output\misc.o" ".\debug\output\stm32f10x_adc.o" ".\debug\output\stm32f10x_gpio.o" ".\debug\output\stm32f10x_i2c.o" ".\debug\output\stm32f10x_rcc.o" ".\debug\output\stm32f10x_tim.o" ".\debug\output\stm32f10x_usart.o" ".\debug\output\stm32f10x_flash.o" ".\debug\output\stm32f10x_iwdg.o" ".\debug\output\stm32f10x_pwr.o" ".\debug\output\core_cm3.o" ".\debug\output\startup_stm32f10x_md_vl.o" 
+--strict --scatter ".\debug\output\rf_module.sct" 
+--keep rf_control.o(POINTER) --keep rf_control.o(.text) --keep user_flash.o(BOOTLOADER)  --keep stm32f10x_flash.o(.text) --keep stm32f10x_iwdg.o(.text)
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols 
+--info sizes --info totals --info unused --info veneers 
+ --list ".\debug\listing\rf_module.map" -o .\debug\output\rf_module.axf### Preparing Environment (PrepEnvAds)
+### ADS-LD Output File: '.\debug\output\rf_module.axf'
+### ADS-LD Command File: '.\debug\output\rf_module.lnp'
+### Checking for dirty Components...
+### Creating CmdFile '.\debug\output\rf_module.lnp', Handle=0x00000320
+### Writing '.lnp' file
+### ADS-LD Command file '.\debug\output\rf_module.lnp' is ready.
+### ADS-LD: About to start ADS-LD Thread.
+### ADS-LD: executed with 0 errors
+### Updating obj list
+### LDADS_file() completed.
