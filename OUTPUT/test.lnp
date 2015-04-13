@@ -1,0 +1,12 @@
+".\OUTPUT\main.obj",
+".\OUTPUT\timer.obj",
+".\OUTPUT\bro20W_cpu.obj",
+".\OUTPUT\bro20W_RFcontrol.obj",
+".\OUTPUT\bro20W_packet.obj",
+".\OUTPUT\START900.obj",
+".\OUTPUT\I2C.obj",
+".\OUTPUT\SPI.obj",
+".\OUTPUT\e2prom.obj",
+".\OUTPUT\serial.obj" 
+TO ".\OUTPUT\test" REGFILE (.\OUTPUT\test.ORC) 
+PRINT(".\list\test.m51") RAMSIZE(256) 

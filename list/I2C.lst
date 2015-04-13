@@ -1,0 +1,161 @@
+C51 COMPILER V9.51   I2C                                                                   08/30/2013 16:13:27 PAGE 1   
+
+
+C51 COMPILER V9.51, COMPILATION OF MODULE I2C
+OBJECT MODULE PLACED IN .\OUTPUT\I2C.obj
+COMPILER INVOKED BY: C:\Program Files\Keil\C51\BIN\C51.EXE drive\I2C.c OPTIMIZE(9,SIZE) REGFILE(.\OUTPUT\test.ORC) BROWS
+                    -E INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\I2C.lst) TABS(2) OBJECT(.\OUTPUT\I2C.obj)
+
+line level    source
+
+   1          /**-------------文件信息--------------------------------------------------------------------------------
+   2          **文   件   名: I2C.c
+   3          **创   建   人: 程莺红
+   4          **修   改   人: 
+   5          **最后修改日期: 2006年3月31日
+   6          **最 新 版  本: V1.2
+   7          **描        述: I2C总线的驱动，读写I2C总线
+   8                  相应寄存器 
+   9                  地址寄存器    I2ADR  用于存放自身从地址（从方式时才有用）
+  10                    数据寄存器    I2DAT  接收/发送数据用
+  11                  控制寄存器    I2CON  用于I2C的设置、使能、启动、结束
+  12                                        应答控制、中断标志等
+  13                  状态寄存器    I2STAT 指示I2C总线的操作状态码
+  14                  SCL占空比寄存器 I2SCLH 设置SCL的频率发生
+  15                          I2CSCLL
+  16          **
+  17          **--------------历史版本信息----------------------------------------------------------------------------
+  18          ** 创建人: 程莺红 
+  19          ** 版  本: V1.2
+  20          ** 日　期: 2006年3月31日
+  21          ** 描　述: 原始版本
+  22          **
+  23          ********************************************************************************************************/
+  24          #include <reg938.h>
+  25          #include <I2C.h>
+  26          
+  27          
+  28          
+  29          /*******************************************************************
+  30          *                  申请总线
+  31          * 功能：进行I2C总线的初始化－－包括时钟选择，I2C使能，发送起始信号等等。
+  32          *       I2EN为1，设置为主机；CRSEL位为0，使用内部SCL发生器。
+  33          *******************************************************************/
+  34          void GetBus()
+  35          {
+  36   1        I2SCLH = 15;  //设置SCL高电平的PCLK周期数
+  37   1        I2SCLL = 15;  //设置SCL低电平的PCLK周期数，
+  38   1        /*申请成为主机，发动总线，使用内部SCL发生器，I2EN和AA置位*/
+  39   1        I2CON = Release_bus_sta;
+  40   1        while(SI == 0);
+  41   1      }
+  42          
+  43          
+  44          /*******************************************************************
+  45          *                    发送数据函数
+  46          * 功能：用于向总线发送数据 
+  47          * 入口参数：ACC   待发送的数据                   
+  48          *******************************************************************/
+  49          void SendByte(unsigned char c)
+  50          { I2DAT = c;
+  51   1        I2CON = Release_bus_ack;      /* 清除SI位等等       */
+  52   1        while( SI==0 );           /* 等待数据的发送     */
+  53   1      }    
+  54          /*******************************************************************
+C51 COMPILER V9.51   I2C                                                                   08/30/2013 16:13:27 PAGE 2   
+
+  55          *                    向器件发送多字节数据函数                 
+  56          * 功能：从启动总线到发送地址，子地址,数据，结束总线的全过程。
+  57          * 入口参数；sla   从器件地址
+  58          *           s       发送内容的指针
+  59          *           no      发送字节数
+  60          * 出口参数：返回1表示操作成功，否则操作有误。
+  61          ********************************************************************/
+  62          unsigned char ISendStrExt(unsigned char sla,unsigned char *s, unsigned char no)
+  63          { unsigned char xdata i;
+  64   1      
+  65   1        GetBus();                 /* 启动总线                 */
+  66   1        SendByte(sla);            /* 发送器件地址             */
+  67   1        if( I2STAT!=0X18 )
+  68   1        { 
+  69   2          I2CON = Generate_stop;
+  70   2          return(0);
+  71   2        }
+  72   1          
+  73   1        for(i=0; i<no; i++)
+  74   1        { 
+  75   2          SendByte(*s);           /* 发送数据         */
+  76   2          if( I2STAT!=0X28 )
+  77   2        { I2CON = Generate_stop;
+  78   3          return(0);
+  79   3        }
+  80   2          s++;
+  81   2        } 
+  82   1      
+  83   1        I2CON = Generate_stop;    /* 结束总线         */ 
+  84   1        return(1);
+  85   1      }
+  86          /*******************************************************************
+  87          *                    向有子地址器件读取多字节数据函数                
+  88          *功能：从启动总线到发送地址，子地址,读数据，结束总线的全过程。
+  89          *入口参数：sla    从器件地址
+  90          *          suba   子地址(就是IIC器件里面的某个寄存器地址)
+  91          *      s      读出的内容存储区的指针
+  92          *          no   读no个字节。
+  93          *出口参数：函数返回1表示操作成功，否则操作有误。
+  94          ********************************************************************/
+  95          unsigned char IRcvStr(unsigned char sla,unsigned char suba,unsigned char *s,unsigned char no)
+  96          { unsigned char i;
+  97   1      
+  98   1        GetBus();                 /* 启动总线           */
+  99   1        SendByte(sla);            /* 发送器件地址         */
+ 100   1        if( I2STAT!=0X18)
+ 101   1        { I2CON = Generate_stop;
+ 102   2          return(0);
+ 103   2        }
+ 104   1        SendByte(suba);           /* 发送器件子地址       */
+ 105   1        if( I2STAT!=0X28 )
+ 106   1        { I2CON = Generate_stop;
+ 107   2          return(0);
+ 108   2        }
+ 109   1      
+ 110   1        I2CON = Release_bus_sta;  /* 重新启动总线         */
+ 111   1        while( SI==0 );
+ 112   1        SendByte(sla+1);
+ 113   1        if( I2STAT!=0X40 )
+ 114   1        { I2CON = Generate_stop;
+ 115   2          return(0);
+ 116   2        } 
+C51 COMPILER V9.51   I2C                                                                   08/30/2013 16:13:27 PAGE 3   
+
+ 117   1         
+ 118   1        for(i=0; i<no-1; i++)
+ 119   1        { I2CON = Release_bus_ack;   /* 接收一字节数据并发送应答位    */
+ 120   2          while( SI==0 );            /* 等待接收数据            */  
+ 121   2          if( I2STAT!=0X50 )
+ 122   2        { I2CON = Generate_stop;
+ 123   3          return(0);
+ 124   3        }
+ 125   2          *s = I2DAT;                /* 读取数据              */ 
+ 126   2          s++;
+ 127   2        } 
+ 128   1        I2CON = Release_bus_noack;   /* 接收最后一字节数据并发送非应答位  */
+ 129   1        while( SI==0 );  
+ 130   1        *s = I2DAT;
+ 131   1        I2CON = Generate_stop;       /* 结束总线              */ 
+ 132   1        return(1);
+ 133   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    197    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----       1
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      11
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

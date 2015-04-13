@@ -1,0 +1,2564 @@
+; .\OUTPUT\bro20W_RFcontrol.SRC generated from: APP\bro20W_RFcontrol.c
+; COMPILER INVOKED BY:
+;        E:\Keil\C51\BIN\C51.EXE APP\bro20W_RFcontrol.c BROWSE INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\bro20W_RFcontrol.lst) SRC(.\OUTPUT\bro20W_RFcontrol.SRC)
+
+$NOMOD51
+
+NAME	BRO20W_RFCONTROL
+
+P0M1	DATA	084H
+P1M1	DATA	091H
+P0M2	DATA	085H
+P0	DATA	080H
+P2M1	DATA	0A4H
+P1M2	DATA	092H
+P1	DATA	090H
+AA	BIT	0D8H.2
+P3M1	DATA	0B1H
+P2M2	DATA	0A5H
+P2	DATA	0A0H
+P3M2	DATA	0B2H
+P3	DATA	0B0H
+T0	BIT	090H.2
+EI2C	BIT	0E8H.0
+AC	BIT	0D0H.6
+T1	BIT	080H.7
+EA	BIT	0A8H.7
+EC	BIT	0E8H.2
+EWDRT	BIT	0A8H.6
+SPCTL	DATA	0E2H
+SCC0	BIT	0C0H.5
+HLTRN	BIT	0C8H.6
+FE	BIT	098H.7
+IEN0	DATA	0A8H
+IEN1	DATA	0E8H
+RxD	BIT	090H.1
+I2EN	BIT	0D8H.6
+PI2C	BIT	0F8H.0
+IEN2	DATA	0D5H
+LD	BIT	080H.6
+TxD	BIT	090H.0
+SSTAT	DATA	0BAH
+IP0H	DATA	0B7H
+CMP1	DATA	0ACH
+PC?	BIT	0F8H.2
+PWDRT	BIT	0B8H.6
+IP1H	DATA	0F7H
+CMP2	DATA	0ADH
+AD0CON	DATA	097H
+TMOD20	BIT	0C8H.0
+ES	BIT	0A8H.4
+TMOD21	BIT	0C8H.1
+EIEE	BIT	0E8H.7
+DATA?	BIT	0A0H.4
+RI	BIT	098H.0
+INT0	BIT	090H.3
+SI	BIT	0D8H.3
+EKBI	BIT	0E8H.1
+CY	BIT	0D0H.7
+INT1	BIT	090H.4
+TI	BIT	098H.1
+WFEED1	DATA	0C2H
+WFEED2	DATA	0C3H
+ECCU	BIT	0E8H.4
+AD0INS	DATA	0A3H
+PS	BIT	0B8H.4
+SP	DATA	081H
+PIEE	BIT	0F8H.7
+OV	BIT	0D0H.2
+SS	BIT	0A0H.4
+WP	BIT	090H.4
+PKBI	BIT	0F8H.1
+I2SCLH	DATA	0DDH
+DEEADR	DATA	0F3H
+DEEDAT	DATA	0F2H
+I2SCLL	DATA	0DCH
+PCCU	BIT	0F8H.4
+RFswitch	BIT	090H.7
+FMDATA	DATA	0E5H
+DEECON	DATA	0F1H
+DIVM	DATA	095H
+SBUF	DATA	099H
+PCON	DATA	087H
+ESPI	BIT	0E8H.3
+RTCH	DATA	0D2H
+FMADRH	DATA	0E7H
+SCON	DATA	098H
+TPCR2H	DATA	0CBH
+TMOD	DATA	089H
+TCON	DATA	088H
+RTCL	DATA	0D3H
+FMADRL	DATA	0E6H
+MOSI	BIT	0A0H.2
+MISO	BIT	0A0H.3
+TPCR2L	DATA	0CAH
+I2STAT	DATA	0D9H
+KBMASK	DATA	086H
+KB0	BIT	080H.0
+PSPI	BIT	0F8H.3
+TRIM	DATA	096H
+BRGCON	DATA	0BDH
+LockYes	BIT	0A0H.3
+KB1	BIT	080H.1
+IE0	BIT	088H.1
+KB2	BIT	080H.2
+IE1	BIT	088H.3
+KB3	BIT	080H.3
+KB4	BIT	080H.4
+B	DATA	0F0H
+LD2	BIT	0A0H.2
+BURST0	BIT	0C0H.6
+KB5	BIT	080H.5
+PB0	BIT	0B8H.5
+KBPATN	DATA	093H
+KB6	BIT	080H.6
+KB7	BIT	080H.7
+ACC	DATA	0E0H
+SPICLK	BIT	0A0H.5
+ET0	BIT	0A8H.1
+IP0	DATA	0B8H
+EAD	BIT	0E8H.7
+ET1	BIT	0A8H.3
+TF0	BIT	088H.5
+IP1	DATA	0F8H
+TF1	BIT	088H.7
+RTCCON	DATA	0D1H
+RB8	BIT	098H.2
+TCR20	DATA	0C8H
+TH0	DATA	08CH
+ICA	BIT	0A0H.7
+EX0	BIT	0A8H.0
+IT0	BIT	088H.0
+TCR21	DATA	0F9H
+TH1	DATA	08DH
+BNDI0	BIT	0C0H.7
+ICB	BIT	0A0H.0
+TB8	BIT	098H.3
+EX1	BIT	0A8H.2
+IT1	BIT	088H.2
+TH2	DATA	0CDH
+P	BIT	0D0H.0
+SM0	BIT	098H.7
+TL0	DATA	08AH
+SM1	BIT	098H.6
+TL1	DATA	08BH
+SM2	BIT	098H.5
+TL2	DATA	0CCH
+OCA	BIT	0A0H.6
+I2ADR	DATA	0DBH
+OCB	BIT	090H.6
+PT0	BIT	0B8H.1
+OCC	BIT	090H.7
+PAD	BIT	0F8H.7
+PT1	BIT	0B8H.3
+RS0	BIT	0D0H.3
+I2DAT	DATA	0DAH
+LimYes	BIT	0A0H.1
+SCAN0	BIT	0C0H.4
+OCD	BIT	0A0H.1
+EBO	BIT	0A8H.5
+TR0	BIT	088H.4
+RS1	BIT	0D0H.4
+TR1	BIT	088H.6
+SDA	BIT	090H.3
+PX0	BIT	0B8H.0
+AD0MODA	DATA	0C0H
+PX1	BIT	0B8H.2
+AD0MODB	DATA	0A1H
+CLK	BIT	0A0H.5
+PT0AD	DATA	0F6H
+RDE	BIT	080H.7
+I2CON	DATA	0D8H
+DPH	DATA	083H
+CCCRA	DATA	0EAH
+CCCRB	DATA	0EBH
+BRGR0	DATA	0BEH
+CCCRC	DATA	0ECH
+BRGR1	DATA	0BFH
+CCCRD	DATA	0EDH
+DPL	DATA	082H
+SPSTAT	DATA	0E1H
+SCL	BIT	090H.2
+RSTSRC	DATA	0DFH
+ALTAB	BIT	0C8H.3
+REN	BIT	098H.4
+TICR2	DATA	0C9H
+TDIR2	BIT	0C8H.2
+WDL	DATA	0C1H
+STA	BIT	0D8H.5
+TISE2	DATA	0DEH
+TIFR2	DATA	0E9H
+ICRAH	DATA	0ABH
+ALTCD	BIT	0C8H.4
+ICRBH	DATA	0AFH
+ESR	BIT	0A8H.4
+XTAL1	BIT	0B0H.1
+XTAL2	BIT	0B0H.0
+EST	BIT	0E8H.6
+ICRAL	DATA	0AAH
+SADEN	DATA	0B9H
+ICRBL	DATA	0AEH
+OCRAH	DATA	0EFH
+KBCON	DATA	094H
+OCRBH	DATA	0FBH
+SADDR	DATA	0A9H
+TOR2H	DATA	0CFH
+OCRCH	DATA	0FDH
+OCRDH	DATA	0FFH
+PCONA	DATA	0B5H
+OCRAL	DATA	0EEH
+AUXR1	DATA	0A2H
+OCRBL	DATA	0FAH
+FMCON	DATA	0E4H
+TOR2L	DATA	0CEH
+OCRCL	DATA	0FCH
+PSR	BIT	0B8H.4
+F0	BIT	0D0H.5
+OCRDL	DATA	0FEH
+STO	BIT	0D8H.4
+F1	BIT	0D0H.1
+TAMOD	DATA	08FH
+PST	BIT	0F8H.6
+RST	BIT	090H.5
+CRSEL	BIT	0D8H.0
+PSW	DATA	0D0H
+HLTEN	BIT	0C8H.5
+PLLEN	BIT	0C8H.7
+WDCON	DATA	0A7H
+SPDAT	DATA	0E3H
+?PR?InitRF?BRO20W_RFCONTROL              SEGMENT CODE 
+?DT?InitRF?BRO20W_RFCONTROL              SEGMENT DATA OVERLAYABLE 
+?PR?_writeLM75?BRO20W_RFCONTROL          SEGMENT CODE 
+?DT?_writeLM75?BRO20W_RFCONTROL          SEGMENT DATA OVERLAYABLE 
+?PR?_switchRF?BRO20W_RFCONTROL           SEGMENT CODE 
+?PR?_writeAD5314?BRO20W_RFCONTROL        SEGMENT CODE 
+?PR?gPALimCompensate?BRO20W_RFCONTROL    SEGMENT CODE 
+?DT?gPALimCompensate?BRO20W_RFCONTROL    SEGMENT DATA OVERLAYABLE 
+?PR?readTemperatur?BRO20W_RFCONTROL      SEGMENT CODE 
+?DT?readTemperatur?BRO20W_RFCONTROL      SEGMENT DATA OVERLAYABLE 
+?PR?_progPLL?BRO20W_RFCONTROL            SEGMENT CODE 
+?DT?_progPLL?BRO20W_RFCONTROL            SEGMENT DATA OVERLAYABLE 
+?PR?writePLL?BRO20W_RFCONTROL            SEGMENT CODE 
+?DT?writePLL?BRO20W_RFCONTROL            SEGMENT DATA OVERLAYABLE 
+?PR?_readAD?BRO20W_RFCONTROL             SEGMENT CODE 
+?DT?_readAD?BRO20W_RFCONTROL             SEGMENT DATA OVERLAYABLE 
+?PR?execCheckSumQ?BRO20W_RFCONTROL       SEGMENT CODE 
+?DT?execCheckSumQ?BRO20W_RFCONTROL       SEGMENT DATA OVERLAYABLE 
+?PR?watchdog?BRO20W_RFCONTROL            SEGMENT CODE 
+?PR?_delay?BRO20W_RFCONTROL              SEGMENT CODE 
+	EXTRN	DATA (gpreRfTemp)
+	EXTRN	DATA (gcurRfTemp)
+	EXTRN	DATA (gCenFreq)
+	EXTRN	XDATA (gAtttempval)
+	EXTRN	CODE (_IRcvStr)
+	EXTRN	DATA (?_IRcvStr?BYTE)
+	EXTRN	XDATA (AutoSwitch)
+	EXTRN	BIT (rfPramModified)
+	EXTRN	XDATA (gPALim)
+	EXTRN	XDATA (gRF_No)
+	EXTRN	XDATA (gPAResetLim)
+	EXTRN	CODE (_ISendStrExt)
+	EXTRN	DATA (?_ISendStrExt?BYTE)
+	EXTRN	CODE (_swapBytes)
+	EXTRN	DATA (?_swapBytes?BYTE)
+	EXTRN	XDATA (gPALimNumer)
+	EXTRN	XDATA (gRFSW)
+	EXTRN	DATA (ack_flag)
+	EXTRN	DATA (Task5S_time)
+	EXTRN	DATA (gtestflag)
+	EXTRN	DATA (OutputPwr)
+	EXTRN	CODE (getTime)
+	EXTRN	DATA (gainCo)
+	EXTRN	CODE (_MSend_bit)
+	EXTRN	DATA (softDownLoad)
+	EXTRN	DATA (Task30S_time)
+	EXTRN	XDATA (gPequDenomi)
+	EXTRN	CODE (_readE2promStr)
+	EXTRN	DATA (re_Pwr)
+	EXTRN	XDATA (all_checksum)
+	EXTRN	XDATA (gPAProtecttLim)
+	EXTRN	XDATA (gPBmFreq)
+	EXTRN	DATA (PA_current)
+	EXTRN	DATA (gtestRfTemp)
+	EXTRN	XDATA (gBaseTemp)
+	EXTRN	CODE (?C?ULCMP)
+	EXTRN	CODE (?C?LMUL)
+	EXTRN	CODE (?C?IMUL)
+	EXTRN	CODE (?C?ULDIV)
+	EXTRN	CODE (?C?LSHL)
+	PUBLIC	_delay
+	PUBLIC	watchdog
+	PUBLIC	execCheckSumQ
+	PUBLIC	_readAD
+	PUBLIC	writePLL
+	PUBLIC	_progPLL
+	PUBLIC	readTemperatur
+	PUBLIC	gPALimCompensate
+	PUBLIC	_writeAD5314
+	PUBLIC	_switchRF
+	PUBLIC	_writeLM75
+	PUBLIC	InitRF
+
+	RSEG  ?DT?_readAD?BRO20W_RFCONTROL
+?_readAD?BYTE:
+      value?864:   DS   2
+
+	RSEG  ?DT?_progPLL?BRO20W_RFCONTROL
+?_progPLL?BYTE:
+      value?652:   DS   4
+	ORG  4
+    num_bit?653:   DS   1
+          i?654:   DS   1
+ masque_bit?655:   DS   4
+
+	RSEG  ?DT?execCheckSumQ?BRO20W_RFCONTROL
+?execCheckSumQ?BYTE:
+   pt_flash?966:   DS   2
+
+	RSEG  ?DT?_writeLM75?BRO20W_RFCONTROL
+?_writeLM75?BYTE:
+        num?143:   DS   1
+	ORG  1
+       temp?144:   DS   5
+
+	RSEG  ?DT?writePLL?BRO20W_RFCONTROL
+?writePLL?BYTE:
+counterTemp?757:   DS   4
+   counterN?758:   DS   4
+     divSel?759:   DS   4
+    refFreq?760:   DS   4
+   freqStep?761:   DS   2
+       temp?762:   DS   4
+
+	RSEG  ?DT?InitRF?BRO20W_RFCONTROL
+?InitRF?BYTE:
+       temp?040:   DS   10
+
+	RSEG  ?DT?gPALimCompensate?BRO20W_RFCONTROL
+?gPALimCompensate?BYTE:
+       temp?448:   DS   4
+gPALimNumerN?449:   DS   1
+     calVal?450:   DS   2
+
+	RSEG  ?DT?readTemperatur?BRO20W_RFCONTROL
+?readTemperatur?BYTE:
+      value?551:   DS   2
+; /**-------------文件信息--------------------------------------------------------------------------------
+; ****文   件   名: packet.c
+; ** 创建人: 程莺红 
+; ** 版  本: V1.2
+; ** 日　期: 2006年3月31日
+; ** 描　述: 原始版本
+; ************************************************************************************/
+; 
+; #include <reg938.h>
+; #include <string.h>
+; #include <intrins.h>
+; #include <i2c.h>
+; #include <math.h>
+; #include <bro20W_RFcontrol.h>
+; #include <bro20W_RFparam.h>
+; #include <SPI.h>
+; #include <packet.h>
+; #include <task.h>
+; #include <serial.h>
+; #include <timer.h>
+; #include <e2prom.h>
+; #include <readad.h>
+; 
+; /*
+; *********************************************************************************************************
+; *                         射频参数初始化
+; *
+; * Description: 初始化RF模块的各类射频参数以及与系统相关的其余参数变量
+; *
+; * Arguments  : 无
+; *
+; * Returns    : 无
+; *********************************************************************************************************
+; */
+; void InitRF()
+
+	RSEG  ?PR?InitRF?BRO20W_RFCONTROL
+InitRF:
+	USING	0
+			; SOURCE LINE # 35
+; {
+			; SOURCE LINE # 36
+; 	unsigned char temp[10];
+; 
+; 	rfPramModified = FALSE;							//射频参数修改标志	
+			; SOURCE LINE # 39
+	CLR  	rfPramModified
+; 	Task5S_time = getTime() + DELAY5S;				//初始化例行任务初始时间
+			; SOURCE LINE # 40
+	LCALL	getTime
+	MOV  	A,R7
+	ADD  	A,#0C8H
+	MOV  	Task5S_time+03H,A
+	CLR  	A
+	ADDC 	A,R6
+	MOV  	Task5S_time+02H,A
+	CLR  	A
+	ADDC 	A,R5
+	MOV  	Task5S_time+01H,A
+	CLR  	A
+	ADDC 	A,R4
+	MOV  	Task5S_time,A
+; 	Task30S_time= getTime() + 100;					//第一次写温度补偿在启动后1S后
+			; SOURCE LINE # 41
+	LCALL	getTime
+	MOV  	A,R7
+	ADD  	A,#064H
+	MOV  	Task30S_time+03H,A
+	CLR  	A
+	ADDC 	A,R6
+	MOV  	Task30S_time+02H,A
+	CLR  	A
+	ADDC 	A,R5
+	MOV  	Task30S_time+01H,A
+	CLR  	A
+	ADDC 	A,R4
+	MOV  	Task30S_time,A
+; 
+; 	LD = 1;
+			; SOURCE LINE # 43
+	SETB 	LD
+; 	LD2 = 0;
+			; SOURCE LINE # 44
+	CLR  	LD2
+;     SM2 = 0;                                        //
+			; SOURCE LINE # 45
+	CLR  	SM2
+; 	softDownLoad = UNDO;							//初始化为非下载状态
+			; SOURCE LINE # 46
+	CLR  	A
+	MOV  	softDownLoad,A
+; 	ack_flag = NO_ERR;								//初始化应答标志
+			; SOURCE LINE # 47
+	MOV  	ack_flag,A
+; 	gtestflag = 0;		 							//初始化测试状态
+			; SOURCE LINE # 48
+	MOV  	gtestflag,A
+; 	gtestRfTemp = 50;								//初始化测试温度值
+			; SOURCE LINE # 49
+	MOV  	gtestRfTemp,A
+	MOV  	gtestRfTemp+01H,#032H
+;    	gpreRfTemp = 50;					   			//初始化温度状态
+			; SOURCE LINE # 50
+	MOV  	gpreRfTemp,A
+	MOV  	gpreRfTemp+01H,#032H
+; 	gcurRfTemp = 50;
+			; SOURCE LINE # 51
+	MOV  	gcurRfTemp,A
+	MOV  	gcurRfTemp+01H,#032H
+; 	gAtttempval = 0;
+			; SOURCE LINE # 52
+	MOV  	DPTR,#gAtttempval
+	MOVX 	@DPTR,A
+; 
+; 	re_Pwr = 0;
+			; SOURCE LINE # 54
+	MOV  	re_Pwr,A
+	MOV  	re_Pwr+01H,A
+; 	PA_current = 0;
+			; SOURCE LINE # 55
+	MOV  	PA_current,A
+	MOV  	PA_current+01H,A
+; 	OutputPwr = 0;
+			; SOURCE LINE # 56
+	MOV  	OutputPwr,A
+	MOV  	OutputPwr+01H,A
+; 
+; //	readE2promStr(1,EE_RFSW,&AutoSwitch);				//射频开关
+; 	AutoSwitch = CLOSE;
+			; SOURCE LINE # 59
+	MOV  	DPTR,#AutoSwitch
+	MOVX 	@DPTR,A
+; 	gRFSW = CLOSE;
+			; SOURCE LINE # 60
+	MOV  	DPTR,#gRFSW
+	MOVX 	@DPTR,A
+; 	switchRF(gRFSW);
+			; SOURCE LINE # 61
+	MOV  	R7,A
+	LCALL	_switchRF
+; 	delay(1);
+			; SOURCE LINE # 62
+	MOV  	R7,#01H
+	LCALL	_delay
+; 	watchdog();
+			; SOURCE LINE # 63
+	LCALL	watchdog
+; 
+; 
+; 	readE2promStr(4,EE_CenFreq,temp);				//读取中心频率
+			; SOURCE LINE # 66
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?040)
+	MOV  	R1,#LOW (temp?040)
+	MOV  	R5,#040H
+	MOV  	R4,#00H
+	MOV  	R7,#04H
+	LCALL	_readE2promStr
+; 	swapBytes(temp,(unsigned char *)&gCenFreq,4);
+			; SOURCE LINE # 67
+	MOV  	?_swapBytes?BYTE+03H,#00H
+	MOV  	?_swapBytes?BYTE+04H,#HIGH (gCenFreq)
+	MOV  	?_swapBytes?BYTE+05H,#LOW (gCenFreq)
+	MOV  	?_swapBytes?BYTE+06H,#04H
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?040)
+	MOV  	R1,#LOW (temp?040)
+	LCALL	_swapBytes
+; 
+; 	readE2promStr(1,EE_RF_No,&gRF_No);				//读取射频模块地址
+			; SOURCE LINE # 69
+	MOV  	R3,#01H
+	MOV  	R2,#HIGH (gRF_No)
+	MOV  	R1,#LOW (gRF_No)
+	MOV  	R5,#0C0H
+	MOV  	R4,#00H
+	MOV  	R7,#01H
+	LCALL	_readE2promStr
+; 
+; 	gPALimCompensate();
+			; SOURCE LINE # 71
+	LCALL	gPALimCompensate
+; 	writeAD5314(gPALim,'B');
+			; SOURCE LINE # 72
+	MOV  	DPTR,#gPALim
+	MOVX 	A,@DPTR
+	MOV  	R6,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	R7,A
+	MOV  	R5,#042H
+	LCALL	_writeAD5314
+; 
+; 	watchdog();				
+			; SOURCE LINE # 74
+	LCALL	watchdog
+; 	writeLM75(0x90,0x00,2);							 //选择指针为配置寄存器
+			; SOURCE LINE # 75
+	MOV  	R3,#02H
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#090H
+	LCALL	_writeLM75
+; 
+; 	readE2promStr(1,EE_PAProtectLim,&gPAProtecttLim);//写功放保护温度门限
+			; SOURCE LINE # 77
+	MOV  	R3,#01H
+	MOV  	R2,#HIGH (gPAProtecttLim)
+	MOV  	R1,#LOW (gPAProtecttLim)
+	MOV  	R5,#0A4H
+	MOV  	R4,#00H
+	MOV  	R7,#01H
+	LCALL	_readE2promStr
+; 	writeLM75(0x03,gPAProtecttLim,3);	
+			; SOURCE LINE # 78
+	MOV  	DPTR,#gPAProtecttLim
+	MOVX 	A,@DPTR
+	MOV  	R5,A
+	MOV  	R3,#03H
+	MOV  	R7,#03H
+	LCALL	_writeLM75
+; 	
+; 	readE2promStr(1,EE_PAResetLim,&gPAResetLim);	 //写功放重启温度门限
+			; SOURCE LINE # 80
+	MOV  	R3,#01H
+	MOV  	R2,#HIGH (gPAResetLim)
+	MOV  	R1,#LOW (gPAResetLim)
+	MOV  	R5,#0A5H
+	MOV  	R4,#00H
+	MOV  	R7,#01H
+	LCALL	_readE2promStr
+; 	writeLM75(0x02,gPAResetLim,3);
+			; SOURCE LINE # 81
+	MOV  	DPTR,#gPAResetLim
+	MOVX 	A,@DPTR
+	MOV  	R5,A
+	MOV  	R3,#03H
+	MOV  	R7,#02H
+	LCALL	_writeLM75
+; 
+; 	readE2promStr(1,EE_BaseTemp_VALUE,&gBaseTemp); 			//读取温度补偿温度基准值
+			; SOURCE LINE # 83
+	MOV  	R3,#01H
+	MOV  	R2,#HIGH (gBaseTemp)
+	MOV  	R1,#LOW (gBaseTemp)
+	MOV  	R5,#0D4H
+	MOV  	R4,#00H
+	MOV  	R7,#01H
+	LCALL	_readE2promStr
+; 	watchdog();
+			; SOURCE LINE # 84
+	LCALL	watchdog
+; 
+; 	writePLL();
+			; SOURCE LINE # 86
+	LCALL	writePLL
+; 	readTemperatur();
+			; SOURCE LINE # 87
+	LCALL	readTemperatur
+; 	execCheckSumQ();							   	 //初始化计算校验和		
+			; SOURCE LINE # 88
+	LJMP 	execCheckSumQ
+; END OF InitRF
+
+; }
+; /*写LM75中的功放保护和恢复门限*/
+; void writeLM75(char point,char value,unsigned char num)
+
+	RSEG  ?PR?_writeLM75?BRO20W_RFCONTROL
+_writeLM75:
+	USING	0
+			; SOURCE LINE # 91
+	MOV  	num?143,R3
+;---- Variable 'value?142' assigned to Register 'R5' ----
+;---- Variable 'point?141' assigned to Register 'R7' ----
+; {
+			; SOURCE LINE # 92
+; 	char temp[5];
+; 	if(num==2)
+			; SOURCE LINE # 94
+	MOV  	A,num?143
+	CJNE 	A,#02H,?C0002
+; 	{
+			; SOURCE LINE # 95
+; 		temp[0] = 0x01;
+			; SOURCE LINE # 96
+	MOV  	temp?144,#01H
+; 		temp[1] = 0x18;								 //高字节在前
+			; SOURCE LINE # 97
+	MOV  	temp?144+01H,#018H
+; 	}
+			; SOURCE LINE # 98
+	SJMP 	?C0003
+?C0002:
+; 	else if(num==3)
+			; SOURCE LINE # 99
+	MOV  	A,num?143
+	CJNE 	A,#03H,?C0003
+; 	{
+			; SOURCE LINE # 100
+; 		temp[0] = point;
+			; SOURCE LINE # 101
+	MOV  	temp?144,R7
+; 		temp[1] = value;								//高字节在前
+			; SOURCE LINE # 102
+	MOV  	temp?144+01H,R5
+; 		temp[2] = 0x00;									//低字节在后
+			; SOURCE LINE # 103
+	CLR  	A
+	MOV  	temp?144+02H,A
+; 	}
+			; SOURCE LINE # 104
+?C0003:
+; 	watchdog();
+			; SOURCE LINE # 105
+	LCALL	watchdog
+; 	ISendStrExt(0x90,temp,num);
+			; SOURCE LINE # 106
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?144)
+	MOV  	R1,#LOW (temp?144)
+	MOV  	?_ISendStrExt?BYTE+04H,num?143
+	MOV  	R7,#090H
+	LJMP 	_ISendStrExt
+; END OF _writeLM75
+
+; }
+; /*开关射频*/
+; void switchRF(unsigned char value)
+
+	RSEG  ?PR?_switchRF?BRO20W_RFCONTROL
+_switchRF:
+			; SOURCE LINE # 109
+;---- Variable 'value?245' assigned to Register 'R7' ----
+; {
+			; SOURCE LINE # 110
+; 	if(value == CLOSE)
+			; SOURCE LINE # 111
+	MOV  	A,R7
+	JNZ  	?C0006
+; 	{
+			; SOURCE LINE # 112
+; 		RFswitch = 1;
+			; SOURCE LINE # 113
+	SETB 	RFswitch
+; 	}
+			; SOURCE LINE # 114
+	RET  	
+?C0006:
+; 	else
+; 	{
+			; SOURCE LINE # 116
+; 		RFswitch = 0;
+			; SOURCE LINE # 117
+	CLR  	RFswitch
+; 	}
+			; SOURCE LINE # 118
+; }
+			; SOURCE LINE # 119
+?C0008:
+	RET  	
+; END OF _switchRF
+
+; /***********************************************************************************************
+; 函数名:		writeDA5741
+; 功能:		唤醒DA及A\B\C\D通道的DA输出
+; 参数说明:	
+; 			value:送入5741的数据	
+; 			function:功能选择	W:为唤醒DA		A/B/C/D:对A/B/C/D通道操作
+; 操作说明:	Immediately following CS high-to-low transition, the data is shifted synchronously 
+; 			and latched into the input register on the falling edge of the serial clock input(SCLK)
+; ************************************************************************************************/
+; /*
+; void writeDA5741(unsigned int value,unsigned char function)
+; {
+; 	value <<=2;
+; 	value &=0xFFFC;				//取DA数据(bit2~bit11)
+; 
+; 	switch(function)
+; 	{
+; 		case 	'W':			//wake up	A、B、C、D通道
+; 			value |= 0x0000;	
+; 			break;
+; 
+; 		case	'A':
+; 			value |= 0x0000;
+; 			break;
+; 		
+; 		case	'B':
+; 			value |= 0x1000;
+; 			break;
+; 
+; 		case	'C':
+; 			value |= 0x2000;	//高4位为模式控制位Shift data from input register to DAC register, OUTC updated
+; 			break;
+; 
+; 		case	'D':
+; 			value |= 0x3000;
+; 			break;
+; 
+; 		default:
+; 			break;	
+; 	}
+; 	LD = 1;
+; 	LD = 0;
+; 	MSend_bit(value,16);
+; 	LD = 1;	
+; } */
+; 
+; 
+; void writeAD5314(unsigned int value,unsigned char channel)
+
+	RSEG  ?PR?_writeAD5314?BRO20W_RFCONTROL
+_writeAD5314:
+	USING	0
+			; SOURCE LINE # 167
+;---- Variable 'value?346' assigned to Register 'R6/R7' ----
+;---- Variable 'channel?347' assigned to Register 'R5' ----
+; {
+			; SOURCE LINE # 168
+; 	value <<=2;
+			; SOURCE LINE # 169
+	MOV  	A,R7
+	MOV  	R0,#02H
+?C0076:
+	CLR  	C
+	RLC  	A
+	XCH  	A,R6
+	RLC  	A
+	XCH  	A,R6
+	DJNZ 	R0,?C0076
+	MOV  	R7,A
+; 	value &=0xFFFC;	
+			; SOURCE LINE # 170
+	ANL  	AR7,#0FCH
+; 	if(channel=='A')
+			; SOURCE LINE # 171
+	CJNE 	R5,#041H,?C0009
+; 	{
+			; SOURCE LINE # 172
+; 		value |= 0x2000;		 		//高4位为模式控制位
+			; SOURCE LINE # 173
+	ORL  	AR6,#020H
+; 	}
+			; SOURCE LINE # 174
+	SJMP 	?C0010
+?C0009:
+; 	else if(channel=='B')	
+			; SOURCE LINE # 175
+	CJNE 	R5,#042H,?C0011
+; 	{
+			; SOURCE LINE # 176
+; 		value |= 0x6000;
+			; SOURCE LINE # 177
+	ORL  	AR6,#060H
+; 	}
+			; SOURCE LINE # 178
+	SJMP 	?C0010
+?C0011:
+; 	else if(channel=='C')	
+			; SOURCE LINE # 179
+	CJNE 	R5,#043H,?C0013
+; 	{
+			; SOURCE LINE # 180
+; 		value |= 0xA000;
+			; SOURCE LINE # 181
+	ORL  	AR6,#0A0H
+; 	}
+			; SOURCE LINE # 182
+	SJMP 	?C0010
+?C0013:
+; 	else 	
+; 	{
+			; SOURCE LINE # 184
+; 		value |= 0xE000;
+			; SOURCE LINE # 185
+	ORL  	AR6,#0E0H
+; 	}
+			; SOURCE LINE # 186
+?C0010:
+; 	LD = 1;
+			; SOURCE LINE # 187
+	SETB 	LD
+; 	LD = 0;
+			; SOURCE LINE # 188
+	CLR  	LD
+; 	MSend_bit(value,16);
+			; SOURCE LINE # 189
+	MOV  	R5,#010H
+	LCALL	_MSend_bit
+; 	LD = 1;
+			; SOURCE LINE # 190
+	SETB 	LD
+; }
+			; SOURCE LINE # 191
+	RET  	
+; END OF _writeAD5314
+
+; 
+; 
+; /*写衰减器Att1--1U5(前部衰减器)
+; void writeAtt1(unsigned char att1)
+; {
+; 	unsigned int value;
+; 	LE1 = 0;
+; 	value = (unsigned int)att1;
+; 	value <<=10;
+; 	MSend_bit(value,6);	
+; 	LE1 = 1;
+; 	LE1 = 0;
+; }
+; 
+; //设置总的衰减值
+; unsigned char writeAttenuator(unsigned char attVal)
+; {
+; 	gAtt1 = attVal <<= 1;
+; 	gAtt1 += gAtttempval;
+; 	gAtt1 += gGainOffset;
+; 
+; 	if(gAtt1 > 0x3F)
+; 	{
+; 		gAtt1 = 0x3F;
+; 	}
+; 
+; 	writeAtt1(gAtt1);	
+; 	return TRUE;		
+; }  */
+; /*
+; ***************************************************************************************************************
+; *                         输出功率限幅值补偿
+; *
+; * Description: 补偿限幅值 
+; *
+; * Arguments  : 无
+; *
+; * Returns    : 无
+; ***************************************************************************************************************
+; */
+; void gPALimCompensate()
+
+	RSEG  ?PR?gPALimCompensate?BRO20W_RFCONTROL
+gPALimCompensate:
+	USING	0
+			; SOURCE LINE # 232
+; {		
+			; SOURCE LINE # 233
+;     unsigned char temp[4];
+;     unsigned char gPALimNumerN;
+; 	int calVal;
+; 
+;     readE2promStr(2, EE_gPALim, temp);											
+			; SOURCE LINE # 238
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?448)
+	MOV  	R1,#LOW (temp?448)
+	MOV  	R5,#020H
+	MOV  	R4,#00H
+	MOV  	R7,#02H
+	LCALL	_readE2promStr
+; 	swapBytes(temp, (unsigned char *)&gPALim, 2);
+			; SOURCE LINE # 239
+	MOV  	?_swapBytes?BYTE+03H,#01H
+	MOV  	?_swapBytes?BYTE+04H,#HIGH (gPALim)
+	MOV  	?_swapBytes?BYTE+05H,#LOW (gPALim)
+	MOV  	?_swapBytes?BYTE+06H,#02H
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?448)
+	MOV  	R1,#LOW (temp?448)
+	LCALL	_swapBytes
+; 
+; #if debug == 1
+; 	gPALim = 600;
+; #endif
+; 
+; 	readE2promStr(1,EE_gPALimNumer,temp);			//读取 功率限幅补偿分子					
+			; SOURCE LINE # 245
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?448)
+	MOV  	R1,#LOW (temp?448)
+	MOV  	R5,#075H
+	MOV  	R4,#00H
+	MOV  	R7,#01H
+	LCALL	_readE2promStr
+; 	swapBytes(temp,(unsigned char *)&gPALimNumer,1);
+			; SOURCE LINE # 246
+	MOV  	?_swapBytes?BYTE+03H,#01H
+	MOV  	?_swapBytes?BYTE+04H,#HIGH (gPALimNumer)
+	MOV  	?_swapBytes?BYTE+05H,#LOW (gPALimNumer)
+	MOV  	?_swapBytes?BYTE+06H,#01H
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?448)
+	MOV  	R1,#LOW (temp?448)
+	LCALL	_swapBytes
+; 
+; 	readE2promStr(1,EE_gPequDenomi,temp);			//读取 功率补偿分母					
+			; SOURCE LINE # 248
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?448)
+	MOV  	R1,#LOW (temp?448)
+	MOV  	R5,#077H
+	MOV  	R4,#00H
+	MOV  	R7,#01H
+	LCALL	_readE2promStr
+; 	swapBytes(temp,(unsigned char *)&gPequDenomi,1);
+			; SOURCE LINE # 249
+	MOV  	?_swapBytes?BYTE+03H,#01H
+	MOV  	?_swapBytes?BYTE+04H,#HIGH (gPequDenomi)
+	MOV  	?_swapBytes?BYTE+05H,#LOW (gPequDenomi)
+	MOV  	?_swapBytes?BYTE+06H,#01H
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?448)
+	MOV  	R1,#LOW (temp?448)
+	LCALL	_swapBytes
+; 
+;     readE2promStr(4,EE_gPBmFreq,temp);				//读取 基准频率
+			; SOURCE LINE # 251
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?448)
+	MOV  	R1,#LOW (temp?448)
+	MOV  	R5,#078H
+	MOV  	R4,#00H
+	MOV  	R7,#04H
+	LCALL	_readE2promStr
+; 	swapBytes(temp,(unsigned char *)&gPBmFreq,4);
+			; SOURCE LINE # 252
+	MOV  	?_swapBytes?BYTE+03H,#01H
+	MOV  	?_swapBytes?BYTE+04H,#HIGH (gPBmFreq)
+	MOV  	?_swapBytes?BYTE+05H,#LOW (gPBmFreq)
+	MOV  	?_swapBytes?BYTE+06H,#04H
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?448)
+	MOV  	R1,#LOW (temp?448)
+	LCALL	_swapBytes
+; 
+; 	gPALimNumerN = ~gPALimNumer + 1;
+			; SOURCE LINE # 254
+	MOV  	DPTR,#gPALimNumer
+	MOVX 	A,@DPTR
+	CPL  	A
+	INC  	A
+	MOV  	gPALimNumerN?449,A
+; 
+; 	calVal = gPALim;
+			; SOURCE LINE # 256
+	MOV  	DPTR,#gPALim
+	MOVX 	A,@DPTR
+	MOV  	calVal?450,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	calVal?450+01H,A
+; 	
+; 	if(gCenFreq < gPBmFreq)
+			; SOURCE LINE # 258
+	MOV  	DPTR,#gPBmFreq
+	MOVX 	A,@DPTR
+	MOV  	R4,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	R5,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	R6,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	R7,A
+	MOV  	R3,gCenFreq+03H
+	MOV  	R2,gCenFreq+02H
+	MOV  	R1,gCenFreq+01H
+	MOV  	R0,gCenFreq
+	CLR  	C
+	LCALL	?C?ULCMP
+	JNC  	?C0016
+;     {
+			; SOURCE LINE # 259
+; 		if(gPALimNumer < 0)
+			; SOURCE LINE # 260
+	MOV  	DPTR,#gPALimNumer
+	MOVX 	A,@DPTR
+	CLR  	C
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	MOV  	DPTR,#gPBmFreq
+	MOVX 	A,@DPTR
+	MOV  	R4,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	R5,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	R6,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	JNC  	?C0017
+; 		{
+			; SOURCE LINE # 261
+; 			calVal += (gPBmFreq - gCenFreq) * gPALimNumerN / (gPequDenomi * 1000);
+			; SOURCE LINE # 262
+	CLR  	C
+	SUBB 	A,gCenFreq+03H
+	MOV  	R3,A
+	MOV  	A,R6
+	SUBB 	A,gCenFreq+02H
+	MOV  	R2,A
+	MOV  	A,R5
+	SUBB 	A,gCenFreq+01H
+	MOV  	R1,A
+	MOV  	A,R4
+	SUBB 	A,gCenFreq
+	MOV  	R0,A
+	MOV  	R7,gPALimNumerN?449
+	CLR  	A
+	MOV  	R4,A
+	MOV  	R5,A
+	MOV  	R6,A
+; 		}
+			; SOURCE LINE # 263
+	LJMP 	?C0086
+?C0017:
+; 		else
+; 		{
+			; SOURCE LINE # 265
+; 			calVal -= (gPBmFreq - gCenFreq) * gPALimNumer / (gPequDenomi * 1000);
+			; SOURCE LINE # 266
+	CLR  	C
+	SUBB 	A,gCenFreq+03H
+	MOV  	R3,A
+	MOV  	A,R6
+	SUBB 	A,gCenFreq+02H
+	MOV  	R2,A
+	MOV  	A,R5
+	SUBB 	A,gCenFreq+01H
+	MOV  	R1,A
+	MOV  	A,R4
+	SUBB 	A,gCenFreq
+	MOV  	R0,A
+	MOV  	DPTR,#gPALimNumer
+	MOVX 	A,@DPTR
+	MOV  	R7,A
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	R6,A
+	MOV  	R5,A
+	MOV  	R4,A
+; 		}
+			; SOURCE LINE # 267
+; 	}
+			; SOURCE LINE # 268
+	SJMP 	?C0087
+?C0016:
+; 	else if(gPBmFreq < gCenFreq)
+			; SOURCE LINE # 269
+	MOV  	R7,gCenFreq+03H
+	MOV  	R6,gCenFreq+02H
+	MOV  	R5,gCenFreq+01H
+	MOV  	R4,gCenFreq
+	MOV  	DPTR,#gPBmFreq
+	MOVX 	A,@DPTR
+	MOV  	R0,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	R1,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	R2,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	R3,A
+	CLR  	C
+	LCALL	?C?ULCMP
+	JC   	$ + 5H
+	LJMP 	?C0019
+; 	{
+			; SOURCE LINE # 270
+; 		if(gPALimNumer < 0)
+			; SOURCE LINE # 271
+	MOV  	DPTR,#gPALimNumer
+	MOVX 	A,@DPTR
+	CLR  	C
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	MOV  	DPTR,#gPBmFreq
+	MOVX 	A,@DPTR
+	MOV  	R0,A
+	INC  	DPTR
+	JNC  	?C0021
+; 		{
+			; SOURCE LINE # 272
+; 			calVal -= (gCenFreq - gPBmFreq) * gPALimNumerN / (gPequDenomi * 1000);
+			; SOURCE LINE # 273
+	INC  	DPTR
+	INC  	DPTR
+	CLR  	C
+	MOV  	A,gCenFreq+03H
+	SUBB 	A,R3
+	MOV  	R3,A
+	MOV  	A,gCenFreq+02H
+	SUBB 	A,R2
+	MOV  	R2,A
+	MOV  	A,gCenFreq+01H
+	SUBB 	A,R1
+	MOV  	R1,A
+	MOV  	A,gCenFreq
+	SUBB 	A,R0
+	MOV  	R0,A
+	MOV  	R7,gPALimNumerN?449
+	CLR  	A
+	MOV  	R4,A
+	MOV  	R5,A
+	MOV  	R6,A
+?C0087:
+	LCALL	?C?LMUL
+	PUSH 	AR4
+	PUSH 	AR5
+	PUSH 	AR6
+	PUSH 	AR7
+	MOV  	DPTR,#gPequDenomi
+	MOVX 	A,@DPTR
+	MOV  	R7,A
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	R6,A
+	MOV  	R4,#03H
+	MOV  	R5,#0E8H
+	LCALL	?C?IMUL
+	MOV  	R3,AR7
+	MOV  	R2,AR6
+	MOV  	A,R2
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	R1,A
+	MOV  	R0,A
+	POP  	AR7
+	POP  	AR6
+	POP  	AR5
+	POP  	AR4
+	LCALL	?C?ULDIV
+	CLR  	C
+	MOV  	A,calVal?450+01H
+	SUBB 	A,R7
+	MOV  	calVal?450+01H,A
+	MOV  	A,calVal?450
+	SUBB 	A,R6
+	MOV  	calVal?450,A
+; 		}
+			; SOURCE LINE # 274
+	SJMP 	?C0019
+?C0021:
+; 		else
+; 		{
+			; SOURCE LINE # 276
+; 			calVal += (gCenFreq - gPBmFreq) * gPALimNumer / (gPequDenomi * 1000);
+			; SOURCE LINE # 277
+	MOVX 	A,@DPTR
+	MOV  	R1,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	R2,A
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	MOV  	R3,A
+	CLR  	C
+	MOV  	A,gCenFreq+03H
+	SUBB 	A,R3
+	MOV  	R3,A
+	MOV  	A,gCenFreq+02H
+	SUBB 	A,R2
+	MOV  	R2,A
+	MOV  	A,gCenFreq+01H
+	SUBB 	A,R1
+	MOV  	R1,A
+	MOV  	A,gCenFreq
+	SUBB 	A,R0
+	MOV  	R0,A
+	MOV  	DPTR,#gPALimNumer
+	MOVX 	A,@DPTR
+	MOV  	R7,A
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	R6,A
+	MOV  	R5,A
+	MOV  	R4,A
+?C0086:
+	LCALL	?C?LMUL
+	PUSH 	AR4
+	PUSH 	AR5
+	PUSH 	AR6
+	PUSH 	AR7
+	MOV  	DPTR,#gPequDenomi
+	MOVX 	A,@DPTR
+	MOV  	R7,A
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	R6,A
+	MOV  	R4,#03H
+	MOV  	R5,#0E8H
+	LCALL	?C?IMUL
+	MOV  	R3,AR7
+	MOV  	R2,AR6
+	MOV  	A,R2
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	R1,A
+	MOV  	R0,A
+	POP  	AR7
+	POP  	AR6
+	POP  	AR5
+	POP  	AR4
+	LCALL	?C?ULDIV
+	MOV  	A,R7
+	ADD  	A,calVal?450+01H
+	MOV  	calVal?450+01H,A
+	MOV  	A,R6
+	ADDC 	A,calVal?450
+	MOV  	calVal?450,A
+; 		}
+			; SOURCE LINE # 278
+; 	}
+			; SOURCE LINE # 279
+?C0019:
+; 
+; 	//检查范围，防止溢出
+; 	if(calVal < 0)
+			; SOURCE LINE # 282
+	CLR  	C
+	MOV  	A,calVal?450
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0023
+; 	{
+			; SOURCE LINE # 283
+; 		gPALim = 0;
+			; SOURCE LINE # 284
+	CLR  	A
+	MOV  	DPTR,#gPALim
+	MOVX 	@DPTR,A
+	INC  	DPTR
+	MOVX 	@DPTR,A
+; 	}
+			; SOURCE LINE # 285
+	RET  	
+?C0023:
+; 	else if(calVal > 1023)								   //防止输出限幅值溢出，导致掉功率
+			; SOURCE LINE # 286
+	SETB 	C
+	MOV  	A,calVal?450+01H
+	SUBB 	A,#0FFH
+	MOV  	A,calVal?450
+	XRL  	A,#080H
+	SUBB 	A,#083H
+	MOV  	DPTR,#gPALim
+	JC   	?C0025
+; 	{
+			; SOURCE LINE # 287
+; 		gPALim = 1023;
+			; SOURCE LINE # 288
+	MOV  	A,#03H
+	MOVX 	@DPTR,A
+	INC  	DPTR
+	MOV  	A,#0FFH
+	MOVX 	@DPTR,A
+; 	}
+			; SOURCE LINE # 289
+	RET  	
+?C0025:
+; 	else
+; 	{
+			; SOURCE LINE # 291
+; 		gPALim = calVal;
+			; SOURCE LINE # 292
+	MOV  	A,calVal?450
+	MOVX 	@DPTR,A
+	INC  	DPTR
+	MOV  	A,calVal?450+01H
+	MOVX 	@DPTR,A
+; 	}
+			; SOURCE LINE # 293
+; 
+; 
+; }
+			; SOURCE LINE # 296
+?C0027:
+	RET  	
+; END OF gPALimCompensate
+
+; /*
+; ****************************************************************************************************************
+; *                         读取温度
+; *
+; * Description: 读取温度，定时执行，更新温度值 
+; *
+; * Arguments  : 无
+; *
+; * Returns    : 无
+; *****************************************************************************************************************
+; */
+; void readTemperatur()
+
+	RSEG  ?PR?readTemperatur?BRO20W_RFCONTROL
+readTemperatur:
+	USING	0
+			; SOURCE LINE # 308
+; {
+			; SOURCE LINE # 309
+; 	int value = 0;
+			; SOURCE LINE # 310
+	CLR  	A
+	MOV  	value?551,A
+	MOV  	value?551+01H,A
+; 
+; 	gpreRfTemp =  gcurRfTemp;
+			; SOURCE LINE # 312
+	MOV  	gpreRfTemp,gcurRfTemp
+	MOV  	gpreRfTemp+01H,gcurRfTemp+01H
+; 	
+; 	IRcvStr(0x90,0x00,(unsigned char*)&value,2);			//读取温度，其中指针寄存器为00
+			; SOURCE LINE # 314
+	MOV  	R3,A
+	MOV  	R2,#HIGH (value?551)
+	MOV  	R1,#LOW (value?551)
+	MOV  	?_IRcvStr?BYTE+05H,#02H
+	MOV  	R5,A
+	MOV  	R7,#090H
+	LCALL	_IRcvStr
+; 	value >>= 7;
+			; SOURCE LINE # 315
+	MOV  	A,value?551+01H
+	MOV  	R6,value?551
+	MOV  	R0,#07H
+?C0077:
+	XCH  	A,R6
+	MOV  	C,ACC.7
+	RRC  	A
+	XCH  	A,R6
+	RRC  	A
+	DJNZ 	R0,?C0077
+	MOV  	value?551+01H,A
+	MOV  	value?551,R6
+; 	gcurRfTemp = value;
+			; SOURCE LINE # 316
+	MOV  	gcurRfTemp,value?551
+	MOV  	gcurRfTemp+01H,A
+; 
+; 	if(gtestflag == 0)										//不在调试状态下，使用实际温度
+			; SOURCE LINE # 318
+	MOV  	A,gtestflag
+	JNZ  	?C0028
+; 	{
+			; SOURCE LINE # 319
+; 		gainCo = gcurRfTemp - gBaseTemp*2;							 
+			; SOURCE LINE # 320
+	MOV  	DPTR,#gBaseTemp
+	MOVX 	A,@DPTR
+	MOV  	B,#02H
+	MUL  	AB
+	MOV  	R7,A
+	MOV  	R6,B
+	CLR  	C
+	MOV  	A,gcurRfTemp+01H
+	SUBB 	A,R7
+	MOV  	gainCo+01H,A
+	MOV  	A,gcurRfTemp
+; 	}
+			; SOURCE LINE # 321
+	SJMP 	?C0088
+?C0028:
+; 	else if(gtestflag == 2)
+			; SOURCE LINE # 322
+	MOV  	A,gtestflag
+	CJNE 	A,#02H,?C0031
+; 	{
+			; SOURCE LINE # 323
+; 		gainCo = gtestRfTemp - gBaseTemp*2;							
+			; SOURCE LINE # 324
+	MOV  	DPTR,#gBaseTemp
+	MOVX 	A,@DPTR
+	MOV  	B,#02H
+	MUL  	AB
+	MOV  	R7,A
+	MOV  	R6,B
+	CLR  	C
+	MOV  	A,gtestRfTemp+01H
+	SUBB 	A,R7
+	MOV  	gainCo+01H,A
+	MOV  	A,gtestRfTemp
+?C0088:
+	SUBB 	A,R6
+	MOV  	gainCo,A
+; 	}
+			; SOURCE LINE # 325
+; }
+			; SOURCE LINE # 326
+?C0031:
+	RET  	
+; END OF readTemperatur
+
+; /*
+; ****************************************************************************************************************
+; *                         温度补偿
+; *
+; * Description: 根据读取的温度值，对衰减值和锁相环分别进行温补操作 
+; *
+; * Arguments  : 无
+; *
+; * Returns    : 无
+; *****************************************************************************************************************
+; */
+; /*
+; void tempCompensate() 
+; {
+; //	unsigned char numerator, denominator;
+; 	int gainCotemp;
+; 
+; 	if( (softDownLoad == DOING)||(gtestflag==1) )
+; 	{
+; 		return;
+; 	}
+; 
+; //	readE2promStr(1,EE_GainNumer,&numerator);	 				//增益温补系数分子
+; //	readE2promStr(1,EE_GainDenomi,&denominator);	 			//增益温补系数分母
+; //	readE2promStr(1,EE_TEMP_VALUE,&gTempgain); 				//读取温度基准值
+; 	if( gTempgain > 16 ) 
+; 	{		
+; 		gTempgain = 9;
+; 	}	
+; 	 
+; 	gainCotemp = gainCo*gGainNumer; //gGainNumer
+; 	if(gGainDenomi == 0)
+; 	{
+; 		gGainDenomi = 100;
+; 	}
+; 	gainCotemp = gainCotemp/gGainDenomi;
+; 	  
+; 	gainCotemp = gTempgain - gainCotemp;
+; 	if(gainCotemp < 0)
+; 	{
+; 		gAtttempval = 0;
+; 	}
+; 	else if(gainCotemp > 0x3F)
+; 	{
+; 		gAtttempval = 0x3F;
+; 	}
+; 	else
+; 	{
+; 		gAtttempval = (unsigned char)gainCotemp;
+; 	}
+; 
+; 	writeAttenuator(gAtteVal);
+; 
+; 	rfPramModified = FALSE;							//射频参数修改标志	
+; 
+; }*/
+; 
+; /*写锁相环4350*/
+; void progPLL(unsigned long value)
+
+	RSEG  ?PR?_progPLL?BRO20W_RFCONTROL
+L?0095:
+	USING	0
+L?0096:
+	MOV  	counterTemp?757,A
+	MOV  	R7,counterTemp?757+03H
+	MOV  	R6,counterTemp?757+02H
+	MOV  	R5,counterTemp?757+01H
+	MOV  	R4,A
+_progPLL:
+	USING	0
+			; SOURCE LINE # 385
+	MOV  	value?652+03H,R7
+	MOV  	value?652+02H,R6
+	MOV  	value?652+01H,R5
+	MOV  	value?652,R4
+; {	
+			; SOURCE LINE # 386
+; 	unsigned char num_bit,i;
+; 	unsigned long masque_bit;
+; 	unsigned char x;
+; 
+; 	num_bit = 32;
+			; SOURCE LINE # 391
+	MOV  	num_bit?653,#020H
+; 	masque_bit = 0x80000000;	
+			; SOURCE LINE # 392
+	CLR  	A
+	MOV  	masque_bit?655+03H,A
+	MOV  	masque_bit?655+02H,A
+	MOV  	masque_bit?655+01H,A
+	MOV  	masque_bit?655,#080H
+; 	
+; 	CLK = 0;					//初始状态
+			; SOURCE LINE # 394
+	CLR  	CLK
+; 	LD2 = 1;
+			; SOURCE LINE # 395
+	SETB 	LD2
+; 
+; 	LD2 = 0;
+			; SOURCE LINE # 397
+	CLR  	LD2
+; 	for(i=0;i<num_bit;i++)
+			; SOURCE LINE # 398
+	MOV  	i?654,A
+?C0032:
+	MOV  	A,i?654
+	CLR  	C
+	SUBB 	A,num_bit?653
+	JNC  	?C0033
+; 	{
+			; SOURCE LINE # 399
+; 		if((value & masque_bit)==0)
+			; SOURCE LINE # 400
+	MOV  	A,value?652+03H
+	ANL  	A,masque_bit?655+03H
+	MOV  	R7,A
+	MOV  	A,value?652+02H
+	ANL  	A,masque_bit?655+02H
+	MOV  	R6,A
+	MOV  	A,value?652+01H
+	ANL  	A,masque_bit?655+01H
+	MOV  	R5,A
+	MOV  	A,value?652
+	ANL  	A,masque_bit?655
+	MOV  	R4,A
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R2,A
+	MOV  	R1,A
+	MOV  	R0,A
+	CLR  	C
+	LCALL	?C?ULCMP
+	JNZ  	?C0035
+; 		{
+			; SOURCE LINE # 401
+; 			DATA = 0;
+			; SOURCE LINE # 402
+	CLR  	DATA?
+; 		}			
+			; SOURCE LINE # 403
+	SJMP 	?C0036
+?C0035:
+; 		else
+; 		{
+			; SOURCE LINE # 405
+; 			DATA = 1;	
+			; SOURCE LINE # 406
+	SETB 	DATA?
+; 		}
+			; SOURCE LINE # 407
+?C0036:
+; 		for(x=0;x<2;x++)
+			; SOURCE LINE # 408
+;---- Variable 'x?656' assigned to Register 'R7' ----
+	CLR  	A
+	MOV  	R7,A
+?C0037:
+; 		{
+			; SOURCE LINE # 409
+; 		}
+			; SOURCE LINE # 410
+	INC  	R7
+	CJNE 	R7,#02H,?C0037
+?C0038:
+; 		CLK = 1;
+			; SOURCE LINE # 411
+	SETB 	CLK
+; 		value <<= 1;
+			; SOURCE LINE # 412
+	MOV  	R7,value?652+03H
+	MOV  	R6,value?652+02H
+	MOV  	R5,value?652+01H
+	MOV  	R4,value?652
+	MOV  	R0,#01H
+	LCALL	?C?LSHL
+	MOV  	value?652+03H,R7
+	MOV  	value?652+02H,R6
+	MOV  	value?652+01H,R5
+	MOV  	value?652,R4
+; 		CLK = 0;
+			; SOURCE LINE # 413
+	CLR  	CLK
+; 	}
+			; SOURCE LINE # 414
+	INC  	i?654
+	SJMP 	?C0032
+?C0033:
+; 	LD2 = 1;
+			; SOURCE LINE # 415
+	SETB 	LD2
+; }
+			; SOURCE LINE # 416
+	RET  	
+; END OF _progPLL
+
+; /*
+; ****************************************************************************************************************
+; *                         写锁相环ADF4350
+; *
+; * Description: 根据设定的中心频率, 中频频率, 频率偏移, 频率步进, 频率温度补偿系数计算出各寄存器值, 再调用progPLL
+; *
+; * Arguments  : 无
+; *
+; * Returns    : 无
+; *****************************************************************************************************************
+; */
+; void writePLL()
+
+	RSEG  ?PR?writePLL?BRO20W_RFCONTROL
+writePLL:
+	USING	0
+			; SOURCE LINE # 428
+; {
+			; SOURCE LINE # 429
+; 	#define R0_INIT		0x00000000
+; 	//
+; 	//DB31             ～                  DB4 DB3 DB2 DB1 DB0
+; 	//0    0    0    0    0    0    0          0
+; 	//0                ～                  0   0   0   0   0
+; 
+; 	#define R1_INIT		0x08008001
+; 	//			  PRESCALER
+; 	//DB31～DB28  DB27       DB26 DB25 DB24 DB23  ～ DB16 DB15 DB14 DB13 DB12 DB11 ～ DB4 DB3 DB2 DB1 DB0
+; 	//0			  8			 	   			0     0		  8					  0    0      1
+; 	//0   ～0     1			 0    0    0    0    ～   0   1    0    0    0    0    ～ 0	  0	  0   0   1 
+; 
+; 	#define R2_INIT		0x18004EC2
+; 	//     NOISE-MODE[1:0] MUXOUT[2:0]	   REF-DOU RDIV2    					 DOUB-BUFF	CHARGE-PUMP[3:0]  LDF LDP PD-POLA PD  CP-THR  COUNT-RESET
+; 	//DB31 DB30 DB29       DB28 DB27 DB26  DB25    DB24   DB23 ～ DB16 DB15 DB14 DB13       DB12 DB11 B10 DB9 DB8 DB7 DB6     DB5 DB4     DB3         DB2 DB1 DB0
+; 	//1							8						  0	   0	   4						 E				  C						  2
+; 	//0    0    0          1    1    0     0       0      0    ～ 0    0    1    0			0	 1	  1	  1	  0	  1	  1	      0	  0		  0           0   1   0
+; 
+; 
+; 	#define R3_INIT		0x000004B3
+; 	//					CSR		  CLK-DIV[1:0]
+; 	//DB31 ～ DB20 DB19 DB18 DB17 DB16 DB15    DB14 DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
+; 	//0  0  0	   0                   0                      4  				B				3
+; 	//0    ～ 0    0    0    0    0    0       0    0    0    0	   1    0   0   1   0   1   1   0   0   1   1 
+; 	
+; 	#define R4_INIT		0x0085041C
+; 	//				 FEEDBACK DIV-SEL[2:0]	     BAND-SELECT-CLOCK-DIVIDER-VALUE[7:0]        VCO-POW  MTLD AUXOUT-SEL AUXOUT-EN	AUXOUT-POW[1:0]	RFOUT-EN OUTPOW[1:0]
+; 	//DB31 ～ DB24   DB23     DB22 DB21 DB20     DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12     DB11     B10  DB9        DB8       DB7 DB6         DB5      DB4 DB3     DB2 DB1 DB0
+; 	//0    0		 8							 5					 0						 4									1							 C
+; 	//0    ～ 0      1        0    0    0        0    1    0    1    0    0    0    0		 0		  1	   0		  0			0	0			0		 1	 1		 1	 0	 0
+; 
+; 	#define R5_INIT		0x00580005
+; 	//				 LD-PIN[1:0]											 
+; 	//DB31 ～ DB24   DB23 DB22   DB21 DB20 DB19 DB18 DB17 DB16 DB15 ～ DB4 DB3 DB2 DB1 DB0
+; 	//0    0		 5					   8                   0 0 0       5
+; 	//0    ～ 0      0    1    	 0	  1	   1    0    0    0    0    ～ 0   0   1   0   1
+; 		  
+; 	unsigned long counterTemp,counterN,divSel,refFreq;
+; 	unsigned int freqStep;
+; 
+; 	unsigned char temp[4];
+; 	//unsigned char divSel;
+; 
+; 	readE2promStr(4,EE_RefFreq,temp);									//读取参考频率，4个字节
+			; SOURCE LINE # 473
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?762)
+	MOV  	R1,#LOW (temp?762)
+	MOV  	R5,#054H
+	MOV  	R4,#00H
+	MOV  	R7,#04H
+	LCALL	_readE2promStr
+; 	swapBytes(temp, (unsigned char *)&refFreq,4);
+			; SOURCE LINE # 474
+	MOV  	?_swapBytes?BYTE+03H,#00H
+	MOV  	?_swapBytes?BYTE+04H,#HIGH (refFreq?760)
+	MOV  	?_swapBytes?BYTE+05H,#LOW (refFreq?760)
+	MOV  	?_swapBytes?BYTE+06H,#04H
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?762)
+	MOV  	R1,#LOW (temp?762)
+	LCALL	_swapBytes
+; 
+; 	readE2promStr(2,EE_FreqStep,temp);									//读取中频步进值
+			; SOURCE LINE # 476
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?762)
+	MOV  	R1,#LOW (temp?762)
+	MOV  	R5,#04AH
+	MOV  	R4,#00H
+	MOV  	R7,#02H
+	LCALL	_readE2promStr
+; 	swapBytes(temp, (unsigned char *)&freqStep,2);
+			; SOURCE LINE # 477
+	MOV  	?_swapBytes?BYTE+03H,#00H
+	MOV  	?_swapBytes?BYTE+04H,#HIGH (freqStep?761)
+	MOV  	?_swapBytes?BYTE+05H,#LOW (freqStep?761)
+	MOV  	?_swapBytes?BYTE+06H,#02H
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (temp?762)
+	MOV  	R1,#LOW (temp?762)
+	LCALL	_swapBytes
+; 
+; #if debug == 1
+; 	gCenFreq = 930000;
+; 	freqStep = 100;
+; 	refFreq = 10000;
+; 	gRFSW = 1;
+; #endif
+; 
+; 	if (freqStep == 0) 
+			; SOURCE LINE # 486
+	MOV  	A,freqStep?761+01H
+	ORL  	A,freqStep?761
+	JNZ  	?C0041
+; 	{
+			; SOURCE LINE # 487
+; 		freqStep = 25;
+			; SOURCE LINE # 488
+	MOV  	freqStep?761,A
+	MOV  	freqStep?761+01H,#019H
+; 	}
+			; SOURCE LINE # 489
+?C0041:
+; 
+; 	counterN = gCenFreq;
+			; SOURCE LINE # 491
+	MOV  	counterN?758+03H,gCenFreq+03H
+	MOV  	counterN?758+02H,gCenFreq+02H
+	MOV  	counterN?758+01H,gCenFreq+01H
+	MOV  	counterN?758,gCenFreq
+; 
+; 	//VCO只能输出2.2GHz-4.4GHz的频率，根据需要输出的频率确定VCO输出的分频值
+; 	if((counterN >= 137500) && (counterN < 275000))
+			; SOURCE LINE # 494
+	MOV  	R7,#01CH
+	MOV  	R6,#019H
+	MOV  	R5,#02H
+	MOV  	R4,#00H
+	MOV  	R3,counterN?758+03H
+	MOV  	R2,counterN?758+02H
+	MOV  	R1,counterN?758+01H
+	MOV  	R0,counterN?758
+	CLR  	C
+	LCALL	?C?ULCMP
+	JC   	?C0042
+	MOV  	R7,#038H
+	MOV  	R6,#032H
+	MOV  	R5,#04H
+	MOV  	R4,#00H
+	MOV  	R0,counterN?758
+	LCALL	?C?ULCMP
+	JNC  	?C0042
+; 	{
+			; SOURCE LINE # 495
+; 		divSel = 4;
+			; SOURCE LINE # 496
+	CLR  	A
+	MOV  	divSel?759+03H,#04H
+; 	}
+			; SOURCE LINE # 497
+	LJMP 	?C0092
+?C0042:
+; 	else if((counterN >= 275000) && (counterN < 550000))
+			; SOURCE LINE # 498
+	MOV  	R7,#038H
+	MOV  	R6,#032H
+	MOV  	R5,#04H
+	MOV  	R4,#00H
+	MOV  	R3,counterN?758+03H
+	MOV  	R2,counterN?758+02H
+	MOV  	R1,counterN?758+01H
+	MOV  	R0,counterN?758
+	CLR  	C
+	LCALL	?C?ULCMP
+	JC   	?C0044
+	MOV  	R7,#070H
+	MOV  	R6,#064H
+	MOV  	R5,#08H
+	MOV  	R4,#00H
+	MOV  	R0,counterN?758
+	LCALL	?C?ULCMP
+	JNC  	?C0044
+; 	{
+			; SOURCE LINE # 499
+; 		divSel = 3;
+			; SOURCE LINE # 500
+	CLR  	A
+	MOV  	divSel?759+03H,#03H
+?C0089:
+; 	}
+			; SOURCE LINE # 501
+	SJMP 	?C0092
+?C0044:
+; 	else if((counterN >= 550000) && (counterN < 1100000))
+			; SOURCE LINE # 502
+	MOV  	R7,#070H
+	MOV  	R6,#064H
+	MOV  	R5,#08H
+	MOV  	R4,#00H
+	MOV  	R3,counterN?758+03H
+	MOV  	R2,counterN?758+02H
+	MOV  	R1,counterN?758+01H
+	MOV  	R0,counterN?758
+	CLR  	C
+	LCALL	?C?ULCMP
+	JC   	?C0046
+	MOV  	R7,#0E0H
+	MOV  	R6,#0C8H
+	MOV  	R5,#010H
+	MOV  	R4,#00H
+	MOV  	R0,counterN?758
+	LCALL	?C?ULCMP
+	JNC  	?C0046
+; 	{
+			; SOURCE LINE # 503
+; 		divSel = 2;
+			; SOURCE LINE # 504
+	CLR  	A
+	MOV  	divSel?759+03H,#02H
+?C0090:
+; 	}
+			; SOURCE LINE # 505
+	SJMP 	?C0092
+?C0046:
+; 	else if((counterN >= 1100000) && (counterN < 2200000))
+			; SOURCE LINE # 506
+	MOV  	R7,#0E0H
+	MOV  	R6,#0C8H
+	MOV  	R5,#010H
+	MOV  	R4,#00H
+	MOV  	R3,counterN?758+03H
+	MOV  	R2,counterN?758+02H
+	MOV  	R1,counterN?758+01H
+	MOV  	R0,counterN?758
+	CLR  	C
+	LCALL	?C?ULCMP
+	JC   	?C0048
+	MOV  	R7,#0C0H
+	MOV  	R6,#091H
+	MOV  	R5,#021H
+	MOV  	R4,#00H
+	MOV  	R0,counterN?758
+	LCALL	?C?ULCMP
+	JNC  	?C0048
+; 	{
+			; SOURCE LINE # 507
+; 		divSel = 1;
+			; SOURCE LINE # 508
+	CLR  	A
+	MOV  	divSel?759+03H,#01H
+?C0091:
+; 	}
+			; SOURCE LINE # 509
+	SJMP 	?C0092
+?C0048:
+; 	else
+; 	{
+			; SOURCE LINE # 511
+; 		divSel = 0;
+			; SOURCE LINE # 512
+	CLR  	A
+	MOV  	divSel?759+03H,A
+?C0092:
+	MOV  	divSel?759+02H,A
+	MOV  	divSel?759+01H,A
+	MOV  	divSel?759,A
+; 	}
+			; SOURCE LINE # 513
+?C0043:
+; 													//放大为VCO的输出频率和步进值
+; 	counterN <<= divSel;
+			; SOURCE LINE # 515
+	MOV  	R7,counterN?758+03H
+	MOV  	R6,counterN?758+02H
+	MOV  	R5,counterN?758+01H
+	MOV  	R4,counterN?758
+	MOV  	R1,divSel?759+03H
+	MOV  	R0,AR1
+	LCALL	?C?LSHL
+	MOV  	counterN?758+03H,R7
+	MOV  	counterN?758+02H,R6
+	MOV  	counterN?758+01H,R5
+	MOV  	counterN?758,R4
+; 	freqStep <<= divSel;
+			; SOURCE LINE # 516
+	MOV  	A,freqStep?761+01H
+	MOV  	R6,freqStep?761
+	MOV  	R0,AR1
+	INC  	R0
+	SJMP 	?C0079
+?C0078:
+	CLR  	C
+	RLC  	A
+	XCH  	A,R6
+	RLC  	A
+	XCH  	A,R6
+?C0079:
+	DJNZ 	R0,?C0078
+	MOV  	freqStep?761+01H,A
+	MOV  	freqStep?761,R6
+; 													//R5
+; 	progPLL(R5_INIT);
+			; SOURCE LINE # 518
+	MOV  	R7,#05H
+	MOV  	R6,#00H
+	MOV  	R5,#058H
+	MOV  	R4,#00H
+	LCALL	_progPLL
+; 
+; 	counterTemp = divSel;
+			; SOURCE LINE # 520
+	MOV  	counterTemp?757+03H,divSel?759+03H
+	MOV  	counterTemp?757+02H,divSel?759+02H
+	MOV  	counterTemp?757+01H,divSel?759+01H
+	MOV  	counterTemp?757,divSel?759
+; 	counterTemp <<= 20;
+			; SOURCE LINE # 521
+	MOV  	R7,counterTemp?757+03H
+	MOV  	R6,counterTemp?757+02H
+	MOV  	R5,counterTemp?757+01H
+	MOV  	R4,counterTemp?757
+	MOV  	R0,#014H
+	LCALL	?C?LSHL
+	MOV  	counterTemp?757+03H,R7
+	MOV  	counterTemp?757+02H,R6
+	MOV  	counterTemp?757+01H,R5
+	MOV  	counterTemp?757,R4
+; 	counterTemp = counterTemp | R4_INIT | (gRFSW << 5);//射频开关关闭则不使能输出
+			; SOURCE LINE # 522
+	MOV  	A,counterTemp?757+03H
+	ORL  	A,#01CH
+	MOV  	R7,A
+	MOV  	A,counterTemp?757+02H
+	ORL  	A,#04H
+	MOV  	R6,A
+	MOV  	A,counterTemp?757+01H
+	ORL  	A,#085H
+	MOV  	R5,A
+	MOV  	R0,AR4
+	MOV  	R1,AR5
+	MOV  	R2,AR6
+	MOV  	R3,AR7
+	MOV  	DPTR,#gRFSW
+	MOVX 	A,@DPTR
+	MOV  	B,#020H
+	MUL  	AB
+	MOV  	R7,A
+	MOV  	R6,B
+	MOV  	A,R6
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	R5,A
+	MOV  	R4,A
+	MOV  	A,R3
+	ORL  	A,R7
+	MOV  	counterTemp?757+03H,A
+	MOV  	A,R2
+	ORL  	A,R6
+	MOV  	counterTemp?757+02H,A
+	MOV  	A,R1
+	ORL  	A,R5
+	MOV  	counterTemp?757+01H,A
+	MOV  	A,R0
+	ORL  	A,R4
+; 													//R4
+; 	progPLL(counterTemp);
+			; SOURCE LINE # 524
+	LCALL	L?0095
+; 
+; 	progPLL(R3_INIT);								//R3
+			; SOURCE LINE # 526
+	MOV  	R7,#0B3H
+	MOV  	R6,#04H
+	MOV  	R5,#00H
+	MOV  	R4,#00H
+	LCALL	_progPLL
+; 
+; 	progPLL(R2_INIT);								//R2
+			; SOURCE LINE # 528
+	MOV  	R7,#0C2H
+	MOV  	R6,#04EH
+	MOV  	R5,#00H
+	MOV  	R4,#018H
+	LCALL	_progPLL
+; 
+; 						  							//转换成对应的分频值1、2、4、8、16
+; 	divSel = 1 << divSel;							//计算小数分频的模
+			; SOURCE LINE # 531
+	MOV  	A,#01H
+	MOV  	R6,#00H
+	MOV  	R0,divSel?759+03H
+	INC  	R0
+	SJMP 	?C0081
+?C0080:
+	CLR  	C
+	RLC  	A
+	XCH  	A,R6
+	RLC  	A
+	XCH  	A,R6
+?C0081:
+	DJNZ 	R0,?C0080
+	MOV  	R7,A
+	MOV  	A,R6
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	divSel?759+03H,R7
+	MOV  	divSel?759+02H,R6
+	MOV  	divSel?759+01H,A
+	MOV  	divSel?759,A
+; 	counterTemp = refFreq;
+			; SOURCE LINE # 532
+	MOV  	counterTemp?757+03H,refFreq?760+03H
+	MOV  	counterTemp?757+02H,refFreq?760+02H
+	MOV  	counterTemp?757+01H,refFreq?760+01H
+	MOV  	counterTemp?757,refFreq?760
+; 	counterTemp /= (unsigned long)freqStep;
+			; SOURCE LINE # 533
+	MOV  	R7,counterTemp?757+03H
+	MOV  	R6,counterTemp?757+02H
+	MOV  	R5,counterTemp?757+01H
+	MOV  	R4,counterTemp?757
+	PUSH 	AR6
+	PUSH 	AR7
+	MOV  	R6,freqStep?761
+	MOV  	R7,freqStep?761+01H
+	MOV  	R3,AR7
+	MOV  	R2,AR6
+	CLR  	A
+	MOV  	R1,A
+	MOV  	R0,A
+	POP  	AR7
+	POP  	AR6
+	LCALL	?C?ULDIV
+	MOV  	counterTemp?757+03H,R7
+	MOV  	counterTemp?757+02H,R6
+	MOV  	counterTemp?757+01H,R5
+	MOV  	counterTemp?757,R4
+; 	counterTemp <<= 3;
+			; SOURCE LINE # 534
+	MOV  	R0,#03H
+	LCALL	?C?LSHL
+	MOV  	counterTemp?757+03H,R7
+	MOV  	counterTemp?757+02H,R6
+	MOV  	counterTemp?757+01H,R5
+	MOV  	counterTemp?757,R4
+; 	counterTemp |= R1_INIT;
+			; SOURCE LINE # 535
+	MOV  	A,counterTemp?757+03H
+	ORL  	A,#01H
+	MOV  	counterTemp?757+03H,A
+	MOV  	A,counterTemp?757+02H
+	ORL  	A,#080H
+	MOV  	counterTemp?757+02H,A
+	MOV  	A,counterTemp?757+01H
+	MOV  	counterTemp?757+01H,A
+	MOV  	A,counterTemp?757
+	ORL  	A,#08H
+; 	progPLL(counterTemp);							//R1
+			; SOURCE LINE # 536
+	LCALL	L?0095
+; 													//计算小数分频分子
+; 	
+; 	counterTemp = counterN % refFreq;
+			; SOURCE LINE # 539
+	MOV  	R3,refFreq?760+03H
+	MOV  	R2,refFreq?760+02H
+	MOV  	R1,refFreq?760+01H
+	MOV  	R0,refFreq?760
+	MOV  	R7,counterN?758+03H
+	MOV  	R6,counterN?758+02H
+	MOV  	R5,counterN?758+01H
+	MOV  	R4,counterN?758
+	LCALL	?C?ULDIV
+	MOV  	R4,AR0
+	MOV  	R5,AR1
+	MOV  	R6,AR2
+	MOV  	R7,AR3
+	MOV  	counterTemp?757+03H,R7
+	MOV  	counterTemp?757+02H,R6
+	MOV  	counterTemp?757+01H,R5
+	MOV  	counterTemp?757,R4
+; 	counterTemp /= (unsigned long)freqStep;
+			; SOURCE LINE # 540
+	PUSH 	AR6
+	PUSH 	AR7
+	MOV  	R6,freqStep?761
+	MOV  	R7,freqStep?761+01H
+	MOV  	R3,AR7
+	MOV  	R2,AR6
+	CLR  	A
+	MOV  	R1,A
+	MOV  	R0,A
+	POP  	AR7
+	POP  	AR6
+	LCALL	?C?ULDIV
+	MOV  	counterTemp?757+03H,R7
+	MOV  	counterTemp?757+02H,R6
+	MOV  	counterTemp?757+01H,R5
+	MOV  	counterTemp?757,R4
+; 	counterTemp <<= 3;
+			; SOURCE LINE # 541
+	MOV  	R0,#03H
+	LCALL	?C?LSHL
+	MOV  	counterTemp?757+03H,R7
+	MOV  	counterTemp?757+02H,R6
+	MOV  	counterTemp?757+01H,R5
+	MOV  	counterTemp?757,R4
+; 													//计算整数分频
+; 	counterN /= refFreq;
+			; SOURCE LINE # 543
+	MOV  	R7,counterN?758+03H
+	MOV  	R6,counterN?758+02H
+	MOV  	R5,counterN?758+01H
+	MOV  	R4,counterN?758
+	MOV  	R3,refFreq?760+03H
+	MOV  	R2,refFreq?760+02H
+	MOV  	R1,refFreq?760+01H
+	MOV  	R0,refFreq?760
+	LCALL	?C?ULDIV
+	MOV  	counterN?758+03H,R7
+	MOV  	counterN?758+02H,R6
+	MOV  	counterN?758+01H,R5
+	MOV  	counterN?758,R4
+; 	counterN <<= 15;
+			; SOURCE LINE # 544
+	MOV  	R0,#0FH
+	LCALL	?C?LSHL
+	MOV  	counterN?758+03H,R7
+	MOV  	counterN?758+02H,R6
+	MOV  	counterN?758+01H,R5
+	MOV  	counterN?758,R4
+; 
+; 	counterTemp |= counterN;
+			; SOURCE LINE # 546
+	MOV  	A,counterTemp?757+03H
+	ORL  	A,counterN?758+03H
+	MOV  	counterTemp?757+03H,A
+	MOV  	A,counterTemp?757+02H
+	ORL  	A,counterN?758+02H
+	MOV  	counterTemp?757+02H,A
+	MOV  	A,counterTemp?757+01H
+	ORL  	A,counterN?758+01H
+	MOV  	counterTemp?757+01H,A
+	MOV  	A,counterTemp?757
+	ORL  	A,counterN?758
+; 	progPLL(counterTemp);							//R0
+			; SOURCE LINE # 547
+	LCALL	L?0096
+; 
+; 	watchdog();		
+			; SOURCE LINE # 549
+	LJMP 	watchdog
+; END OF writePLL
+
+; }
+; /*
+; *********************************************************************************************************
+; *                         A/D转换
+; *
+; * Description: 根据给定的A/D转换通道，取得相应的A/D转换值
+; *
+; * Arguments  : channel  给定的通道号
+; *
+; * Returns    : value    转换结果
+; *********************************************************************************************************
+; */
+; unsigned int readAD(unsigned char channel)
+
+	RSEG  ?PR?_readAD?BRO20W_RFCONTROL
+_readAD:
+	USING	0
+			; SOURCE LINE # 562
+;---- Variable 'channel?863' assigned to Register 'R7' ----
+; {
+			; SOURCE LINE # 563
+; 
+; 	unsigned int value = 0; 
+			; SOURCE LINE # 565
+	CLR  	A
+	MOV  	value?864,A
+	MOV  	value?864+01H,A
+; 	unsigned int temp = 0;
+			; SOURCE LINE # 566
+;---- Variable 'temp?865' assigned to Register 'R4/R5' ----
+	MOV  	R5,A
+	MOV  	R4,A
+; 	
+; 	AD0INS  = channel;	  					//选择转换通道 //
+			; SOURCE LINE # 568
+	MOV  	AD0INS,R7
+; 	AD0MODA |= 0x10;						//单次转换
+			; SOURCE LINE # 569
+	ORL  	AD0MODA,#010H
+; 	AD0MODB |= 0x20;						// ADC时钟=CCLK/2,即2分频
+			; SOURCE LINE # 570
+	ORL  	AD0MODB,#020H
+; 	AD0CON = 0x05;							//立即启动
+			; SOURCE LINE # 571
+	MOV  	AD0CON,#05H
+?C0051:
+; 	while(!AD0CON&0x08);					//等待转换完毕
+			; SOURCE LINE # 572
+	MOV  	A,AD0CON
+	JNZ  	?C0053
+	MOV  	R6,#01H
+	SJMP 	?C0054
+?C0053:
+	MOV  	R6,#00H
+?C0054:
+	MOV  	A,R6
+	JB   	ACC.3,?C0051
+?C0052:
+; 
+; 	switch(channel)
+			; SOURCE LINE # 574
+	MOV  	A,R7
+	ADD  	A,#0FEH
+	JZ   	?C0057
+	ADD  	A,#0E2H
+	JZ   	?C0058
+	ADD  	A,#01FH
+	JNZ  	?C0055
+; 	{
+			; SOURCE LINE # 575
+; 		#ifdef CHANNEL_0
+; 		case CHANNEL_0:
+			; SOURCE LINE # 577
+?C0056:
+; 			value |= AD0DAT0R;					//右边字节，低位，取位7.6.5.4.3.2.1.0. 八位
+			; SOURCE LINE # 578
+	MOV  	DPTR,#0FFFEH
+; 			temp  |= AD0DAT0L;	 				//左边字节，高位，位9.8.7.6.5.4.3.2为一字节，取9.8.两位
+			; SOURCE LINE # 579
+; 			break;
+			; SOURCE LINE # 580
+	SJMP 	?C0094
+; 		#endif
+; 
+; 		#ifdef CHANNEL_1
+; 		case CHANNEL_1:
+			; SOURCE LINE # 584
+?C0057:
+; 			value |= AD0DAT1R;
+			; SOURCE LINE # 585
+	MOV  	DPTR,#0FFFCH
+?C0093:
+; 			temp  |= AD0DAT1L;
+			; SOURCE LINE # 586
+; 			break;
+			; SOURCE LINE # 587
+	SJMP 	?C0094
+; 		#endif
+; 
+; 		#ifdef CHANNEL_2
+; 		case CHANNEL_2:
+; 			value |= AD0DAT2R;
+; 			temp  |= AD0DAT2L;
+; 			break;
+; 		#endif
+; 
+; 		#ifdef CHANNEL_3
+; 		case CHANNEL_3:
+; 			value |= AD0DAT3R;
+; 			temp  |= AD0DAT3L;
+; 			break;
+; 		#endif
+; 
+; 		#ifdef CHANNEL_4
+; 		case CHANNEL_4:
+; 			value |= AD0DAT4R;
+; 			temp  |= AD0DAT4L;
+; 			break;
+; 		#endif
+; 
+; 		#ifdef CHANNEL_5
+; 		case CHANNEL_5:
+			; SOURCE LINE # 612
+?C0058:
+; 			value |= AD0DAT5R;
+			; SOURCE LINE # 613
+	MOV  	DPTR,#0FFF4H
+?C0094:
+	MOVX 	A,@DPTR
+	ORL  	value?864+01H,A
+; 			temp  |= AD0DAT5L;
+			; SOURCE LINE # 614
+	INC  	DPTR
+	MOVX 	A,@DPTR
+	ORL  	AR5,A
+; 			break;
+			; SOURCE LINE # 615
+; 		#endif
+; 
+; 		#ifdef CHANNEL_6
+; 		case CHANNEL_6:
+; 			value |= AD0DAT6R;
+; 			temp  |= AD0DAT6L;
+; 			break;
+; 		#endif
+; 
+; 		#ifdef CHANNEL_7
+; 		case CHANNEL_7:
+; 			value |= AD0DAT7R;
+; 			temp  |= AD0DAT7L;
+; 			break;
+; 		#endif 
+; 		default:
+			; SOURCE LINE # 631
+; 			break;
+			; SOURCE LINE # 632
+; 	}
+			; SOURCE LINE # 633
+?C0055:
+; 
+;     temp <<= 2;
+			; SOURCE LINE # 635
+	MOV  	A,R5
+	MOV  	R6,AR4
+	MOV  	R0,#02H
+?C0082:
+	CLR  	C
+	RLC  	A
+	XCH  	A,R6
+	RLC  	A
+	XCH  	A,R6
+	DJNZ 	R0,?C0082
+	MOV  	R4,AR6
+; 	temp &= 0x0300;
+			; SOURCE LINE # 636
+	ANL  	AR4,#03H
+; 	value &= 0x00FF;
+			; SOURCE LINE # 637
+	MOV  	value?864,#00H
+; 	temp |= value;
+			; SOURCE LINE # 638
+	MOV  	A,value?864
+	ORL  	AR4,A
+	MOV  	A,value?864+01H
+; 	return temp;
+			; SOURCE LINE # 639
+	MOV  	R6,AR4
+	MOV  	R7,A
+; }
+			; SOURCE LINE # 640
+?C0060:
+	RET  	
+; END OF _readAD
+
+; /*
+; *********************************************************************************************************
+; *                         计算程序校验和
+; *
+; * Description: 读取flash中的代码，计算校验和
+; *
+; * Arguments  : 无
+; *
+; * Returns    : 计算结果保存在全局变量all_checksum中
+; *********************************************************************************************************
+; */
+; void execCheckSumQ()
+
+	RSEG  ?PR?execCheckSumQ?BRO20W_RFCONTROL
+execCheckSumQ:
+	USING	0
+			; SOURCE LINE # 652
+; {
+			; SOURCE LINE # 653
+; 	unsigned char code *data pt_flash;	
+; 	all_checksum = 0;
+			; SOURCE LINE # 655
+	CLR  	A
+	MOV  	DPTR,#all_checksum
+	MOVX 	@DPTR,A
+	INC  	DPTR
+	MOVX 	@DPTR,A
+; 	for (pt_flash = 0x0000; pt_flash < 0x1D00; pt_flash++)
+			; SOURCE LINE # 656
+	MOV  	pt_flash?966,A
+	MOV  	pt_flash?966+01H,A
+?C0061:
+	CLR  	C
+	MOV  	A,pt_flash?966
+	SUBB 	A,#01DH
+	JNC  	?C0062
+; 	{
+			; SOURCE LINE # 657
+; 		all_checksum += *pt_flash;
+			; SOURCE LINE # 658
+	MOV  	DPL,pt_flash?966+01H
+	MOV  	DPH,pt_flash?966
+	CLR  	A
+	MOVC 	A,@A+DPTR
+	MOV  	R7,A
+	MOV  	DPTR,#all_checksum+01H
+	MOVX 	A,@DPTR
+	ADD  	A,R7
+; 		watchdog();
+			; SOURCE LINE # 659
+	LCALL	L?0097
+; 	}
+			; SOURCE LINE # 660
+	INC  	pt_flash?966+01H
+	MOV  	A,pt_flash?966+01H
+	JNZ  	?C0061
+	INC  	pt_flash?966
+?C0083:
+	SJMP 	?C0061
+?C0062:
+; 	for (pt_flash = 0x0000; pt_flash < 0xE300; pt_flash++)
+			; SOURCE LINE # 661
+	CLR  	A
+	MOV  	pt_flash?966,A
+	MOV  	pt_flash?966+01H,A
+?C0064:
+	CLR  	C
+	MOV  	A,pt_flash?966
+	SUBB 	A,#0E3H
+	JNC  	?C0067
+; 	{
+			; SOURCE LINE # 662
+; 		all_checksum += 0xFF;
+			; SOURCE LINE # 663
+	MOV  	DPTR,#all_checksum+01H
+	MOVX 	A,@DPTR
+	ADD  	A,#0FFH
+; 		watchdog();
+			; SOURCE LINE # 664
+	LCALL	L?0097
+; 	}
+			; SOURCE LINE # 665
+	INC  	pt_flash?966+01H
+	MOV  	A,pt_flash?966+01H
+	JNZ  	?C0064
+	INC  	pt_flash?966
+?C0084:
+	SJMP 	?C0064
+; }
+			; SOURCE LINE # 666
+?C0067:
+	RET  	
+; END OF execCheckSumQ
+
+; //喂狗程序
+; void watchdog(void) 
+
+	RSEG  ?PR?watchdog?BRO20W_RFCONTROL
+L?0097:
+	USING	0
+	MOVX 	@DPTR,A
+	MOV  	DPTR,#all_checksum
+	MOVX 	A,@DPTR
+	ADDC 	A,#00H
+	MOVX 	@DPTR,A
+watchdog:
+			; SOURCE LINE # 668
+; {
+			; SOURCE LINE # 669
+; 	EA = 0; 			//关闭中断 
+			; SOURCE LINE # 670
+	CLR  	EA
+; 	WFEED1 = 0xA5; 		//执行清零第一部分 
+			; SOURCE LINE # 671
+	MOV  	WFEED1,#0A5H
+; 	WFEED2 = 0x5A; 		//执行清零第二部分 
+			; SOURCE LINE # 672
+	MOV  	WFEED2,#05AH
+; 	EA = 1; 			//开中断				
+			; SOURCE LINE # 673
+	SETB 	EA
+; }
+			; SOURCE LINE # 674
+	RET  	
+; END OF watchdog
+
+; 
+; void delay(unsigned char time)
+
+	RSEG  ?PR?_delay?BRO20W_RFCONTROL
+_delay:
+	USING	0
+			; SOURCE LINE # 676
+;---- Variable 'time?1167' assigned to Register 'R7' ----
+; {
+			; SOURCE LINE # 677
+; 	unsigned char x;
+; 	unsigned int y;
+; 	for(x=0;x<time;x++)
+			; SOURCE LINE # 680
+;---- Variable 'x?1168' assigned to Register 'R6' ----
+	CLR  	A
+	MOV  	R6,A
+?C0069:
+	MOV  	A,R6
+	CLR  	C
+	SUBB 	A,R7
+	JNC  	?C0075
+; 	{
+			; SOURCE LINE # 681
+; 		watchdog();
+			; SOURCE LINE # 682
+	LCALL	watchdog
+; 		for(y=0;y<0xFFFF;y++);
+			; SOURCE LINE # 683
+;---- Variable 'y?1169' assigned to Register 'R4/R5' ----
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R4,A
+?C0072:
+	INC  	R5
+	CJNE 	R5,#00H,?C0085
+	INC  	R4
+?C0085:
+	CJNE 	R4,#0FFH,?C0072
+	CJNE 	R5,#0FFH,?C0072
+; 		//for(y=0;y<0x0600;y++); // 1毫秒
+; 	}
+			; SOURCE LINE # 685
+?C0071:
+	INC  	R6
+	SJMP 	?C0069
+; }
+			; SOURCE LINE # 686
+?C0075:
+	RET  	
+; END OF _delay
+
+	END

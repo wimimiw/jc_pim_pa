@@ -1,0 +1,92 @@
+C51 COMPILER V9.51   SPI                                                                   08/30/2013 16:13:27 PAGE 1   
+
+
+C51 COMPILER V9.51, COMPILATION OF MODULE SPI
+OBJECT MODULE PLACED IN .\OUTPUT\SPI.obj
+COMPILER INVOKED BY: C:\Program Files\Keil\C51\BIN\C51.EXE drive\SPI.C OPTIMIZE(9,SIZE) REGFILE(.\OUTPUT\test.ORC) BROWS
+                    -E INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\SPI.lst) TABS(2) OBJECT(.\OUTPUT\SPI.obj)
+
+line level    source
+
+   1          /**-------------文件信息--------------------------------------------------------------------------------
+   2          **文   件   名: SPI.c
+   3          **创   建   人: 程莺红
+   4          **修   改   人: 
+   5          **最后修改日期: 2006年3月31日
+   6          **最 新 版  本: V1.2
+   7          **描        述: 初始化SPI总线，发送数据位
+   8                  
+   9          **
+  10          **--------------历史版本信息----------------------------------------------------------------------------
+  11          ** 创建人: 程莺红 
+  12          ** 版  本: V1.2
+  13          ** 日　期: 2006年3月31日
+  14          ** 描　述: 原始版本
+  15          **
+  16          ********************************************************************************************************/
+  17          #include <reg938.h>
+  18          #include <SPI.h>
+  19           /*
+  20          *********************************************************************************************************
+  21          *                         SPI初始化
+  22          *
+  23          * Description: SPI初始化
+  24          *
+  25          * Arguments  : 无
+  26          *
+  27          * Returns    : 无
+  28          *********************************************************************************************************
+  29          */
+  30          void InitSPI()
+  31          {
+  32   1        //SPCTL = 0x50;   //SSIG=0,SPEN=0,MSTR=0，SPI被禁止，作为普通I/O口  
+  33   1        SPCTL = 0x00;
+  34   1      }
+  35          
+  36          /*
+  37          *********************************************************************************************************
+  38          *                         发送数据
+  39          *
+  40          * Description: SPI发送一个字节的数据
+  41          *
+  42          * Arguments  : send_byte是SPI设置字                ------错
+  43          *
+  44          * Returns    : 无
+  45          *********************************************************************************************************
+  46          */
+  47          void MSend_bit(unsigned int send_data,unsigned char Bitcnt)
+  48          {
+  49   1        unsigned char  i;
+  50   1        unsigned int  trans_data;
+  51   1        for(i=0;i<Bitcnt;i++)
+  52   1        {
+  53   2          trans_data = send_data;
+  54   2          if((trans_data&=0x8000)==0)
+C51 COMPILER V9.51   SPI                                                                   08/30/2013 16:13:27 PAGE 2   
+
+  55   2          {
+  56   3            DATA = 0;
+  57   3          }     
+  58   2          else
+  59   2          {
+  60   3            DATA = 1; 
+  61   3          }
+  62   2          CLK = 1;
+  63   2          CLK = 0;
+  64   2          send_data <<= 1;
+  65   2        }   
+  66   1      }                                           
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     48    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
