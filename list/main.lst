@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   MAIN                                                                  10/21/2014 13:18:03 PAGE 1   
+C51 COMPILER V9.51   MAIN                                                                  10/30/2014 16:21:17 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   52   1      #define TRIG_PLUS_BAUD    20  //20hz
   53   1      //const static unsigned char xdata txPaBuf[] = {0x00,0x40,0x55,0x02,0x00,0x40,0x66,0x02,0x00,0x40,0x77,0x0
              -2};  
-C51 COMPILER V9.51   MAIN                                                                  10/21/2014 13:18:03 PAGE 2   
+C51 COMPILER V9.51   MAIN                                                                  10/30/2014 16:21:17 PAGE 2   
 
   54   1        static unsigned char idx = 0,cycCnt = 0;
   55   1        static unsigned char xdata txPaBuf[] = {0x40,0x00,0x00,0x00,0x00,0x02};
@@ -97,229 +97,237 @@ line level    source
   84   1        
   85   1        if(state!=0)
   86   1        {
-  87   2          RFswitch = 0;
-  88   2        }
-  89   1        else
-  90   1        {
-  91   2          RFswitch = 1;     
-  92   2        }   
-  93   1      }
-  94          
-  95          /*
-  96          *********************************************************************************************************
-  97          *                         主函数
-  98          *
-  99          * Description: 初始化系统后，进入主循环，按顺序执行各个任务
- 100          *
- 101          * Arguments  : 无
- 102          *
- 103          * Returns    : 无
+  87   2      #ifdef NEW_PLAD   
+  88   2          writeAD5314(gDAoutB,'B');
+  89   2          writeAD5314(gDAoutC,'C');     
+  90   2      #endif    
+  91   2          RFswitch = 0;
+  92   2        }
+  93   1        else
+  94   1        {
+  95   2      #ifdef NEW_PLAD
+  96   2          writeAD5314(0,'B');
+  97   2          writeAD5314(0,'C'); 
+  98   2      #endif    
+  99   2          RFswitch = 1;     
+ 100   2        }   
+ 101   1      }
+ 102          
+ 103          /*
  104          *********************************************************************************************************
- 105          */
- 106          void main(void) small
- 107          {
- 108   1        InitCpu();                  // 和本应用系统相关的初始化
- 109   1        InitSerial();               //串口初始化
- 110   1        InitSPI();                  //初始化SPI总线
- 111   1        InitRF();                 //初始化模块参数
- 112   1        InitTimer1();
- 113   1        sendInitpacket();
- 114   1        DwnldSoft1m_time = getTime();
- 115   1      
-C51 COMPILER V9.51   MAIN                                                                  10/21/2014 13:18:03 PAGE 3   
+ 105          *                         主函数
+ 106          *
+ 107          * Description: 初始化系统后，进入主循环，按顺序执行各个任务
+ 108          *
+ 109          * Arguments  : 无
+ 110          *
+ 111          * Returns    : 无
+ 112          *********************************************************************************************************
+ 113          */
+ 114          void main(void) small
+ 115          {
+C51 COMPILER V9.51   MAIN                                                                  10/30/2014 16:21:17 PAGE 3   
 
- 116   1        EA = 0;
- 117   1        TimerCallback = (void*)ZhouQiFaSong5ms;
- 118   1        EA = 1;
- 119   1        
- 120   1        while(1)
- 121   1        {     
- 122   2          if (getTime()- DwnldSoft1m_time >= DwnldSoftTimeOut)
- 123   2          {
- 124   3            softDownLoad = UNDO;
- 125   3          }
- 126   2          TaskRoutine();       //定时执行
- 127   2          TaskHandlePkt();    //串口通讯处理
- 128   2        }
- 129   1      }
- 130          /*
- 131          *********************************************************************************************************
- 132          *                         新包处理任务
- 133          *
- 134          * Description: 根据邮箱信息做相应处理
- 135          *
- 136          * Arguments  : 
- 137          *        parameter  指针，指向提供给任务的相关参数
- 138          *
- 139          * Returns    : 无
- 140          *********************************************************************************************************
- 141          */
- 142          void TaskHandlePkt() 
- 143          {
- 144   1        unsigned char bPulse = FALSE;
- 145   1        
- 146   1        if(pack_valid == 1)
- 147   1        { 
- 148   2      
- 149   2      //      RDE = 1;
- 150   2      //      SM2 = 0;
- 151   2      
- 152   2          if(ack_flag==0)
- 153   2          {
- 154   3            watchdog();
- 155   3            execute_cmd();            //没有错误则执行相应的命令
- 156   3          }
- 157   2          if(ack_flag!=0)
- 158   2          //else
- 159   2          {                   //组织错误包
- 160   3            RxBuf[3] = ack_flag;        //置应答标志  
- 161   3            Data_len = RxBuf[1] + 2;      //包中的长度＋地址（1字节）＋长度字节本身（1字节）
- 162   3          }
- 163   2          
- 164   2          watchdog();
- 165   2          while( OPEN == __PlusSwitchState ){bPulse = TRUE;watchdog();};
- 166   2          
- 167   2          if(PktHandle2S_time < PktHandleTimeOut || TRUE == bPulse)
- 168   2          {           //没有超时则发包
- 169   3            sendPkt();
+ 116   1        InitCpu();                  // 和本应用系统相关的初始化
+ 117   1        InitSerial();               //串口初始化
+ 118   1        InitSPI();                  //初始化SPI总线
+ 119   1        InitRF();                 //初始化模块参数
+ 120   1        InitTimer1();
+ 121   1        sendInitpacket();
+ 122   1        DwnldSoft1m_time = getTime();
+ 123   1      
+ 124   1        EA = 0;
+ 125   1        TimerCallback = (void*)ZhouQiFaSong5ms;
+ 126   1        EA = 1;
+ 127   1        
+ 128   1        while(1)
+ 129   1        {     
+ 130   2          if (getTime()- DwnldSoft1m_time >= DwnldSoftTimeOut)
+ 131   2          {
+ 132   3            softDownLoad = UNDO;
+ 133   3          }
+ 134   2          TaskRoutine();       //定时执行
+ 135   2          TaskHandlePkt();    //串口通讯处理
+ 136   2        }
+ 137   1      }
+ 138          /*
+ 139          *********************************************************************************************************
+ 140          *                         新包处理任务
+ 141          *
+ 142          * Description: 根据邮箱信息做相应处理
+ 143          *
+ 144          * Arguments  : 
+ 145          *        parameter  指针，指向提供给任务的相关参数
+ 146          *
+ 147          * Returns    : 无
+ 148          *********************************************************************************************************
+ 149          */
+ 150          void TaskHandlePkt() 
+ 151          {
+ 152   1        unsigned char bPulse = FALSE;
+ 153   1        
+ 154   1        if(pack_valid == 1)
+ 155   1        { 
+ 156   2      
+ 157   2      //      RDE = 1;
+ 158   2      //      SM2 = 0;
+ 159   2      
+ 160   2          if(ack_flag==0)
+ 161   2          {
+ 162   3            watchdog();
+ 163   3            execute_cmd();            //没有错误则执行相应的命令
+ 164   3          }
+ 165   2          if(ack_flag!=0)
+ 166   2          //else
+ 167   2          {                   //组织错误包
+ 168   3            RxBuf[3] = ack_flag;        //置应答标志  
+ 169   3            Data_len = RxBuf[1] + 2;      //包中的长度＋地址（1字节）＋长度字节本身（1字节）
  170   3          }
- 171   2          else
- 172   2          {           //否则设置数据包无效
- 173   3            pack_valid = 0;
- 174   3          }                         
- 175   2        }
- 176   1      }
- 177          
-C51 COMPILER V9.51   MAIN                                                                  10/21/2014 13:18:03 PAGE 4   
+ 171   2          
+ 172   2          watchdog();
+ 173   2          while( OPEN == __PlusSwitchState ){bPulse = TRUE;watchdog();};
+ 174   2          
+ 175   2          if(PktHandle2S_time < PktHandleTimeOut || TRUE == bPulse)
+ 176   2          {           //没有超时则发包
+ 177   3            sendPkt();
+C51 COMPILER V9.51   MAIN                                                                  10/30/2014 16:21:17 PAGE 4   
 
- 178          /*
- 179          *********************************************************************************************************
- 180          *                         定时执行任务
- 181          *
- 182          * Description: 在需要时查询各个系统参数，有异常时处理告警信息
- 183          *
- 184          * Arguments  : 
- 185          *        parameter  指针，指向提供给任务的相关参数
- 186          *
- 187          * Returns    : 无
- 188          *********************************************************************************************************
- 189          */
- 190          void TaskRoutine()
- 191          {
- 192   1        watchdog();
- 193   1        if( softDownLoad == UNDO || softDownLoad == DONE )
- 194   1        {
- 195   2          if(Task100MS_time < getTime())     //add by  dw 20090603 
- 196   2          {
- 197   3            Task100MS_time += DELAY100MS;
- 198   3            Switch_clock();
- 199   3          }
- 200   2          if(Task5S_time < getTime())
- 201   2          {
- 202   3            Task5S_time += DELAY5S;
- 203   3            TaskRunPer5s();
- 204   3          }
- 205   2          if(Task30S_time < getTime())
- 206   2          {
- 207   3            Task30S_time += DELAY30S;
- 208   3            TaskRunPer30s();
- 209   3          }
- 210   2        }
- 211   1      }
- 212          
- 213          /*
- 214          *********************************************************************************************************
- 215          *                         定时执行对ADF4350的内外时钟的检测切换 
- 216          *
- 217          * Description: 在TaskRoutine中调用，每100MS 
- 218          *
- 219          * Arguments  : 无
- 220          *
- 221          * Returns    : 无
+ 178   3          }
+ 179   2          else
+ 180   2          {           //否则设置数据包无效
+ 181   3            pack_valid = 0;
+ 182   3          }                         
+ 183   2        }
+ 184   1      }
+ 185          
+ 186          /*
+ 187          *********************************************************************************************************
+ 188          *                         定时执行任务
+ 189          *
+ 190          * Description: 在需要时查询各个系统参数，有异常时处理告警信息
+ 191          *
+ 192          * Arguments  : 
+ 193          *        parameter  指针，指向提供给任务的相关参数
+ 194          *
+ 195          * Returns    : 无
+ 196          *********************************************************************************************************
+ 197          */
+ 198          void TaskRoutine()
+ 199          {
+ 200   1        watchdog();
+ 201   1        if( softDownLoad == UNDO || softDownLoad == DONE )
+ 202   1        {
+ 203   2          if(Task100MS_time < getTime())     //add by  dw 20090603 
+ 204   2          {
+ 205   3            Task100MS_time += DELAY100MS;
+ 206   3            Switch_clock();
+ 207   3          }
+ 208   2          if(Task5S_time < getTime())
+ 209   2          {
+ 210   3            Task5S_time += DELAY5S;
+ 211   3            TaskRunPer5s();
+ 212   3          }
+ 213   2          if(Task30S_time < getTime())
+ 214   2          {
+ 215   3            Task30S_time += DELAY30S;
+ 216   3            TaskRunPer30s();
+ 217   3          }
+ 218   2        }
+ 219   1      }
+ 220          
+ 221          /*
  222          *********************************************************************************************************
- 223          */
- 224          void Switch_clock()                  //add by  dw 20090603 
- 225          {
- 226   1          unsigned int data vcc_in = 0;
- 227   1        unsigned char data i;
- 228   1        if( softDownLoad != DOING )
- 229   1          {
- 230   2            //对AD转换后的电压进行判别，并对P2.6输出一个电平     
- 231   2            //watchdog();
- 232   2            for( i = 0; i < 8; i++ )
- 233   2            {
- 234   3              //vcc_in += readAD(CHANNEL_2);
- 235   3              vcc_in += readAD(CHANNEL_6);
- 236   3            }
- 237   2            //ADCON0 = 0x01;              //关闭转换，以防止出现的管脚相互影响现象。add by dw   20090623
- 238   2            
- 239   2            vcc_in >>= 3;
-C51 COMPILER V9.51   MAIN                                                                  10/21/2014 13:18:03 PAGE 5   
+ 223          *                         定时执行对ADF4350的内外时钟的检测切换 
+ 224          *
+ 225          * Description: 在TaskRoutine中调用，每100MS 
+ 226          *
+ 227          * Arguments  : 无
+ 228          *
+ 229          * Returns    : 无
+ 230          *********************************************************************************************************
+ 231          */
+ 232          void Switch_clock()                  //add by  dw 20090603 
+ 233          {
+ 234   1          unsigned int data vcc_in = 0;
+ 235   1        unsigned char data i;
+ 236   1        if( softDownLoad != DOING )
+ 237   1          {
+ 238   2            //对AD转换后的电压进行判别，并对P2.6输出一个电平     
+ 239   2            //watchdog();
+C51 COMPILER V9.51   MAIN                                                                  10/30/2014 16:21:17 PAGE 5   
 
- 240   2            
- 241   2            if( vcc_in < 62  )              //62 = (0.2  / 3.3) * 2 >>10
- 242   2              V33C = 0;
- 243   2            else
- 244   2              V33C = 1;
- 245   2          }
- 246   1      }
- 247          /*
- 248          *********************************************************************************************************
- 249          *                         定时执行告警信息更新
- 250          *
- 251          * Description: 在TaskRoutine中调用，每5秒一次
- 252          *
- 253          * Arguments  : 无
- 254          *
- 255          * Returns    : 无
+ 240   2            for( i = 0; i < 8; i++ )
+ 241   2            {
+ 242   3              //vcc_in += readAD(CHANNEL_2);
+ 243   3              vcc_in += readAD(CHANNEL_6);
+ 244   3            }
+ 245   2            //ADCON0 = 0x01;              //关闭转换，以防止出现的管脚相互影响现象。add by dw   20090623
+ 246   2            
+ 247   2            vcc_in >>= 3;
+ 248   2            
+ 249   2            if( vcc_in < 62  )              //62 = (0.2  / 3.3) * 2 >>10
+ 250   2              V33C = 0;
+ 251   2            else
+ 252   2              V33C = 1;
+ 253   2          }
+ 254   1      }
+ 255          /*
  256          *********************************************************************************************************
- 257          */
- 258          void TaskRunPer5s()
- 259          {
- 260   1        if( softDownLoad != DOING )                     //软件下载时
- 261   1        {
- 262   2          updateAlmInfo();                        //更新告警信息
- 263   2        }
- 264   1      }
- 265          /*
- 266          *********************************************************************************************************
- 267          *                         定时执行温度补偿    读取温度值
- 268          *
- 269          * Description: 在TaskRoutine中调用，每30秒一次
- 270          *
- 271          * Arguments  : 无
- 272          *
- 273          * Returns    : 无
+ 257          *                         定时执行告警信息更新
+ 258          *
+ 259          * Description: 在TaskRoutine中调用，每5秒一次
+ 260          *
+ 261          * Arguments  : 无
+ 262          *
+ 263          * Returns    : 无
+ 264          *********************************************************************************************************
+ 265          */
+ 266          void TaskRunPer5s()
+ 267          {
+ 268   1        if( softDownLoad != DOING )                     //软件下载时
+ 269   1        {
+ 270   2          updateAlmInfo();                        //更新告警信息
+ 271   2        }
+ 272   1      }
+ 273          /*
  274          *********************************************************************************************************
- 275          */
- 276          void TaskRunPer30s() 
- 277          {
- 278   1        if( softDownLoad != DOING )             //软件下载时，不发告警
- 279   1        {
- 280   2                                      //若动作了射频开关，则需要对衰减器和锁相环重新进行操作
- 281   2          readTemperatur();               //更新温度记录
- 282   2          
- 283   2          //功放打开后周期进行温度补偿操作
- 284   2          if(gRFSW == OPEN)
- 285   2          {
- 286   3            gPALimCompensate();
- 287   3            writeAD5314(gPALim,DAPOWER_LIM_CHAN);
- 288   3          }
- 289   2          //  if((rfPramModified == TRUE) || (gpreRfTemp != gcurRfTemp) ) //射频参数更改或温度有变化
- 290   2        //  {
- 291   2            //tempCompensate();               //温度补偿
- 292   2        //  }
- 293   2        watchdog();
- 294   2        }  
- 295   1      }
+ 275          *                         定时执行温度补偿    读取温度值
+ 276          *
+ 277          * Description: 在TaskRoutine中调用，每30秒一次
+ 278          *
+ 279          * Arguments  : 无
+ 280          *
+ 281          * Returns    : 无
+ 282          *********************************************************************************************************
+ 283          */
+ 284          void TaskRunPer30s() 
+ 285          {
+ 286   1        if( softDownLoad != DOING )             //软件下载时，不发告警
+ 287   1        {
+ 288   2                                      //若动作了射频开关，则需要对衰减器和锁相环重新进行操作
+ 289   2          readTemperatur();               //更新温度记录
+ 290   2          
+ 291   2          //功放打开后周期进行温度补偿操作
+ 292   2          if(gRFSW == OPEN)
+ 293   2          {
+ 294   3            gPALimCompensate();
+ 295   3            writeAD5314(gPALim,DAPOWER_LIM_CHAN);
+ 296   3          }
+ 297   2          //  if((rfPramModified == TRUE) || (gpreRfTemp != gcurRfTemp) ) //射频参数更改或温度有变化
+ 298   2        //  {
+ 299   2            //tempCompensate();               //温度补偿
+ 300   2        //  }
+ 301   2        watchdog();
+C51 COMPILER V9.51   MAIN                                                                  10/30/2014 16:21:17 PAGE 6   
+
+ 302   2        }  
+ 303   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    492    ----
+   CODE SIZE        =    532    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =    388    ----
-C51 COMPILER V9.51   MAIN                                                                  10/21/2014 13:18:03 PAGE 6   
-
    PDATA SIZE       =   ----    ----
    DATA SIZE        =     45       1
    IDATA SIZE       =     22    ----

@@ -5,7 +5,7 @@ pnlBottomDragV=1
 ChipName=P89LPC936FDH @ICPLine
 Manufactory=NXP
 [Path]
-OpenSave=D:\Work\公司资料\插损检测\Jointcom_PA_firmware_936_V5.3\OUTPUT\ZGRF_V30_20141021_13-18-04_6E10.hex
+OpenSave=D:\Work\公司资料\插损检测\Jointcom_PA_firmware_936_V5.4\OUTPUT\ZGRF_V30_20141030_14-31-27_4B7B.hex
 [ProgramFormC]
 ckbSound=1
 ckbINC=0
@@ -179,7 +179,7 @@ Index30=255
 Index31=255
 [Secrity]
 Description=
-CRC=D2 92 4E 29
+CRC=57 9D 7F A4
 [Setting]
 PinsCheck=1
 CheckSumIncludeSN=1

@@ -84,10 +84,18 @@ static void ZhouQiFaSong5ms(void) small
 	
 	if(state!=0)
 	{
+#ifdef NEW_PLAD		
+		writeAD5314(gDAoutB,'B');
+		writeAD5314(gDAoutC,'C');			
+#endif 		
 		RFswitch = 0;
 	}
 	else
 	{
+#ifdef NEW_PLAD
+		writeAD5314(0,'B');
+		writeAD5314(0,'C');	
+#endif		
 		RFswitch = 1;			
 	}		
 }
