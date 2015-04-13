@@ -141,7 +141,8 @@ void OutputPwrsampling()
 
 	for(i=0;i<8;i++)
 	{
-		OutputPwr += readAD(CHANNEL_0);
+		//OutputPwr += readAD(CHANNEL_0);
+		OutputPwr += readAD(CHANNEL_4);
 	}
 	
 	OutputPwr >>= 3;
@@ -277,8 +278,10 @@ void updateAlmInfo() small
 
 	for(i=0;i<8;i++)
 	{
-		re_Pwr += readAD(CHANNEL_1);				//读反射功率AD值
-		PA_current += readAD(CHANNEL_5);			//读出功放电流AD值
+// 		re_Pwr += readAD(CHANNEL_1);				//读反射功率AD值
+// 		PA_current += readAD(CHANNEL_5);			//读出功放电流AD值
+		re_Pwr += readAD(CHANNEL_5);				//读反射功率AD值
+		PA_current += readAD(CHANNEL_1);			//读出功放电流AD值
 	}
 
 	re_Pwr >>= 3;
@@ -460,6 +463,17 @@ void execFctParamSet()
 			rfPramModified = TRUE;							//射频参数修改标志有效	
 			switch(param_addr)
 			{
+				case EE_TEMPER_BUCHANG:
+					memcpy(__temp_que,RxBuf+13,sizeof(__temp_que));
+				break;
+				case EE_PLUS_TRIGER://触发单次脉冲信号
+					EA = 0;
+					__PlusSwitchState = OPEN;
+					__PlusReqAddr			= RxBuf[13];
+					__PlusReqPower    = RxBuf[14];
+					__PlusReqFreq			= RxBuf[15]+RxBuf[16]<<8;
+					EA = 1;
+				break;
 				case EE_DA_CHANNEL_B:
 					gDAoutB = tmpInt;					
 					writeAD5314(gDAoutB,'B');
@@ -482,13 +496,13 @@ void execFctParamSet()
 					//2012.10.26
 					gPALimCompensate();
 					gPALim = (gPALim + tPALim)/2;					
-					writeAD5314(gPALim,'A');
+					writeAD5314(gPALim,DAPOWER_LIM_CHAN);
 					updateAlmInfo();					
 					
 					delay(1);
 					
 					gPALimCompensate();
-					writeAD5314(gPALim,'A');
+					writeAD5314(gPALim,DAPOWER_LIM_CHAN);
 					updateAlmInfo();
 					//Task5S_time = getTime() + 100;
 					break;				
@@ -507,13 +521,13 @@ void execFctParamSet()
 					{
 						gPALimCompensate();
 						gPALim = (gPALim + tPALim)/2;					
-						writeAD5314(gPALim,'A');
+						writeAD5314(gPALim,DAPOWER_LIM_CHAN);
 						updateAlmInfo();					
 						
 						delay(1);
 						
 						gPALimCompensate();
-						writeAD5314(gPALim,'A');
+						writeAD5314(gPALim,DAPOWER_LIM_CHAN);
 						updateAlmInfo();						
 					}  
 
@@ -531,13 +545,13 @@ void execFctParamSet()
 					//2012.10.26
 					gPALimCompensate();
 					gPALim = (gPALim + tPALim)/2;					
-					writeAD5314(gPALim,'A');
+					writeAD5314(gPALim,DAPOWER_LIM_CHAN);
 					updateAlmInfo();					
 					
 					delay(1);
 					
 					gPALimCompensate();
-					writeAD5314(gPALim,'A');
+					writeAD5314(gPALim,DAPOWER_LIM_CHAN);
 					updateAlmInfo();					
 					break;
 
@@ -759,7 +773,7 @@ unsigned char endDwnldSoft()
 	unsigned int tmpInt;
 	unsigned int y;	 //x,
 	
-	count = 0x1D00 - softLen;
+	count = 0x3700 - softLen;
 	leaveCnt =count%32;								//不足32字节的数目
 	count = count >> 5; 
 	
@@ -817,7 +831,7 @@ unsigned char endDwnldSoft()
 
 	FMADRL = 0x02;
 	FMCON = 0x6C;
-	FMDATA = 0x1D;				//启动向量0x1E	
+	FMDATA = 0x37;				//启动向量0x37	
 	while((FMCON&0x0F)!=0);
 	
 	FMADRL = 0x03;	 			//状态字节

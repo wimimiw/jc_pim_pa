@@ -1,0 +1,1 @@
+"APP\bro20W_RFcontrol.c" OPTIMIZE (9,SIZE) REGFILE (.\OUTPUT\my_project.ORC) BROWSE INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\bro20W_RFcontrol.lst) TABS (2) OBJECT(.\OUTPUT\bro20W_RFcontrol.obj)

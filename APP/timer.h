@@ -25,7 +25,8 @@
 
 #define DELAY100MS		10
 #define DELAY5S		200
-#define DELAY30S	6000
+//#define DELAY30S	6000
+#define DELAY30S	600
 #define DwnldSoftTimeOut 12000
 #define PktHandleTimeOut 200            //数据处理超时2S
 
@@ -34,6 +35,7 @@ APP_EXT unsigned short idata Task100MS_time;
 APP_EXT unsigned short data Task5S_time;
 APP_EXT unsigned short data Task30S_time;
 APP_EXT unsigned short DwnldSoft1m_time;
+APP_EXT void (*TimerCallback)(void);
 
 unsigned short getTime();
 void InitTimer1();

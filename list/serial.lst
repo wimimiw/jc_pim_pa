@@ -1,10 +1,11 @@
-C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 1   
+C51 COMPILER V9.51   SERIAL                                                                07/11/2014 13:22:10 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE SERIAL
 OBJECT MODULE PLACED IN .\OUTPUT\serial.obj
-COMPILER INVOKED BY: C:\Program Files\Keil\C51\BIN\C51.EXE drive\serial.c OPTIMIZE(9,SIZE) REGFILE(.\OUTPUT\test.ORC) BR
-                    -OWSE INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\serial.lst) TABS(2) OBJECT(.\OUTPUT\serial.obj)
+COMPILER INVOKED BY: C:\Program Files\Keil\C51\BIN\C51.EXE drive\serial.c OPTIMIZE(9,SIZE) REGFILE(.\OUTPUT\my_project.O
+                    -RC) BROWSE INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\serial.lst) TABS(2) OBJECT(.\OUTPUT\serial.obj
+                    -)
 
 line level    source
 
@@ -61,9 +62,9 @@ line level    source
   50          void InitSerial()   
   51          {
   52   1        // 初始化串口 
-  53   1                //485接收有效，发送禁止
-C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 2   
+C51 COMPILER V9.51   SERIAL                                                                07/11/2014 13:22:10 PAGE 2   
 
+  53   1                //485接收有效，发送禁止
   54   1        Rx_state = STA_ADDRESS1;  //初始化接收状态,第一个字节为
   55   1        pack_valid = 0;
   56   1      //    RDE = 0;            //没使用
@@ -125,9 +126,9 @@ line level    source
  112   3      //      RDE =  0;    //232通信时，没使用
  113   3          } 
  114   2        }   
- 115   1      }
-C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 3   
+C51 COMPILER V9.51   SERIAL                                                                07/11/2014 13:22:10 PAGE 3   
 
+ 115   1      }
  116          
  117          /*
  118          *********************************************************************************************************
@@ -189,9 +190,9 @@ line level    source
  174   4              }
  175   3              else                  //非本模块数据，则不接收
  176   3              {
- 177   4                Rx_state = STA_ADDRESS1;
-C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 4   
+C51 COMPILER V9.51   SERIAL                                                                07/11/2014 13:22:10 PAGE 4   
 
+ 177   4                Rx_state = STA_ADDRESS1;
  178   4              } 
  179   3              break; 
  180   3            case STA_ADDRESS2:                //模块地址或者广播地址
@@ -253,9 +254,9 @@ line level    source
  236   4               }  
  237   3               else                     
  238   3               {
- 239   4                Rx_state = STA_ADDRESS1;    
-C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 5   
+C51 COMPILER V9.51   SERIAL                                                                07/11/2014 13:22:10 PAGE 5   
 
+ 239   4                Rx_state = STA_ADDRESS1;    
  240   4               }
  241   3               break;
  242   3            case  STA_OID1:               //监控对象标号
@@ -317,9 +318,9 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    DATA SIZE        =      2    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
-END OF MODULE INFORMATION.
+C51 COMPILER V9.51   SERIAL                                                                07/11/2014 13:22:10 PAGE 6   
 
-C51 COMPILER V9.51   SERIAL                                                                10/22/2013 09:07:11 PAGE 6   
+END OF MODULE INFORMATION.
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

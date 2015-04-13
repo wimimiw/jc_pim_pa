@@ -6,7 +6,7 @@
 ** 描　述: 原始版本
 ************************************************************************************/
 
-#include <reg938.h>
+#include <reg936.h>
 #include <string.h>
 #include <intrins.h>
 #include <i2c.h>
@@ -53,6 +53,8 @@ void InitRF()
 	gcurRfTemp = 50;
 	gAtttempval = 0;
 
+	__PlusSwitchState = CLOSE;
+	
 	re_Pwr = 0;
 	PA_current = 0;
 	OutputPwr = 0;
@@ -66,6 +68,9 @@ void InitRF()
 	delay(1);
 	watchdog();
 	
+	//读取温度补偿值
+	readE2promStr(sizeof(__temp_que),EE_TEMPER_BUCHANG,__temp_que);
+	
 	//Source select
 	readE2promStr(1,EE_SOURCE_SELECT,temp);
 	RFSrcSelect = (temp[0] == 0xFF)? SRC_INTERNAL:temp[0];
@@ -76,7 +81,7 @@ void InitRF()
 	readE2promStr(1,EE_RF_No,&gRF_No);				//读取射频模块地址
 
 	gPALimCompensate();
-	writeAD5314(gPALim,'A');
+	writeAD5314(gPALim,DAPOWER_LIM_CHAN);
 
 	watchdog();				
 	writeLM75(0x90,0x00,2);							 //选择指针为配置寄存器
@@ -133,14 +138,18 @@ void switchRF(unsigned char value)
 	
 	if(value == CLOSE)
 	{
+#ifdef NEW_PLAD
 		writeAD5314(0,'B');
 		writeAD5314(0,'C');	
+#endif
 		RFswitch = 1;
 	}
 	else
 	{
+#ifdef NEW_PLAD		
 		writeAD5314(gDAoutB,'B');
 		writeAD5314(gDAoutC,'C');			
+#endif 		
 		RFswitch = 0;
 	}
 }
@@ -193,6 +202,19 @@ void writeDA5741(unsigned int value,unsigned char function)
 
 void writeAD5314(unsigned short value,unsigned char channel)            //DA转换器
 {
+	//温度补偿
+	signed char xdata curTemp = gcurRfTemp/2;
+	
+	if( curTemp < TEMP_NORMAL && TEMP_NORMAL != TEMP_LOW )
+	{
+		value -= (TEMP_NORMAL_VALUE - TEMP_LOW_VALUE)*(TEMP_NORMAL - curTemp)*1.0/(TEMP_NORMAL - TEMP_LOW);
+	}	
+	else 
+	if( curTemp >= TEMP_NORMAL && TEMP_NORMAL != TEMP_HIGH )
+	{
+		value += (TEMP_NORMAL_VALUE - TEMP_HIGH_VALUE)*(curTemp - TEMP_NORMAL)*1.0/(TEMP_NORMAL - TEMP_HIGH);		
+	}
+	
 	value <<=2;
 	value &=0xFFFC;	
 	if(channel=='A')
@@ -346,7 +368,12 @@ void readTemperatur()
 
 	gpreRfTemp =  gcurRfTemp;
 	
+#ifdef NEW_PLAD	
 	IRcvStr(0x92,0x00,(unsigned char*)&value,2);			//读取温度，其中指针寄存器为00
+#else	
+	IRcvStr(0x90,0x00,(unsigned char*)&value,2);			//读取温度，其中指针寄存器为00
+#endif
+	
 	value >>= 7;
 	gcurRfTemp = value;
 
@@ -584,84 +611,53 @@ void writePLL()
 */
 unsigned short readAD(unsigned char channel)
 {
-
 	unsigned short value = 0; 
-	unsigned short temp = 0;
 	
-	AD0INS  = channel;	  					//选择转换通道 //
-	AD0MODA |= 0x10;						//单次转换
-	AD0MODB |= 0x20;						// ADC时钟=CCLK/2,即2分频
-	AD0CON = 0x05;							//立即启动
-	while(!AD0CON&0x08);					//等待转换完毕
-    //while(!AD0CON&0x08);					//等待转换完毕
-   
+	ADINS  = channel;	  					//选择转换通道 //
+	ADMODA |= 0x10;						//单次转换
+	ADMODB |= 0x20;						// ADC时钟=CCLK/2,即2分频
+	if(channel < CHANNEL_4)
+	{
+		ADCON0 = 0x05;							//立即启动
+		while(!ADCON0&0x08);					//等待转换完毕
+	}
+	else
+	{
+		ADCON1 = 0x05;							//立即启动
+		while(!ADCON1&0x08);					//等待转换完毕		
+	}
+	
+	//936提供的ADC为2*4通道,是一种比较古老的ADC，与938的10位8通道ADC不兼容
 	switch(channel)
 	{
-		#ifdef CHANNEL_0
 		case CHANNEL_0:
-			value |= AD0DAT0R;					//右边字节，低位，取位7.6.5.4.3.2.1.0. 八位
-			temp  |= AD0DAT0L;	 				//左边字节，高位，位9.8.7.6.5.4.3.2为一字节，取9.8.两位
-			break;
-		#endif
-
-		#ifdef CHANNEL_1
+			value = AD0DAT0; 
+		break;
 		case CHANNEL_1:
-			value |= AD0DAT1R;
-			temp  |= AD0DAT1L;
-			break;
-		#endif
-
-		#ifdef CHANNEL_2
+			value = AD0DAT1; 
+		break;
 		case CHANNEL_2:
-			value |= AD0DAT2R;
-			temp  |= AD0DAT2L;
-			break;
-		#endif
-
-		#ifdef CHANNEL_3
+			value = AD0DAT2; 
+		break;
 		case CHANNEL_3:
-			value |= AD0DAT3R;
-			temp  |= AD0DAT3L;
-			break;
-		#endif
-
-		#ifdef CHANNEL_4
+			value = AD0DAT3; 
+		break;
 		case CHANNEL_4:
-			value |= AD0DAT4R;
-			temp  |= AD0DAT4L;
-			break;
-		#endif
-
-		#ifdef CHANNEL_5
+			value = AD1DAT0; 
+		break;
 		case CHANNEL_5:
-			value |= AD0DAT5R;
-			temp  |= AD0DAT5L;
-			break;
-		#endif
-
-		#ifdef CHANNEL_6
+			value = AD1DAT1; 
+		break;
 		case CHANNEL_6:
-			value |= AD0DAT6R;
-			temp  |= AD0DAT6L;
-			break;
-		#endif
-
-		#ifdef CHANNEL_7
+			value = AD1DAT2; 
+		break;
 		case CHANNEL_7:
-			value |= AD0DAT7R;
-			temp  |= AD0DAT7L;
-			break;
-		#endif 
-		default:
-			break;
+			value = AD1DAT3; 
+		break;		
+		default:break;
 	}
-    //AD0CON = 0x01;              //关闭转换，以防止出现的管脚相互影响现象。add by dw   20090623
 	
-    temp <<= 2;
-	temp &= 0x0300;
-	value &= 0x00FF;
-	temp |= value;
-	return temp;
+	return value<<2;
 }
 /*
 *********************************************************************************************************
@@ -678,16 +674,18 @@ void execCheckSumQ()
 {
 	unsigned char code *data pt_flash;	
 	all_checksum = 0;
-	for (pt_flash = 0x0000; pt_flash < 0x1D00; pt_flash++)
+	for (pt_flash = 0x0000; pt_flash < 0x3700; pt_flash++)
 	{
 		all_checksum += *pt_flash;
 		watchdog();
 	}
-	for (pt_flash = 0x0000; pt_flash < 0xE300; pt_flash++)
+	for (pt_flash = 0x0000; pt_flash < 0x1047; pt_flash++)
 	{
 		all_checksum += 0xFF;
 		watchdog();
 	}
+	
+	all_checksum += 0x47;
 }
 //喂狗程序
 void watchdog(void) 

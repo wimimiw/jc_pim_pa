@@ -31,7 +31,7 @@
 
 #define APP_GLOBALS
 
-#include <reg938.h>
+#include <reg936.h>
 #include <stdio.h>
 #include <intrins.h>
 #include <string.h>	  
@@ -47,7 +47,44 @@
 #include <e2prom.h>
 //#include <math.h>
 
+static void ZhouQiFaSong5ms(void) small
+{
+//const static unsigned char xdata txPaBuf[] = {0x00,0x40,0x55,0x02,0x00,0x40,0x66,0x02,0x00,0x40,0x77,0x02};	
+	static unsigned char idx;
+	static unsigned char xdata txPaBuf[] = {0x00,0x40,0x55,0x66,0x77,0x44,0x02,0x00};
+	unsigned char state,check;
 
+	if ( __PlusSwitchState == CLOSE )return;
+	
+	if( idx == 0 )
+	{
+		txPaBuf[2] = __PlusReqPower;
+		txPaBuf[3] = (__PlusReqPower<<4) + (__PlusReqFreq>>8)&0x0f;
+		txPaBuf[4] = (unsigned char)__PlusReqFreq;
+		check = 0;
+		check^=txPaBuf[2];
+		check^=txPaBuf[3];
+		check^=txPaBuf[4];
+		txPaBuf[5] = check;
+	}
+	
+	state = txPaBuf[idx/8] & (1<<(idx%8));
+
+	if(++idx/8>=sizeof(txPaBuf))
+	{
+		idx = 0;
+		__PlusSwitchState = CLOSE;
+	}
+	
+	if(state!=0)
+	{
+		writeAtt1(0);	
+	}
+	else
+	{
+		writeAtt1(63);			
+	}		
+}
 
 /*
 *********************************************************************************************************
@@ -70,6 +107,10 @@ void main(void) small
 	sendInitpacket();
 	DwnldSoft1m_time = getTime();
 
+	EA = 0;
+	TimerCallback = (void*)ZhouQiFaSong5ms;
+	EA = 1;
+	
 	while(1)
 	{		
 		if (getTime()- DwnldSoft1m_time >= DwnldSoftTimeOut)
@@ -181,9 +222,10 @@ void Switch_clock()                  //add by  dw	20090603
 			//watchdog();
 			for( i = 0; i < 8; i++ )
 			{
-				vcc_in += readAD(CHANNEL_2);
+				//vcc_in += readAD(CHANNEL_2);
+				vcc_in += readAD(CHANNEL_6);
 			}
-			AD0CON = 0x01;              //关闭转换，以防止出现的管脚相互影响现象。add by dw   20090623
+			//ADCON0 = 0x01;              //关闭转换，以防止出现的管脚相互影响现象。add by dw   20090623
 			
 			vcc_in >>= 3;
 			
@@ -228,7 +270,14 @@ void TaskRunPer30s()
 	{
 								                //若动作了射频开关，则需要对衰减器和锁相环重新进行操作
 		readTemperatur();								//更新温度记录
-	//	if((rfPramModified == TRUE) || (gpreRfTemp != gcurRfTemp) )	//射频参数更改或温度有变化
+		
+		//功放打开后周期进行温度补偿操作
+		if(gRFSW == OPEN)
+		{
+			gPALimCompensate();
+			writeAD5314(gPALim,DAPOWER_LIM_CHAN);
+		}
+		//	if((rfPramModified == TRUE) || (gpreRfTemp != gcurRfTemp) )	//射频参数更改或温度有变化
 	//	{
 			//tempCompensate();								//温度补偿
 	//	}

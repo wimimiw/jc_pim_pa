@@ -1,11 +1,11 @@
-C51 COMPILER V9.51   BRO20W_CPU                                                            10/22/2013 09:07:10 PAGE 1   
+C51 COMPILER V9.51   BRO20W_CPU                                                            07/11/2014 13:22:09 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE BRO20W_CPU
 OBJECT MODULE PLACED IN .\OUTPUT\bro20W_cpu.obj
-COMPILER INVOKED BY: C:\Program Files\Keil\C51\BIN\C51.EXE APP\bro20W_cpu.c OPTIMIZE(9,SIZE) REGFILE(.\OUTPUT\test.ORC) 
-                    -BROWSE INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\bro20W_cpu.lst) TABS(2) OBJECT(.\OUTPUT\bro20W_cpu
-                    -.obj)
+COMPILER INVOKED BY: C:\Program Files\Keil\C51\BIN\C51.EXE APP\bro20W_cpu.c OPTIMIZE(9,SIZE) REGFILE(.\OUTPUT\my_project
+                    -.ORC) BROWSE INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\bro20W_cpu.lst) TABS(2) OBJECT(.\OUTPUT\bro2
+                    -0W_cpu.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   51   1                  // P1.7   推挽输出    RFswitch      0     1
   52   1      
   53   1                  // PORT   Configuration FUNC        P2M1    P2M2
-C51 COMPILER V9.51   BRO20W_CPU                                                            10/22/2013 09:07:10 PAGE 2   
+C51 COMPILER V9.51   BRO20W_CPU                                                            07/11/2014 13:22:09 PAGE 2   
 
   54   1        P2M1 = 0x0A;    // P2.0 --- 准双向口------- 空闲------------  0---------- 0 
   55   1        P2M2 = 0xf4;    // P2.1   仅为输入    LimYes          1     0

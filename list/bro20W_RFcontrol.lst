@@ -1,11 +1,11 @@
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 1   
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE BRO20W_RFCONTROL
 OBJECT MODULE PLACED IN .\OUTPUT\bro20W_RFcontrol.obj
-COMPILER INVOKED BY: C:\Program Files\Keil\C51\BIN\C51.EXE APP\bro20W_RFcontrol.c OPTIMIZE(9,SIZE) REGFILE(.\OUTPUT\test
-                    -.ORC) BROWSE INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\bro20W_RFcontrol.lst) TABS(2) OBJECT(.\OUTPU
-                    -T\bro20W_RFcontrol.obj)
+COMPILER INVOKED BY: C:\Program Files\Keil\C51\BIN\C51.EXE APP\bro20W_RFcontrol.c OPTIMIZE(9,SIZE) REGFILE(.\OUTPUT\my_p
+                    -roject.ORC) BROWSE INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\bro20W_RFcontrol.lst) TABS(2) OBJECT(.
+                    -\OUTPUT\bro20W_RFcontrol.obj)
 
 line level    source
 
@@ -17,7 +17,7 @@ line level    source
    6          ** 描　述: 原始版本
    7          ************************************************************************************/
    8          
-   9          #include <reg938.h>
+   9          #include <reg936.h>
   10          #include <string.h>
   11          #include <intrins.h>
   12          #include <i2c.h>
@@ -62,730 +62,728 @@ line level    source
   51   1        gtestRfTemp = 50;               //初始化测试温度值
   52   1        gpreRfTemp = 50;                  //初始化温度状态
   53   1        gcurRfTemp = 50;
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 2   
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 2   
 
   54   1        gAtttempval = 0;
   55   1      
-  56   1        re_Pwr = 0;
-  57   1        PA_current = 0;
-  58   1        OutputPwr = 0;
-  59   1      //  rfmute = 1;                      //    使能ADF4350,高电平有效
-  60   1      //  readE2promStr(1,EE_RFSW,&AutoSwitch);       //射频开关
-  61   1        AutoSwitch = CLOSE;                     //上位机开关
-  62   1        gRFSW = CLOSE;
-  63   1        
-  64   1        switchRF(gRFSW);
+  56   1        __PlusSwitchState = CLOSE;
+  57   1        
+  58   1        re_Pwr = 0;
+  59   1        PA_current = 0;
+  60   1        OutputPwr = 0;
+  61   1      //  rfmute = 1;                      //    使能ADF4350,高电平有效
+  62   1      //  readE2promStr(1,EE_RFSW,&AutoSwitch);       //射频开关
+  63   1        AutoSwitch = CLOSE;                     //上位机开关
+  64   1        gRFSW = CLOSE;
   65   1        
-  66   1        delay(1);
-  67   1        watchdog();
-  68   1        
-  69   1        //Source select
-  70   1        readE2promStr(1,EE_SOURCE_SELECT,temp);
-  71   1        RFSrcSelect = (temp[0] == 0xFF)? SRC_INTERNAL:temp[0];
-  72   1        
-  73   1        readE2promStr(4,EE_CenFreq,temp);       //读取中心频率
-  74   1        swapBytes(temp,(unsigned char *)&gCenFreq,4);
-  75   1      
-  76   1        readE2promStr(1,EE_RF_No,&gRF_No);        //读取射频模块地址
-  77   1      
-  78   1        gPALimCompensate();
-  79   1        writeAD5314(gPALim,'A');
+  66   1        switchRF(gRFSW);
+  67   1        
+  68   1        delay(1);
+  69   1        watchdog();
+  70   1        
+  71   1        //读取温度补偿值
+  72   1        readE2promStr(sizeof(__temp_que),EE_TEMPER_BUCHANG,__temp_que);
+  73   1        
+  74   1        //Source select
+  75   1        readE2promStr(1,EE_SOURCE_SELECT,temp);
+  76   1        RFSrcSelect = (temp[0] == 0xFF)? SRC_INTERNAL:temp[0];
+  77   1        
+  78   1        readE2promStr(4,EE_CenFreq,temp);       //读取中心频率
+  79   1        swapBytes(temp,(unsigned char *)&gCenFreq,4);
   80   1      
-  81   1        watchdog();       
-  82   1        writeLM75(0x90,0x00,2);              //选择指针为配置寄存器
-  83   1      
-  84   1        readE2promStr(1,EE_PAProtectLim,&gPAProtecttLim);//写功放保护温度门限
-  85   1        writeLM75(0x03,gPAProtecttLim,3); 
-  86   1        
-  87   1        readE2promStr(1,EE_PAResetLim,&gPAResetLim);   //写功放重启温度门限
-  88   1        writeLM75(0x02,gPAResetLim,3);
-  89   1      
-  90   1        readE2promStr(1,EE_BaseTemp_VALUE,&gBaseTemp);      //读取温度补偿温度基准值
-  91   1        watchdog();  
-  92   1        readE2promStr(1,EE_Att1,&gGain);
-  93   1        writeAtt1(gGain);
-  94   1        writePLL();                     
-  95   1        delay(1);                 
-  96   1        readTemperatur();
-  97   1        execCheckSumQ();                   //初始化计算校验和   
-  98   1      }
-  99          
- 100          
- 101          /*写LM75中的功放保护和恢复门限*/
- 102          void writeLM75(char point,char value,unsigned char num)
- 103          {
- 104   1        char temp[5];
- 105   1        if(num==2)
- 106   1        {
- 107   2          temp[0] = 0x01;
- 108   2          temp[1] = 0x18;                //高字节在前
- 109   2        }
- 110   1        else if(num==3)
+  81   1        readE2promStr(1,EE_RF_No,&gRF_No);        //读取射频模块地址
+  82   1      
+  83   1        gPALimCompensate();
+  84   1        writeAD5314(gPALim,DAPOWER_LIM_CHAN);
+  85   1      
+  86   1        watchdog();       
+  87   1        writeLM75(0x90,0x00,2);              //选择指针为配置寄存器
+  88   1      
+  89   1        readE2promStr(1,EE_PAProtectLim,&gPAProtecttLim);//写功放保护温度门限
+  90   1        writeLM75(0x03,gPAProtecttLim,3); 
+  91   1        
+  92   1        readE2promStr(1,EE_PAResetLim,&gPAResetLim);   //写功放重启温度门限
+  93   1        writeLM75(0x02,gPAResetLim,3);
+  94   1      
+  95   1        readE2promStr(1,EE_BaseTemp_VALUE,&gBaseTemp);      //读取温度补偿温度基准值
+  96   1        watchdog();  
+  97   1        readE2promStr(1,EE_Att1,&gGain);
+  98   1        writeAtt1(gGain);
+  99   1        writePLL();                     
+ 100   1        delay(1);                 
+ 101   1        readTemperatur();
+ 102   1        execCheckSumQ();                   //初始化计算校验和   
+ 103   1      }
+ 104          
+ 105          
+ 106          /*写LM75中的功放保护和恢复门限*/
+ 107          void writeLM75(char point,char value,unsigned char num)
+ 108          {
+ 109   1        char temp[5];
+ 110   1        if(num==2)
  111   1        {
- 112   2          temp[0] = point;
- 113   2          temp[1] = value;                //高字节在前
- 114   2          temp[2] = 0x00;                 //低字节在后
- 115   2        }
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 3   
+ 112   2          temp[0] = 0x01;
+ 113   2          temp[1] = 0x18;                //高字节在前
+ 114   2        }
+ 115   1        else if(num==3)
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 3   
 
- 116   1        watchdog();                  //这里似乎没必要喂狗
- 117   1        ISendStrExt(0x90,temp,num);
- 118   1      }
- 119          
- 120          
- 121          /*开关射频*/
- 122          void switchRF(unsigned char value)
- 123          {
- 124   1        unsigned char temp[4];
- 125   1        
- 126   1        readE2promStr(2,EE_DA_CHANNEL_B,temp);
- 127   1        swapBytes(temp,(unsigned char *)&gDAoutB,2);
- 128   1        if ( gDAoutB > 1023 )gDAoutB = 0;
- 129   1        
- 130   1        readE2promStr(2,EE_DA_CHANNEL_C,temp);
- 131   1        swapBytes(temp,(unsigned char *)&gDAoutC,2);
- 132   1        if ( gDAoutC > 1023 )gDAoutC = 0;
- 133   1        
- 134   1        if(value == CLOSE)
- 135   1        {
- 136   2          writeAD5314(0,'B');
- 137   2          writeAD5314(0,'C'); 
- 138   2          RFswitch = 1;
- 139   2        }
- 140   1        else
- 141   1        {
- 142   2          writeAD5314(gDAoutB,'B');
- 143   2          writeAD5314(gDAoutC,'C');     
- 144   2          RFswitch = 0;
- 145   2        }
- 146   1      }
- 147          /***********************************************************************************************
- 148          函数名:   writeDA5741
- 149          功能:   唤醒DA及A\B\C\D通道的DA输出
- 150          参数说明: 
- 151                value:送入5741的数据  
- 152                function:功能选择 W:为唤醒DA    A/B/C/D:对A/B/C/D通道操作
- 153          操作说明: Immediately following CS high-to-low transition, the data is shifted synchronously 
- 154                and latched into the input register on the falling edge of the serial clock input(SCLK)
- 155          ************************************************************************************************/
- 156          /*
- 157          void writeDA5741(unsigned int value,unsigned char function)
- 158          {
- 159            value <<=2;
- 160            value &=0xFFFC;       //取DA数据(bit2~bit11)
- 161          
- 162            switch(function)
- 163            {
- 164              case  'W':      //wake up A、B、C、D通道
- 165                value |= 0x0000;  
- 166                break;
- 167          
- 168              case  'A':
- 169                value |= 0x0000;
- 170                break;
- 171              
- 172              case  'B':
- 173                value |= 0x1000;
- 174                break;
- 175          
- 176              case  'C':
- 177                value |= 0x2000;  //高4位为模式控制位Shift data from input register to DAC register, OUTC updated
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 4   
+ 116   1        {
+ 117   2          temp[0] = point;
+ 118   2          temp[1] = value;                //高字节在前
+ 119   2          temp[2] = 0x00;                 //低字节在后
+ 120   2        }
+ 121   1        watchdog();                  //这里似乎没必要喂狗
+ 122   1        ISendStrExt(0x90,temp,num);
+ 123   1      }
+ 124          
+ 125          
+ 126          /*开关射频*/
+ 127          void switchRF(unsigned char value)
+ 128          {
+ 129   1        unsigned char temp[4];
+ 130   1        
+ 131   1        readE2promStr(2,EE_DA_CHANNEL_B,temp);
+ 132   1        swapBytes(temp,(unsigned char *)&gDAoutB,2);
+ 133   1        if ( gDAoutB > 1023 )gDAoutB = 0;
+ 134   1        
+ 135   1        readE2promStr(2,EE_DA_CHANNEL_C,temp);
+ 136   1        swapBytes(temp,(unsigned char *)&gDAoutC,2);
+ 137   1        if ( gDAoutC > 1023 )gDAoutC = 0;
+ 138   1        
+ 139   1        if(value == CLOSE)
+ 140   1        {
+ 141   2      #ifdef NEW_PLAD
+ 142   2          writeAD5314(0,'B');
+ 143   2          writeAD5314(0,'C'); 
+ 144   2      #endif
+ 145   2          RFswitch = 1;
+ 146   2        }
+ 147   1        else
+ 148   1        {
+ 149   2      #ifdef NEW_PLAD   
+ 150   2          writeAD5314(gDAoutB,'B');
+ 151   2          writeAD5314(gDAoutC,'C');     
+ 152   2      #endif    
+ 153   2          RFswitch = 0;
+ 154   2        }
+ 155   1      }
+ 156          /***********************************************************************************************
+ 157          函数名:   writeDA5741
+ 158          功能:   唤醒DA及A\B\C\D通道的DA输出
+ 159          参数说明: 
+ 160                value:送入5741的数据  
+ 161                function:功能选择 W:为唤醒DA    A/B/C/D:对A/B/C/D通道操作
+ 162          操作说明: Immediately following CS high-to-low transition, the data is shifted synchronously 
+ 163                and latched into the input register on the falling edge of the serial clock input(SCLK)
+ 164          ************************************************************************************************/
+ 165          /*
+ 166          void writeDA5741(unsigned int value,unsigned char function)
+ 167          {
+ 168            value <<=2;
+ 169            value &=0xFFFC;       //取DA数据(bit2~bit11)
+ 170          
+ 171            switch(function)
+ 172            {
+ 173              case  'W':      //wake up A、B、C、D通道
+ 174                value |= 0x0000;  
+ 175                break;
+ 176          
+ 177              case  'A':
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 4   
 
- 178                break;
- 179          
- 180              case  'D':
- 181                value |= 0x3000;
- 182                break;
- 183          
- 184              default:
- 185                break;  
- 186            }
- 187            LD = 1;
- 188            LD = 0;
- 189            MSend_bit(value,16);
- 190            LD = 1; 
- 191          } */
+ 178                value |= 0x0000;
+ 179                break;
+ 180              
+ 181              case  'B':
+ 182                value |= 0x1000;
+ 183                break;
+ 184          
+ 185              case  'C':
+ 186                value |= 0x2000;  //高4位为模式控制位Shift data from input register to DAC register, OUTC updated
+ 187                break;
+ 188          
+ 189              case  'D':
+ 190                value |= 0x3000;
+ 191                break;
  192          
- 193          
- 194          void writeAD5314(unsigned short value,unsigned char channel)            //DA转换器
- 195          {
- 196   1        value <<=2;
- 197   1        value &=0xFFFC; 
- 198   1        if(channel=='A')
- 199   1        {
- 200   2          value |= 0x2000;        //高4位为模式控制位
- 201   2        }
- 202   1        else if(channel=='B') 
- 203   1        {
- 204   2          value |= 0x6000;
- 205   2        }
- 206   1        else if(channel=='C') 
- 207   1        {
- 208   2          value |= 0xA000;
- 209   2        }
- 210   1        else  
- 211   1        {
- 212   2          value |= 0xE000;
- 213   2        }
- 214   1        LD = 1;
- 215   1        LD = 0;
- 216   1        MSend_bit(value,16);
- 217   1        LD = 1;
- 218   1      }
- 219          //减器Att1--1U5(前部衰减器)
- 220          /**********对衰减值的做了相应的处理 2--10,    4-20       6-30*/
- 221          void writeAtt1(unsigned char att1)
- 222          {
- 223   1        unsigned short value  ;
- 224   1        LE1 = 0;
- 225   1        value =(unsigned int)att1/2;
- 226   1        /*  switch(value)
- 227   1        {
- 228   1        case 2: value=20;break;
- 229   1        case 4 : value=40;break;
- 230   1        case 6:value=60;break;
- 231   1      
- 232   1        default: break;
- 233   1        }
- 234   1      */
- 235   1        value<<=10;
- 236   1        MSend_bit(value,6); 
- 237   1        LE1 = 1;
- 238   1        LE1 = 0;
- 239   1      }
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 5   
+ 193              default:
+ 194                break;  
+ 195            }
+ 196            LD = 1;
+ 197            LD = 0;
+ 198            MSend_bit(value,16);
+ 199            LD = 1; 
+ 200          } */
+ 201          
+ 202          
+ 203          void writeAD5314(unsigned short value,unsigned char channel)            //DA转换器
+ 204          {
+ 205   1        //温度补偿
+ 206   1        signed char xdata curTemp = gcurRfTemp/2;
+ 207   1        
+ 208   1        if( curTemp < TEMP_NORMAL && TEMP_NORMAL != TEMP_LOW )
+ 209   1        {
+ 210   2          value -= (TEMP_NORMAL_VALUE - TEMP_LOW_VALUE)*(TEMP_NORMAL - curTemp)*1.0/(TEMP_NORMAL - TEMP_LOW);
+ 211   2        } 
+ 212   1        else 
+ 213   1        if( curTemp >= TEMP_NORMAL && TEMP_NORMAL != TEMP_HIGH )
+ 214   1        {
+ 215   2          value += (TEMP_NORMAL_VALUE - TEMP_HIGH_VALUE)*(curTemp - TEMP_NORMAL)*1.0/(TEMP_NORMAL - TEMP_HIGH);   
+ 216   2        }
+ 217   1        
+ 218   1        value <<=2;
+ 219   1        value &=0xFFFC; 
+ 220   1        if(channel=='A')
+ 221   1        {
+ 222   2          value |= 0x2000;        //高4位为模式控制位
+ 223   2        }
+ 224   1        else if(channel=='B') 
+ 225   1        {
+ 226   2          value |= 0x6000;
+ 227   2        }
+ 228   1        else if(channel=='C') 
+ 229   1        {
+ 230   2          value |= 0xA000;
+ 231   2        }
+ 232   1        else  
+ 233   1        {
+ 234   2          value |= 0xE000;
+ 235   2        }
+ 236   1        LD = 1;
+ 237   1        LD = 0;
+ 238   1        MSend_bit(value,16);
+ 239   1        LD = 1;
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 5   
 
- 240            /*
- 241          //设置总的衰减值
- 242          unsigned char writeAttenuator(unsigned char attVal)
- 243          {
- 244            gAtt1 = attVal <<= 1;
- 245            gAtt1 += gAtttempval;
- 246            gAtt1 += gGainOffset;
- 247          
- 248            if(gAtt1 > 0x3F)
- 249            {
- 250              gAtt1 = 0x3F;
- 251            }
- 252          
- 253            writeAtt1(gAtt1); 
- 254            return TRUE;    
- 255          }  */
- 256          /*
- 257          **********************************************************************************************************
+ 240   1      }
+ 241          //减器Att1--1U5(前部衰减器)
+ 242          /**********对衰减值的做了相应的处理 2--10,    4-20       6-30*/
+ 243          void writeAtt1(unsigned char att1)
+ 244          {
+ 245   1        unsigned short value  ;
+ 246   1        LE1 = 0;
+ 247   1        value =(unsigned int)att1/2;
+ 248   1        /*  switch(value)
+ 249   1        {
+ 250   1        case 2: value=20;break;
+ 251   1        case 4 : value=40;break;
+ 252   1        case 6:value=60;break;
+ 253   1      
+ 254   1        default: break;
+ 255   1        }
+ 256   1      */
+ 257   1        value<<=10;
+ 258   1        MSend_bit(value,6); 
+ 259   1        LE1 = 1;
+ 260   1        LE1 = 0;
+ 261   1      }
+ 262            /*
+ 263          //设置总的衰减值
+ 264          unsigned char writeAttenuator(unsigned char attVal)
+ 265          {
+ 266            gAtt1 = attVal <<= 1;
+ 267            gAtt1 += gAtttempval;
+ 268            gAtt1 += gGainOffset;
+ 269          
+ 270            if(gAtt1 > 0x3F)
+ 271            {
+ 272              gAtt1 = 0x3F;
+ 273            }
+ 274          
+ 275            writeAtt1(gAtt1); 
+ 276            return TRUE;    
+ 277          }  */
+ 278          /*
+ 279          **********************************************************************************************************
              -*****
- 258          *                         输出功率限幅值补偿
- 259          *
- 260          * Description: 补偿限幅值 
- 261          *
- 262          * Arguments  : 无
- 263          *
- 264          * Returns    : 无
- 265          **********************************************************************************************************
+ 280          *                         输出功率限幅值补偿
+ 281          *
+ 282          * Description: 补偿限幅值 
+ 283          *
+ 284          * Arguments  : 无
+ 285          *
+ 286          * Returns    : 无
+ 287          **********************************************************************************************************
              -*****
- 266          */
- 267          void gPALimCompensate()
- 268          {   
- 269   1          unsigned char temp[4];
- 270   1          unsigned char gPALimNumerN;
- 271   1        signed short calVal;
- 272   1      
- 273   1          readE2promStr(2, EE_gPALim, temp);                      
- 274   1        swapBytes(temp, (unsigned char *)&gPALim, 2);
- 275   1      
- 276   1      #if debug == 1
+ 288          */
+ 289          void gPALimCompensate()
+ 290          {   
+ 291   1          unsigned char temp[4];
+ 292   1          unsigned char gPALimNumerN;
+ 293   1        signed short calVal;
+ 294   1      
+ 295   1          readE2promStr(2, EE_gPALim, temp);                      
+ 296   1        swapBytes(temp, (unsigned char *)&gPALim, 2);
+ 297   1      
+ 298   1      #if debug == 1
                 gPALim = 600;
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 6   
+
               #endif
- 279   1      
- 280   1        readE2promStr(1,EE_gPALimNumer,temp);     //读取 功率限幅补偿分子         
- 281   1        swapBytes(temp,(unsigned char *)&gPALimNumer,1);
- 282   1      
- 283   1        readE2promStr(1,EE_gPequDenomi,temp);     //读取 功率补偿分母         
- 284   1        swapBytes(temp,(unsigned char *)&gPequDenomi,1);
- 285   1      
- 286   1        readE2promStr(4,EE_gPBmFreq,temp);        //读取 基准频率
- 287   1        swapBytes(temp,(unsigned char *)&gPBmFreq,4);
- 288   1      
- 289   1        gPALimNumerN = ~gPALimNumer + 1;
- 290   1      
- 291   1        calVal = gPALim;
- 292   1        
- 293   1        if(gCenFreq < gPBmFreq)
- 294   1          {
- 295   2          if(gPALimNumer < 0)
- 296   2          {
- 297   3            calVal += (gPBmFreq - gCenFreq) * gPALimNumerN / (gPequDenomi * 1000);
- 298   3          }
- 299   2          else
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 6   
-
- 300   2          {
- 301   3            calVal -= (gPBmFreq - gCenFreq) * gPALimNumer / (gPequDenomi * 1000);
- 302   3          }
- 303   2        }
- 304   1        else if(gPBmFreq < gCenFreq)
- 305   1        {
- 306   2          if(gPALimNumer < 0)
- 307   2          {
- 308   3            calVal -= (gCenFreq - gPBmFreq) * gPALimNumerN / (gPequDenomi * 1000);
- 309   3          }
- 310   2          else
- 311   2          {
- 312   3            calVal += (gCenFreq - gPBmFreq) * gPALimNumer / (gPequDenomi * 1000);
- 313   3          }
- 314   2        }
- 315   1      
- 316   1        //检查范围，防止溢出
- 317   1        if(calVal < 0)
- 318   1        {
- 319   2          gPALim = 0;
- 320   2        }
- 321   1        else if(calVal > 1023)                   //防止输出限幅值溢出，导致掉功率
- 322   1        {
- 323   2          gPALim = 1023;
- 324   2        }
- 325   1        else
- 326   1        {
- 327   2          gPALim = calVal;
- 328   2        }
- 329   1      
- 330   1      
- 331   1      }
- 332          /*
- 333          **********************************************************************************************************
-             -******
- 334          *                         读取温度
- 335          *
- 336          * Description: 读取温度，定时执行，更新温度值 
- 337          *
- 338          * Arguments  : 无
- 339          *
- 340          * Returns    : 无
- 341          **********************************************************************************************************
-             -*******
- 342          */
- 343          void readTemperatur()
- 344          {
- 345   1        signed short value = 0;
- 346   1      
- 347   1        gpreRfTemp =  gcurRfTemp;
- 348   1        
- 349   1        IRcvStr(0x92,0x00,(unsigned char*)&value,2);      //读取温度，其中指针寄存器为00
- 350   1        value >>= 7;
- 351   1        gcurRfTemp = value;
+ 301   1      
+ 302   1        readE2promStr(1,EE_gPALimNumer,temp);     //读取 功率限幅补偿分子         
+ 303   1        swapBytes(temp,(unsigned char *)&gPALimNumer,1);
+ 304   1      
+ 305   1        readE2promStr(1,EE_gPequDenomi,temp);     //读取 功率补偿分母         
+ 306   1        swapBytes(temp,(unsigned char *)&gPequDenomi,1);
+ 307   1      
+ 308   1        readE2promStr(4,EE_gPBmFreq,temp);        //读取 基准频率
+ 309   1        swapBytes(temp,(unsigned char *)&gPBmFreq,4);
+ 310   1      
+ 311   1        gPALimNumerN = ~gPALimNumer + 1;
+ 312   1      
+ 313   1        calVal = gPALim;
+ 314   1        
+ 315   1        if(gCenFreq < gPBmFreq)
+ 316   1          {
+ 317   2          if(gPALimNumer < 0)
+ 318   2          {
+ 319   3            calVal += (gPBmFreq - gCenFreq) * gPALimNumerN / (gPequDenomi * 1000);
+ 320   3          }
+ 321   2          else
+ 322   2          {
+ 323   3            calVal -= (gPBmFreq - gCenFreq) * gPALimNumer / (gPequDenomi * 1000);
+ 324   3          }
+ 325   2        }
+ 326   1        else if(gPBmFreq < gCenFreq)
+ 327   1        {
+ 328   2          if(gPALimNumer < 0)
+ 329   2          {
+ 330   3            calVal -= (gCenFreq - gPBmFreq) * gPALimNumerN / (gPequDenomi * 1000);
+ 331   3          }
+ 332   2          else
+ 333   2          {
+ 334   3            calVal += (gCenFreq - gPBmFreq) * gPALimNumer / (gPequDenomi * 1000);
+ 335   3          }
+ 336   2        }
+ 337   1      
+ 338   1        //检查范围，防止溢出
+ 339   1        if(calVal < 0)
+ 340   1        {
+ 341   2          gPALim = 0;
+ 342   2        }
+ 343   1        else if(calVal > 1023)                   //防止输出限幅值溢出，导致掉功率
+ 344   1        {
+ 345   2          gPALim = 1023;
+ 346   2        }
+ 347   1        else
+ 348   1        {
+ 349   2          gPALim = calVal;
+ 350   2        }
+ 351   1      
  352   1      
- 353   1      /*  if(gtestflag == 0)                    //不在调试状态下，使用实际温度
- 354   1        {
- 355   1          gainCo = gcurRfTemp - gBaseTemp*2;               
- 356   1        }
- 357   1        else if(gtestflag == 2)
- 358   1        {
- 359   1          gainCo = gtestRfTemp - gBaseTemp*2;             
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 7   
+ 353   1      }
+ 354          /*
+ 355          **********************************************************************************************************
+             -******
+ 356          *                         读取温度
+ 357          *
+ 358          * Description: 读取温度，定时执行，更新温度值 
+ 359          *
+ 360          * Arguments  : 无
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 7   
 
- 360   1        } */
- 361   1      }
- 362          /*
+ 361          *
+ 362          * Returns    : 无
  363          **********************************************************************************************************
-             -******
- 364          *                         温度补偿
- 365          *
- 366          * Description: 根据读取的温度值，对衰减值和锁相环分别进行温补操作 
- 367          *
- 368          * Arguments  : 无
- 369          *
- 370          * Returns    : 无
- 371          **********************************************************************************************************
              -*******
- 372          */
- 373          /*
- 374          void tempCompensate() 
- 375          {
- 376          //  unsigned char numerator, denominator;
- 377            int gainCotemp;
- 378          
- 379            if( (softDownLoad == DOING)||(gtestflag==1) )
- 380            {
- 381              return;
- 382            }
- 383          
- 384          //  readE2promStr(1,EE_GainNumer,&numerator);         //增益温补系数分子
- 385          //  readE2promStr(1,EE_GainDenomi,&denominator);        //增益温补系数分母
- 386          //  readE2promStr(1,EE_TEMP_VALUE,&gTempgain);        //读取温度基准值
- 387            if( gTempgain > 16 ) 
- 388            {   
- 389              gTempgain = 9;
- 390            } 
- 391             
- 392            gainCotemp = gainCo*gGainNumer; //gGainNumer
- 393            if(gGainDenomi == 0)
- 394            {
- 395              gGainDenomi = 100;
- 396            }
- 397            gainCotemp = gainCotemp/gGainDenomi;
- 398              
- 399            gainCotemp = gTempgain - gainCotemp;
- 400            if(gainCotemp < 0)
- 401            {
- 402              gAtttempval = 0;
- 403            }
- 404            else if(gainCotemp > 0x3F)
- 405            {
- 406              gAtttempval = 0x3F;
- 407            }
- 408            else
- 409            {
- 410              gAtttempval = (unsigned char)gainCotemp;
- 411            }
- 412          
- 413            writeAttenuator(gAtteVal);
- 414          
- 415            rfPramModified = FALSE;             //射频参数修改标志  
- 416          
- 417          }*/
- 418          
- 419          /*写锁相环4350*/
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 8   
-
- 420          void progPLL(unsigned long value)
- 421          { 
- 422   1        unsigned char num_bit,i;
- 423   1        unsigned long masque_bit;
- 424   1        unsigned char x;
- 425   1      
- 426   1        num_bit = 32;
- 427   1        masque_bit = 0x80000000;  
- 428   1        
- 429   1        CLK = 0;          //初始状态
- 430   1        LD2 = 1;
- 431   1      
- 432   1        LD2 = 0;
- 433   1        for(i=0;i<num_bit;i++)
- 434   1        {
- 435   2          if((value & masque_bit)==0)
- 436   2          {
- 437   3            DATA = 0;
- 438   3          }     
- 439   2          else
- 440   2          {
- 441   3            DATA = 1; 
- 442   3          }
- 443   2          for(x=0;x<2;x++)
- 444   2          {
- 445   3          }
- 446   2          CLK = 1;
- 447   2          value <<= 1;
- 448   2          CLK = 0;
- 449   2        }
- 450   1        LD2 = 1;
- 451   1      }
- 452          
- 453          /*
- 454          void writePLL()
- 455          {
- 456            progPLL(0x00580005);     //5
- 457            progPLL(0x0095003c);
- 458            progPLL(0x000004b3);
- 459            progPLL(0x60004ec2);
- 460            progPLL(0x08008191);
- 461            progPLL(0x00b48000);     //0
- 462          }
- 463          /*
- 464          **********************************************************************************************************
+ 364          */
+ 365          void readTemperatur()
+ 366          {
+ 367   1        signed short value = 0;
+ 368   1      
+ 369   1        gpreRfTemp =  gcurRfTemp;
+ 370   1        
+ 371   1      #ifdef NEW_PLAD 
+ 372   1        IRcvStr(0x92,0x00,(unsigned char*)&value,2);      //读取温度，其中指针寄存器为00
+ 373   1      #else 
+                IRcvStr(0x90,0x00,(unsigned char*)&value,2);      //读取温度，其中指针寄存器为00
+              #endif
+ 376   1        
+ 377   1        value >>= 7;
+ 378   1        gcurRfTemp = value;
+ 379   1      
+ 380   1      /*  if(gtestflag == 0)                    //不在调试状态下，使用实际温度
+ 381   1        {
+ 382   1          gainCo = gcurRfTemp - gBaseTemp*2;               
+ 383   1        }
+ 384   1        else if(gtestflag == 2)
+ 385   1        {
+ 386   1          gainCo = gtestRfTemp - gBaseTemp*2;             
+ 387   1        } */
+ 388   1      }
+ 389          /*
+ 390          **********************************************************************************************************
              -******
- 465          *                         写锁相环ADF4350
- 466          *
- 467          * Description: 根据设定的中心频率, 中频频率, 频率偏移, 频率步进, 频率温度补偿系数计算出各寄存器值, 再调用p
+ 391          *                         温度补偿
+ 392          *
+ 393          * Description: 根据读取的温度值，对衰减值和锁相环分别进行温补操作 
+ 394          *
+ 395          * Arguments  : 无
+ 396          *
+ 397          * Returns    : 无
+ 398          **********************************************************************************************************
+             -*******
+ 399          */
+ 400          /*
+ 401          void tempCompensate() 
+ 402          {
+ 403          //  unsigned char numerator, denominator;
+ 404            int gainCotemp;
+ 405          
+ 406            if( (softDownLoad == DOING)||(gtestflag==1) )
+ 407            {
+ 408              return;
+ 409            }
+ 410          
+ 411          //  readE2promStr(1,EE_GainNumer,&numerator);         //增益温补系数分子
+ 412          //  readE2promStr(1,EE_GainDenomi,&denominator);        //增益温补系数分母
+ 413          //  readE2promStr(1,EE_TEMP_VALUE,&gTempgain);        //读取温度基准值
+ 414            if( gTempgain > 16 ) 
+ 415            {   
+ 416              gTempgain = 9;
+ 417            } 
+ 418             
+ 419            gainCotemp = gainCo*gGainNumer; //gGainNumer
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 8   
+
+ 420            if(gGainDenomi == 0)
+ 421            {
+ 422              gGainDenomi = 100;
+ 423            }
+ 424            gainCotemp = gainCotemp/gGainDenomi;
+ 425              
+ 426            gainCotemp = gTempgain - gainCotemp;
+ 427            if(gainCotemp < 0)
+ 428            {
+ 429              gAtttempval = 0;
+ 430            }
+ 431            else if(gainCotemp > 0x3F)
+ 432            {
+ 433              gAtttempval = 0x3F;
+ 434            }
+ 435            else
+ 436            {
+ 437              gAtttempval = (unsigned char)gainCotemp;
+ 438            }
+ 439          
+ 440            writeAttenuator(gAtteVal);
+ 441          
+ 442            rfPramModified = FALSE;             //射频参数修改标志  
+ 443          
+ 444          }*/
+ 445          
+ 446          /*写锁相环4350*/
+ 447          void progPLL(unsigned long value)
+ 448          { 
+ 449   1        unsigned char num_bit,i;
+ 450   1        unsigned long masque_bit;
+ 451   1        unsigned char x;
+ 452   1      
+ 453   1        num_bit = 32;
+ 454   1        masque_bit = 0x80000000;  
+ 455   1        
+ 456   1        CLK = 0;          //初始状态
+ 457   1        LD2 = 1;
+ 458   1      
+ 459   1        LD2 = 0;
+ 460   1        for(i=0;i<num_bit;i++)
+ 461   1        {
+ 462   2          if((value & masque_bit)==0)
+ 463   2          {
+ 464   3            DATA = 0;
+ 465   3          }     
+ 466   2          else
+ 467   2          {
+ 468   3            DATA = 1; 
+ 469   3          }
+ 470   2          for(x=0;x<2;x++)
+ 471   2          {
+ 472   3          }
+ 473   2          CLK = 1;
+ 474   2          value <<= 1;
+ 475   2          CLK = 0;
+ 476   2        }
+ 477   1        LD2 = 1;
+ 478   1      }
+ 479          
+ 480          /*
+ 481          void writePLL()
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 9   
+
+ 482          {
+ 483            progPLL(0x00580005);     //5
+ 484            progPLL(0x0095003c);
+ 485            progPLL(0x000004b3);
+ 486            progPLL(0x60004ec2);
+ 487            progPLL(0x08008191);
+ 488            progPLL(0x00b48000);     //0
+ 489          }
+ 490          /*
+ 491          **********************************************************************************************************
+             -******
+ 492          *                         写锁相环ADF4350
+ 493          *
+ 494          * Description: 根据设定的中心频率, 中频频率, 频率偏移, 频率步进, 频率温度补偿系数计算出各寄存器值, 再调用p
              -rogPLL
- 468          *
- 469          * Arguments  : 无
- 470          *
- 471          * Returns    : 无
- 472          **********************************************************************************************************
+ 495          *
+ 496          * Arguments  : 无
+ 497          *
+ 498          * Returns    : 无
+ 499          **********************************************************************************************************
              -*******
- 473          */
- 474          void writePLL()
- 475          {
- 476   1          #define R0_INIT   0x00000000
- 477   1        //
- 478   1        //DB31             ～                  DB4 DB3 DB2 DB1 DB0
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 9   
-
- 479   1        //0    0    0    0    0    0    0          0
- 480   1        //0                ～                  0   0   0   0   0
- 481   1      
- 482   1        #define R1_INIT   0x08008001
- 483   1        //        PRESCALER
- 484   1        //DB31～DB28  DB27       DB26 DB25 DB24 DB23  ～ DB16 DB15 DB14 DB13 DB12 DB11 ～ DB4 DB3 DB2 DB1 DB0
- 485   1        //0       8               0     0     8           0    0      1
- 486   1        //0   ～0     1      0    0    0    0    ～   0   1    0    0    0    0    ～ 0   0   0   0   1 
- 487   1      
- 488   1        #define R2_INIT   0x18004EC2
- 489   1        //     NOISE-MODE[1:0] MUXOUT[2:0]     REF-DOU RDIV2               DOUB-BUFF  CHARGE-PUMP[3:0]  LDF LDP PD-POLA 
+ 500          */
+ 501          void writePLL()
+ 502          {
+ 503   1          #define R0_INIT   0x00000000
+ 504   1        //
+ 505   1        //DB31             ～                  DB4 DB3 DB2 DB1 DB0
+ 506   1        //0    0    0    0    0    0    0          0
+ 507   1        //0                ～                  0   0   0   0   0
+ 508   1      
+ 509   1        #define R1_INIT   0x08008001
+ 510   1        //        PRESCALER
+ 511   1        //DB31～DB28  DB27       DB26 DB25 DB24 DB23  ～ DB16 DB15 DB14 DB13 DB12 DB11 ～ DB4 DB3 DB2 DB1 DB0
+ 512   1        //0       8               0     0     8           0    0      1
+ 513   1        //0   ～0     1      0    0    0    0    ～   0   1    0    0    0    0    ～ 0   0   0   0   1 
+ 514   1      
+ 515   1        #define R2_INIT   0x18004EC2
+ 516   1        //     NOISE-MODE[1:0] MUXOUT[2:0]     REF-DOU RDIV2               DOUB-BUFF  CHARGE-PUMP[3:0]  LDF LDP PD-POLA 
              -PD  CP-THR  COUNT-RESET
- 490   1        //DB31 DB30 DB29       DB28 DB27 DB26  DB25    DB24   DB23 ～ DB16 DB15 DB14 DB13       DB12 DB11 B10 DB9
+ 517   1        //DB31 DB30 DB29       DB28 DB27 DB26  DB25    DB24   DB23 ～ DB16 DB15 DB14 DB13       DB12 DB11 B10 DB9
              - DB8 DB7 DB6     DB5 DB4     DB3         DB2 DB1 DB0
- 491   1        //1             8             0    0     4             E          C             2
- 492   1        //0    0    0          1    1    0     0       0      0    ～ 0    0    1    0      0  1    1   1   0   1   1
+ 518   1        //1             8             0    0     4             E          C             2
+ 519   1        //0    0    0          1    1    0     0       0      0    ～ 0    0    1    0      0  1    1   1   0   1   1
              -        0    0      0           0   1   0
- 493   1      
- 494   1      
- 495   1        #define R3_INIT   0x000004B3
- 496   1        //          CSR     CLK-DIV[1:0]
- 497   1        //DB31 ～ DB20 DB19 DB18 DB17 DB16 DB15    DB14 DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 D
-             -B0
- 498   1        //0  0  0    0                   0                      4         B       3
- 499   1        //0    ～ 0    0    0    0    0    0       0    0    0    0    1    0   0   1   0   1   1   0   0   1   1
-             - 
- 500   1        
- 501   1        #define R4_INIT   0x0085041C        //0x00850414
- 502   1        //         FEEDBACK DIV-SEL[2:0]       BAND-SELECT-CLOCK-DIVIDER-VALUE[7:0]        VCO-POW  MTLD AUXOUT-SEL AU
-             -XOUT-EN  AUXOUT-POW[1:0]  RFOUT-EN OUTPOW[1:0]
- 503   1        //DB31 ～ DB24   DB23     DB22 DB21 DB20     DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12     DB11     B10  DB
-             -9        DB8       DB7 DB6         DB5      DB4 DB3     DB2 DB1 DB0
- 504   1        //0    0     8               5           0             4                  1              C
- 505   1        //0    ～ 0      1        0    0    0        0    1    0    1    0    0    0    0    0      1    0      0     0 
-             -0      0     1   1     1   0   0
- 506   1      
- 507   1        #define R5_INIT   0x00580005
- 508   1        //         LD-PIN[1:0]                       
- 509   1        //DB31 ～ DB24   DB23 DB22   DB21 DB20 DB19 DB18 DB17 DB16 DB15 ～ DB4 DB3 DB2 DB1 DB0
- 510   1        //0    0     5             8                   0 0 0       5
- 511   1        //0    ～ 0      0    1      0    1    1    0    0    0    0    ～ 0   0   1   0   1
- 512   1            
- 513   1            
- 514   1        unsigned long counterTemp,counterN,divSel,refFreq;
- 515   1        unsigned short freqStep;
- 516   1        unsigned char temp[4];
- 517   1       
- 518   1      
- 519   1        readE2promStr(4,EE_RefFreq,temp);                 //读取参考频率，4个字节
- 520   1        swapBytes(temp, (unsigned char *)&refFreq,4);
+ 520   1      
  521   1      
- 522   1        readE2promStr(2,EE_FreqStep,temp);                  //读取中频步进值
- 523   1        swapBytes(temp, (unsigned char *)&freqStep,2);
- 524   1      
- 525   1      #if debug == 1
+ 522   1        #define R3_INIT   0x000004B3
+ 523   1        //          CSR     CLK-DIV[1:0]
+ 524   1        //DB31 ～ DB20 DB19 DB18 DB17 DB16 DB15    DB14 DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 D
+             -B0
+ 525   1        //0  0  0    0                   0                      4         B       3
+ 526   1        //0    ～ 0    0    0    0    0    0       0    0    0    0    1    0   0   1   0   1   1   0   0   1   1
+             - 
+ 527   1        
+ 528   1        #define R4_INIT   0x0085041C        //0x00850414
+ 529   1        //         FEEDBACK DIV-SEL[2:0]       BAND-SELECT-CLOCK-DIVIDER-VALUE[7:0]        VCO-POW  MTLD AUXOUT-SEL AU
+             -XOUT-EN  AUXOUT-POW[1:0]  RFOUT-EN OUTPOW[1:0]
+ 530   1        //DB31 ～ DB24   DB23     DB22 DB21 DB20     DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12     DB11     B10  DB
+             -9        DB8       DB7 DB6         DB5      DB4 DB3     DB2 DB1 DB0
+ 531   1        //0    0     8               5           0             4                  1              C
+ 532   1        //0    ～ 0      1        0    0    0        0    1    0    1    0    0    0    0    0      1    0      0     0 
+             -0      0     1   1     1   0   0
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 10  
+
+ 533   1      
+ 534   1        #define R5_INIT   0x00580005
+ 535   1        //         LD-PIN[1:0]                       
+ 536   1        //DB31 ～ DB24   DB23 DB22   DB21 DB20 DB19 DB18 DB17 DB16 DB15 ～ DB4 DB3 DB2 DB1 DB0
+ 537   1        //0    0     5             8                   0 0 0       5
+ 538   1        //0    ～ 0      0    1      0    1    1    0    0    0    0    ～ 0   0   1   0   1
+ 539   1            
+ 540   1            
+ 541   1        unsigned long counterTemp,counterN,divSel,refFreq;
+ 542   1        unsigned short freqStep;
+ 543   1        unsigned char temp[4];
+ 544   1       
+ 545   1      
+ 546   1        readE2promStr(4,EE_RefFreq,temp);                 //读取参考频率，4个字节
+ 547   1        swapBytes(temp, (unsigned char *)&refFreq,4);
+ 548   1      
+ 549   1        readE2promStr(2,EE_FreqStep,temp);                  //读取中频步进值
+ 550   1        swapBytes(temp, (unsigned char *)&freqStep,2);
+ 551   1      
+ 552   1      #if debug == 1
                 gCenFreq = 1805000; //930000
                 freqStep = 100;
                 refFreq = 10000;
                 gRFSW = 1;
               #endif
- 531   1      
- 532   1        if (freqStep == 0) 
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 10  
+ 558   1      
+ 559   1        if (freqStep == 0) 
+ 560   1        {
+ 561   2          freqStep = 25;
+ 562   2        }
+ 563   1       
+ 564   1      //  counterN = gCenFreq;
+ 565   1        counterN = RFSrcSelect?0:gCenFreq;
+ 566   1        //VCO只能输出2.2GHz-4.4GHz的频率，根据需要输出的频率确定VCO输出的分频值
+ 567   1         
+ 568   1        divSel = 4400000 / counterN;
+ 569   1        divSel = checkMBit((unsigned char)divSel);
+ 570   1        counterN <<= divSel;              //放大为VCO的输出频率和步进值
+ 571   1        freqStep <<= divSel;
+ 572   1        progPLL(R5_INIT);               //R5
+ 573   1      
+ 574   1        counterTemp = divSel;
+ 575   1        counterTemp <<= 20;
+ 576   1        counterTemp = counterTemp | R4_INIT | (gRFSW << 5);//射频开关关闭则不使能输出
+ 577   1        progPLL(counterTemp);             //R4
+ 578   1      
+ 579   1        progPLL(R3_INIT);               //R3
+ 580   1      
+ 581   1        progPLL(R2_INIT);               //R2
+ 582   1      
+ 583   1                                  //转换成对应的分频值1、2、4、8、16
+ 584   1        //divSel = 1 << divSel;             //计算小数分频的模
+ 585   1        counterTemp = refFreq;
+ 586   1        counterTemp /= (unsigned long)freqStep;
+ 587   1        counterTemp <<= 3;
+ 588   1        counterTemp |= R1_INIT;
+ 589   1        progPLL(counterTemp);             //R1
+ 590   1                                //计算小数分频分子
+ 591   1        
+ 592   1        counterTemp = counterN % refFreq;
+ 593   1        counterTemp /= (unsigned long)freqStep;
+ 594   1        counterTemp <<= 3;
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 11  
 
- 533   1        {
- 534   2          freqStep = 25;
- 535   2        }
- 536   1       
- 537   1      //  counterN = gCenFreq;
- 538   1        counterN = RFSrcSelect?0:gCenFreq;
- 539   1        //VCO只能输出2.2GHz-4.4GHz的频率，根据需要输出的频率确定VCO输出的分频值
- 540   1         
- 541   1        divSel = 4400000 / counterN;
- 542   1        divSel = checkMBit((unsigned char)divSel);
- 543   1        counterN <<= divSel;              //放大为VCO的输出频率和步进值
- 544   1        freqStep <<= divSel;
- 545   1        progPLL(R5_INIT);               //R5
- 546   1      
- 547   1        counterTemp = divSel;
- 548   1        counterTemp <<= 20;
- 549   1        counterTemp = counterTemp | R4_INIT | (gRFSW << 5);//射频开关关闭则不使能输出
- 550   1        progPLL(counterTemp);             //R4
- 551   1      
- 552   1        progPLL(R3_INIT);               //R3
- 553   1      
- 554   1        progPLL(R2_INIT);               //R2
- 555   1      
- 556   1                                  //转换成对应的分频值1、2、4、8、16
- 557   1        //divSel = 1 << divSel;             //计算小数分频的模
- 558   1        counterTemp = refFreq;
- 559   1        counterTemp /= (unsigned long)freqStep;
- 560   1        counterTemp <<= 3;
- 561   1        counterTemp |= R1_INIT;
- 562   1        progPLL(counterTemp);             //R1
- 563   1                                //计算小数分频分子
- 564   1        
- 565   1        counterTemp = counterN % refFreq;
- 566   1        counterTemp /= (unsigned long)freqStep;
- 567   1        counterTemp <<= 3;
- 568   1        counterN /= refFreq;              //计算整数分频
- 569   1        counterN <<= 15;
- 570   1        counterTemp |= counterN;
- 571   1        progPLL(counterTemp);             //R0
- 572   1        watchdog();   
- 573   1      }
- 574          /*
- 575          *********************************************************************************************************
- 576          *                         A/D转换
- 577          *
- 578          * Description: 根据给定的A/D转换通道，取得相应的A/D转换值
- 579          *
- 580          * Arguments  : channel  给定的通道号
- 581          *
- 582          * Returns    : value    转换结果
- 583          *********************************************************************************************************
- 584          */
- 585          unsigned short readAD(unsigned char channel)
- 586          {
- 587   1      
- 588   1        unsigned short value = 0; 
- 589   1        unsigned short temp = 0;
- 590   1        
- 591   1        AD0INS  = channel;              //选择转换通道 //
- 592   1        AD0MODA |= 0x10;            //单次转换
- 593   1        AD0MODB |= 0x20;            // ADC时钟=CCLK/2,即2分频
- 594   1        AD0CON = 0x05;              //立即启动
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 11  
+ 595   1        counterN /= refFreq;              //计算整数分频
+ 596   1        counterN <<= 15;
+ 597   1        counterTemp |= counterN;
+ 598   1        progPLL(counterTemp);             //R0
+ 599   1        watchdog();   
+ 600   1      }
+ 601          /*
+ 602          *********************************************************************************************************
+ 603          *                         A/D转换
+ 604          *
+ 605          * Description: 根据给定的A/D转换通道，取得相应的A/D转换值
+ 606          *
+ 607          * Arguments  : channel  给定的通道号
+ 608          *
+ 609          * Returns    : value    转换结果
+ 610          *********************************************************************************************************
+ 611          */
+ 612          unsigned short readAD(unsigned char channel)
+ 613          {
+ 614   1        unsigned short value = 0; 
+ 615   1        
+ 616   1        ADINS  = channel;             //选择转换通道 //
+ 617   1        ADMODA |= 0x10;           //单次转换
+ 618   1        ADMODB |= 0x20;           // ADC时钟=CCLK/2,即2分频
+ 619   1        if(channel < CHANNEL_4)
+ 620   1        {
+ 621   2          ADCON0 = 0x05;              //立即启动
+ 622   2          while(!ADCON0&0x08);          //等待转换完毕
+ 623   2        }
+ 624   1        else
+ 625   1        {
+ 626   2          ADCON1 = 0x05;              //立即启动
+ 627   2          while(!ADCON1&0x08);          //等待转换完毕    
+ 628   2        }
+ 629   1        
+ 630   1        //936提供的ADC为2*4通道,是一种比较古老的ADC，与938的10位8通道ADC不兼容
+ 631   1        switch(channel)
+ 632   1        {
+ 633   2          case CHANNEL_0:
+ 634   2            value = AD0DAT0; 
+ 635   2          break;
+ 636   2          case CHANNEL_1:
+ 637   2            value = AD0DAT1; 
+ 638   2          break;
+ 639   2          case CHANNEL_2:
+ 640   2            value = AD0DAT2; 
+ 641   2          break;
+ 642   2          case CHANNEL_3:
+ 643   2            value = AD0DAT3; 
+ 644   2          break;
+ 645   2          case CHANNEL_4:
+ 646   2            value = AD1DAT0; 
+ 647   2          break;
+ 648   2          case CHANNEL_5:
+ 649   2            value = AD1DAT1; 
+ 650   2          break;
+ 651   2          case CHANNEL_6:
+ 652   2            value = AD1DAT2; 
+ 653   2          break;
+ 654   2          case CHANNEL_7:
+ 655   2            value = AD1DAT3; 
+ 656   2          break;    
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 12  
 
- 595   1        while(!AD0CON&0x08);          //等待转换完毕
- 596   1          //while(!AD0CON&0x08);          //等待转换完毕
- 597   1         
- 598   1        switch(channel)
- 599   1        {
- 600   2          #ifdef CHANNEL_0
- 601   2          case CHANNEL_0:
- 602   2            value |= AD0DAT0R;          //右边字节，低位，取位7.6.5.4.3.2.1.0. 八位
- 603   2            temp  |= AD0DAT0L;          //左边字节，高位，位9.8.7.6.5.4.3.2为一字节，取9.8.两位
- 604   2            break;
- 605   2          #endif
- 606   2      
- 607   2          #ifdef CHANNEL_1
- 608   2          case CHANNEL_1:
- 609   2            value |= AD0DAT1R;
- 610   2            temp  |= AD0DAT1L;
- 611   2            break;
- 612   2          #endif
- 613   2      
- 614   2          #ifdef CHANNEL_2
- 615   2          case CHANNEL_2:
- 616   2            value |= AD0DAT2R;
- 617   2            temp  |= AD0DAT2L;
- 618   2            break;
- 619   2          #endif
- 620   2      
- 621   2          #ifdef CHANNEL_3
-                  case CHANNEL_3:
-                    value |= AD0DAT3R;
-                    temp  |= AD0DAT3L;
-                    break;
-                  #endif
- 627   2      
- 628   2          #ifdef CHANNEL_4
-                  case CHANNEL_4:
-                    value |= AD0DAT4R;
-                    temp  |= AD0DAT4L;
-                    break;
-                  #endif
- 634   2      
- 635   2          #ifdef CHANNEL_5
- 636   2          case CHANNEL_5:
- 637   2            value |= AD0DAT5R;
- 638   2            temp  |= AD0DAT5L;
- 639   2            break;
- 640   2          #endif
- 641   2      
- 642   2          #ifdef CHANNEL_6
-                  case CHANNEL_6:
-                    value |= AD0DAT6R;
-                    temp  |= AD0DAT6L;
-                    break;
-                  #endif
- 648   2      
- 649   2          #ifdef CHANNEL_7
-                  case CHANNEL_7:
-                    value |= AD0DAT7R;
-                    temp  |= AD0DAT7L;
-                    break;
-                  #endif 
- 655   2          default:
- 656   2            break;
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 12  
-
- 657   2        }
- 658   1          //AD0CON = 0x01;              //关闭转换，以防止出现的管脚相互影响现象。add by dw   20090623
+ 657   2          default:break;
+ 658   2        }
  659   1        
- 660   1          temp <<= 2;
- 661   1        temp &= 0x0300;
- 662   1        value &= 0x00FF;
- 663   1        temp |= value;
- 664   1        return temp;
- 665   1      }
- 666          /*
- 667          *********************************************************************************************************
- 668          *                         计算程序校验和
+ 660   1        return value<<2;
+ 661   1      }
+ 662          /*
+ 663          *********************************************************************************************************
+ 664          *                         计算程序校验和
+ 665          *
+ 666          * Description: 读取flash中的代码，计算校验和
+ 667          *
+ 668          * Arguments  : 无
  669          *
- 670          * Description: 读取flash中的代码，计算校验和
- 671          *
- 672          * Arguments  : 无
- 673          *
- 674          * Returns    : 计算结果保存在全局变量all_checksum中
- 675          *********************************************************************************************************
- 676          */
- 677          void execCheckSumQ()
- 678          {
- 679   1        unsigned char code *data pt_flash;  
- 680   1        all_checksum = 0;
- 681   1        for (pt_flash = 0x0000; pt_flash < 0x1D00; pt_flash++)
- 682   1        {
- 683   2          all_checksum += *pt_flash;
- 684   2          watchdog();
- 685   2        }
- 686   1        for (pt_flash = 0x0000; pt_flash < 0xE300; pt_flash++)
- 687   1        {
- 688   2          all_checksum += 0xFF;
- 689   2          watchdog();
- 690   2        }
- 691   1      }
- 692          //喂狗程序
- 693          void watchdog(void) 
- 694          {
- 695   1        EA = 0;       //关闭中断 
- 696   1        WFEED1 = 0xA5;    //执行清零第一部分 
- 697   1        WFEED2 = 0x5A;    //执行清零第二部分 
- 698   1        EA = 1;       //开中断        
- 699   1      }
- 700          
- 701          void delay(unsigned char time)
- 702          {
- 703   1        unsigned char x;
- 704   1        unsigned short y;
- 705   1        for(x=0;x<time;x++)
- 706   1        {
- 707   2          watchdog();
- 708   2          for(y=0;y<0x8FFF;y++);                //han
- 709   2          //for(y=0;y<0x0700;y++); // 1毫秒   
- 710   2        }
- 711   1      }
- 712          
- 713          unsigned char checkMBit(unsigned char value)
- 714          {
- 715   1        #define MASQUE 0x80
- 716   1        unsigned char i;
- 717   1      
- 718   1        for(i=7;i>0;i--)
-C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      10/22/2013 09:07:10 PAGE 13  
+ 670          * Returns    : 计算结果保存在全局变量all_checksum中
+ 671          *********************************************************************************************************
+ 672          */
+ 673          void execCheckSumQ()
+ 674          {
+ 675   1        unsigned char code *data pt_flash;  
+ 676   1        all_checksum = 0;
+ 677   1        for (pt_flash = 0x0000; pt_flash < 0x3700; pt_flash++)
+ 678   1        {
+ 679   2          all_checksum += *pt_flash;
+ 680   2          watchdog();
+ 681   2        }
+ 682   1        for (pt_flash = 0x0000; pt_flash < 0x1047; pt_flash++)
+ 683   1        {
+ 684   2          all_checksum += 0xFF;
+ 685   2          watchdog();
+ 686   2        }
+ 687   1        
+ 688   1        all_checksum += 0x47;
+ 689   1      }
+ 690          //喂狗程序
+ 691          void watchdog(void) 
+ 692          {
+ 693   1        EA = 0;       //关闭中断 
+ 694   1        WFEED1 = 0xA5;    //执行清零第一部分 
+ 695   1        WFEED2 = 0x5A;    //执行清零第二部分 
+ 696   1        EA = 1;       //开中断        
+ 697   1      }
+ 698          
+ 699          void delay(unsigned char time)
+ 700          {
+ 701   1        unsigned char x;
+ 702   1        unsigned short y;
+ 703   1        for(x=0;x<time;x++)
+ 704   1        {
+ 705   2          watchdog();
+ 706   2          for(y=0;y<0x8FFF;y++);                //han
+ 707   2          //for(y=0;y<0x0700;y++); // 1毫秒   
+ 708   2        }
+ 709   1      }
+ 710          
+ 711          unsigned char checkMBit(unsigned char value)
+ 712          {
+ 713   1        #define MASQUE 0x80
+ 714   1        unsigned char i;
+ 715   1      
+ 716   1        for(i=7;i>0;i--)
+ 717   1        {
+ 718   2          if((value & MASQUE)==0x80)
+C51 COMPILER V9.51   BRO20W_RFCONTROL                                                      07/11/2014 13:22:09 PAGE 13  
 
- 719   1        {
- 720   2          if((value & MASQUE)==0x80)
- 721   2          {
- 722   3            break;
- 723   3          }
- 724   2          value <<= 1;
- 725   2        }
- 726   1      
- 727   1        return i;
- 728   1      }
+ 719   2          {
+ 720   3            break;
+ 721   3          }
+ 722   2          value <<= 1;
+ 723   2        }
+ 724   1      
+ 725   1        return i;
+ 726   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1899    ----
+   CODE SIZE        =   2268    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =   ----       1
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----      68
+   DATA SIZE        =   ----      69
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

@@ -33,6 +33,13 @@
 #endif
 
 #define debug 0
+#define NEW_PLAD
+
+#ifdef NEW_PLAD
+	#define DAPOWER_LIM_CHAN 'A'
+#else
+	#define DAPOWER_LIM_CHAN 'B'
+#endif	
 
 sbit LimYes = P2^1;
 sbit RFSrcSelect = P1^6;
@@ -59,23 +66,27 @@ sbit  LE1=P2^7;
 #define SRC_INTERNAL	0
 #define SRC_EXTERNAL 	1
 
-#define	 Ver_High  0x03
+#define	 Ver_High  0x05
 #define  Ver_Low  0x00
 
 //#define	WAKE_UP	0x3C04				//ADÐ¾Æ¬MAX5741»½ÐÑ	
-
-
-
 
 //ÔÚÕâÀïÑ¡ÔñÊ¹ÓÃµÄADCÍ¨µÀ
 #define CHANNEL_0	0x01			//AD×ª»»Í¨µÀ
 #define CHANNEL_1	0x02
 #define CHANNEL_2	0x04
-//#define CHANNEL_3	0x08
-//#define CHANNEL_4	0x10
+#define CHANNEL_3	0x08
+#define CHANNEL_4	0x10
 #define CHANNEL_5	0x20
-//#define CHANNEL_6	0x40
-//#define CHANNEL_7	0x80
+#define CHANNEL_6	0x40
+#define CHANNEL_7	0x80
+
+#define TEMP_LOW  				__temp_que[0]
+#define TEMP_LOW_VALUE  	__temp_que[1]
+#define TEMP_NORMAL  			__temp_que[2]
+#define TEMP_NORMAL_VALUE __temp_que[3]
+#define TEMP_HIGH  				__temp_que[4]
+#define TEMP_HIGH_VALUE  	__temp_que[5]
 
 APP_EXT	int gcurRfTemp;				//µ±Ç°ÎÂ¶ÈÖµ
 APP_EXT	int gpreRfTemp;				//ÉÏÒ»´ÎÎÂ¶ÈÖµ
@@ -150,6 +161,14 @@ APP_EXT	unsigned int xdata PaLastAdjDate_month;	     //0x00F3	    //1×Ö½Ú£¬·ÅµÄ×
 APP_EXT	unsigned int xdata PaLastAdjDate_day;	     //0x00F1	    //1×Ö½Ú£¬·ÅµÄ×îÖÕÐ£×¼ÈÕÆÚ(Äê)
 APP_EXT	unsigned int xdata PaUpLimit;		         //0x00F5		//2×Ö½Ú£¬¹¦·ÅÉÏÏÞ
 APP_EXT	unsigned char xdata AppModel;	             //0x00F7	    //1×Ö½Ú£¬ÒÇ±íÐÍºÅ
+
+/****************µ¥´ÎÂö³å´¥·¢±äÁ¿********************/
+APP_EXT	unsigned char 	xdata __PlusSwitchState;     //Âö³å¿ª¹Ø×´Ì¬±äÁ¿
+APP_EXT	unsigned char 	xdata __PlusReqAddr;			 	 //ÇëÇóµØÖ·
+APP_EXT	unsigned char 	xdata __PlusReqPower;			 	 //ÇëÇó¹¦ÂÊÖµ µ¥Î»dB
+APP_EXT	unsigned short  xdata __PlusReqFreq;				 //ÇëÇóÆµÂÊÖµ µ¥Î»MHz
+
+APP_EXT	signed char	xdata __temp_que[6];						 //ÎÂ²¹²Ù×÷¶ÓÁÐ
 
 //void writeDA5741(unsigned int value,unsigned char function);
 void writeAD5314(unsigned short value,unsigned char channel);

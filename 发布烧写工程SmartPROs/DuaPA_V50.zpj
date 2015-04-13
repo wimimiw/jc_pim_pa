@@ -2,10 +2,10 @@
 pnlLeftDragV=1
 pnlBottomDragV=1
 [Chip]
-ChipName=P89LPC938FDH @ICPLine
+ChipName=P89LPC936FDH @ICPLine
 Manufactory=NXP
 [Path]
-OpenSave=D:\Work\公司资料\PA\Jointcom_DuaPA_firmware_V3.0_1157\OUTPUT\ZGRF_V10_20131022_09-07-11_1157.hex
+OpenSave=D:\Work\公司资料\插损检测\Jointcom_PA_firmware_936_V5.0\OUTPUT\ZGRF_V30_20140711_13-22-11_7B64.hex
 [ProgramFormC]
 ckbSound=1
 ckbINC=0
@@ -16,7 +16,7 @@ ckbParameter3=1
 ckbParameter4=1
 [ProgramFormT]
 edBgnAdr=00000000
-edEndAdr=00001DFF
+edEndAdr=00003DFF
 edCNT=0
 [ProgramSetupFormC]
 ckbEraseFir=1
@@ -68,8 +68,8 @@ edEndAdr=
 ckbFromHei=0
 ckbHeiByte=0
 [AutoIncFormT]
-edBgn=0001DF8
-edEnd=0001DFF
+edBgn=0003DF8
+edEnd=0003DFF
 edStep=1
 edInitFile=
 [AutoIncFormR]
@@ -113,7 +113,7 @@ ckbAuto=1
 ckbSound=1
 [ProgramGuidT]
 edBgnAdr=00000000
-edEndAdr=00001DFF
+edEndAdr=00003DFF
 edWillProgrammed=(不设定上限)
 edMaxFailedTimes=(不设定上限)
 edProgrammed=0
@@ -124,12 +124,12 @@ cmbSmart=1
 [SlectChipT]
 edtFind=
 [SlectChipR]
-rbMCU=0
+rbMCU=1
 rbSEEPROM=0
 rbEEPROM=0
 rbSRAM=0
 rbPLD=0
-rbAll=1
+rbAll=0
 [SettingC]
 ckbCheckPin=0
 ckbZone0=1
@@ -179,7 +179,7 @@ Index30=255
 Index31=255
 [Secrity]
 Description=
-CRC=E2 0A 90 AA
+CRC=B2 E0 58 5F
 [Setting]
 PinsCheck=1
 CheckSumIncludeSN=1

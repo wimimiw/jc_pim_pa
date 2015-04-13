@@ -1,10 +1,10 @@
-C51 COMPILER V9.51   TIMER                                                                 10/22/2013 09:07:10 PAGE 1   
+C51 COMPILER V9.51   TIMER                                                                 07/11/2014 13:22:08 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE TIMER
 OBJECT MODULE PLACED IN .\OUTPUT\timer.obj
-COMPILER INVOKED BY: C:\Program Files\Keil\C51\BIN\C51.EXE APP\timer.c OPTIMIZE(9,SIZE) REGFILE(.\OUTPUT\test.ORC) BROWS
-                    -E INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\timer.lst) TABS(2) OBJECT(.\OUTPUT\timer.obj)
+COMPILER INVOKED BY: C:\Program Files\Keil\C51\BIN\C51.EXE APP\timer.c OPTIMIZE(9,SIZE) REGFILE(.\OUTPUT\my_project.ORC)
+                    - BROWSE INCDIR(.\APP;.\drive;.\LPC900) DEBUG OBJECTEXTEND PRINT(.\list\timer.lst) TABS(2) OBJECT(.\OUTPUT\timer.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   52          * Returns    : 无
   53          *********************************************************************************************************
   54          */
-C51 COMPILER V9.51   TIMER                                                                 10/22/2013 09:07:10 PAGE 2   
+C51 COMPILER V9.51   TIMER                                                                 07/11/2014 13:22:08 PAGE 2   
 
   55          void Timer1( void ) interrupt 3 
   56          {
@@ -74,32 +74,35 @@ line level    source
   62   1        PktHandle2S_time++; //数据处理定时器加1
   63   1        EA=1 ;
   64   1        TR1 = 1;
-  65   1      
-  66   1      }
-  67          /*
-  68          *********************************************************************************************************
-  69          *                         获取系统时间
-  70          *
-  71          * Description: 取得系统时间
-  72          *
-  73          * Arguments  : 无
-  74          * Returns    : ticks
-  75          *********************************************************************************************************
-  76          */
-  77          unsigned short getTime() small
-  78          {
-  79   1        unsigned short  ticks;  
-  80   1      
-  81   1        EA = 0;;
-  82   1        ticks = sysTime;
-  83   1        EA = 1;
-  84   1                
-  85   1        return (ticks);
-  86   1      }
+  65   1        
+  66   1        //以下回调函数必须放在TR=1后，因为TimerCallback耗时，影响计数精度。
+  67   1        if(TimerCallback != (void*)0)
+  68   1          TimerCallback();  
+  69   1      }
+  70          /*
+  71          *********************************************************************************************************
+  72          *                         获取系统时间
+  73          *
+  74          * Description: 取得系统时间
+  75          *
+  76          * Arguments  : 无
+  77          * Returns    : ticks
+  78          *********************************************************************************************************
+  79          */
+  80          unsigned short getTime() small
+  81          {
+  82   1        unsigned short  ticks;  
+  83   1      
+  84   1        EA = 0;;
+  85   1        ticks = sysTime;
+  86   1        EA = 1;
+  87   1                
+  88   1        return (ticks);
+  89   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     69    ----
+   CODE SIZE        =    124    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

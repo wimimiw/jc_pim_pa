@@ -62,7 +62,10 @@ void Timer1( void ) interrupt 3
 	PktHandle2S_time++; //数据处理定时器加1
 	EA=1 ;
 	TR1 = 1;
-
+	
+	//以下回调函数必须放在TR=1后，因为TimerCallback耗时，影响计数精度。
+	if(TimerCallback != (void*)0)
+		TimerCallback();	
 }
 /*
 *********************************************************************************************************

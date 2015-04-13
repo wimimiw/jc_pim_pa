@@ -101,5 +101,8 @@
 #define	EE_ALL_CHECKSUM		0x00E2		//2字节，程序校验和
 #define	EE_MODULE_No		0x00E4		//10字节，模块序列号
 
+#define EE_PLUS_TRIGER 			0x0100		//触发单次脉冲信号 
+#define EE_TEMPER_BUCHANG		0x0110		//温补命令
+
 #define EE_DOWN_FLAG        0x01FF		//1字节，软件下载标志
 
