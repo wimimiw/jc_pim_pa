@@ -67,7 +67,7 @@ sbit  LE1=P2^7;
 #define SRC_EXTERNAL 	1
 
 #define	 Ver_High  0x05
-#define  Ver_Low  0x00
+#define  Ver_Low  0x03
 
 //#define	WAKE_UP	0x3C04				//AD芯片MAX5741唤醒	
 
@@ -163,10 +163,10 @@ APP_EXT	unsigned int xdata PaUpLimit;		         //0x00F5		//2字节，功放上限
 APP_EXT	unsigned char xdata AppModel;	             //0x00F7	    //1字节，仪表型号
 
 /****************单次脉冲触发变量********************/
-APP_EXT	unsigned char 	xdata __PlusSwitchState;     //脉冲开关状态变量
-APP_EXT	unsigned char 	xdata __PlusReqAddr;			 	 //请求地址
-APP_EXT	unsigned char 	xdata __PlusReqPower;			 	 //请求功率值 单位dB
-APP_EXT	unsigned short  xdata __PlusReqFreq;				 //请求频率值 单位MHz
+APP_EXT	volatile unsigned char 	xdata __PlusSwitchState;     //脉冲开关状态变量
+APP_EXT	volatile unsigned char 	xdata __PlusReqAddr;			 	 //请求地址
+APP_EXT	volatile unsigned char 	xdata __PlusReqPower;			 	 //请求功率值 单位dB
+APP_EXT	volatile unsigned short xdata __PlusReqFreq;				 //请求频率值 单位MHz
 
 APP_EXT	signed char	xdata __temp_que[6];						 //温补操作队列
 

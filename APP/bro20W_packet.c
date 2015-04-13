@@ -471,7 +471,7 @@ void execFctParamSet()
 					__PlusSwitchState = OPEN;
 					__PlusReqAddr			= RxBuf[13];
 					__PlusReqPower    = RxBuf[14];
-					__PlusReqFreq			= RxBuf[15]+RxBuf[16]<<8;
+					__PlusReqFreq			= RxBuf[15]+(RxBuf[16]<<8);
 					EA = 1;
 				break;
 				case EE_DA_CHANNEL_B:

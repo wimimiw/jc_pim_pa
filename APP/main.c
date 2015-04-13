@@ -49,26 +49,32 @@
 
 static void ZhouQiFaSong5ms(void) small
 {
+#define TRIG_PLUS_BAUD		20	//20hz
 //const static unsigned char xdata txPaBuf[] = {0x00,0x40,0x55,0x02,0x00,0x40,0x66,0x02,0x00,0x40,0x77,0x02};	
-	static unsigned char idx;
-	static unsigned char xdata txPaBuf[] = {0x00,0x40,0x55,0x66,0x77,0x44,0x02,0x00};
+	static unsigned char idx = 0,cycCnt = 0;
+	static unsigned char xdata txPaBuf[] = {0x40,0x00,0x00,0x00,0x00,0x02};
 	unsigned char state,check;
+
+	if( ++cycCnt < 100/TRIG_PLUS_BAUD )	
+		return;	
+	else
+		cycCnt = 0;
 
 	if ( __PlusSwitchState == CLOSE )return;
 	
 	if( idx == 0 )
 	{
-		txPaBuf[2] = __PlusReqPower;
-		txPaBuf[3] = (__PlusReqPower<<4) + (__PlusReqFreq>>8)&0x0f;
-		txPaBuf[4] = (unsigned char)__PlusReqFreq;
+		txPaBuf[1] = __PlusReqAddr;
+		txPaBuf[2] = (unsigned char)((__PlusReqPower&0x0f) + ((__PlusReqFreq<<4)&0x00f0));
+		txPaBuf[3] = (unsigned char)(__PlusReqFreq>>4);
 		check = 0;
+		check^=txPaBuf[1];
 		check^=txPaBuf[2];
 		check^=txPaBuf[3];
-		check^=txPaBuf[4];
-		txPaBuf[5] = check;
+		txPaBuf[4] = check;
 	}
 	
-	state = txPaBuf[idx/8] & (1<<(idx%8));
+	state = (unsigned char)(txPaBuf[idx/8] & (1<<(idx%8)));
 
 	if(++idx/8>=sizeof(txPaBuf))
 	{
@@ -78,11 +84,11 @@ static void ZhouQiFaSong5ms(void) small
 	
 	if(state!=0)
 	{
-		writeAtt1(0);	
+		RFswitch = 0;
 	}
 	else
 	{
-		writeAtt1(63);			
+		RFswitch = 1;			
 	}		
 }
 
@@ -112,7 +118,7 @@ void main(void) small
 	EA = 1;
 	
 	while(1)
-	{		
+	{			
 		if (getTime()- DwnldSoft1m_time >= DwnldSoftTimeOut)
 		{
 			softDownLoad = UNDO;
@@ -135,6 +141,8 @@ void main(void) small
 */
 void TaskHandlePkt() 
 {
+	unsigned char bPulse = FALSE;
+	
 	if(pack_valid == 1)
 	{	
 
@@ -152,10 +160,11 @@ void TaskHandlePkt()
 			RxBuf[3] = ack_flag;				//置应答标志	
 			Data_len = RxBuf[1] + 2;			//包中的长度＋地址（1字节）＋长度字节本身（1字节）
 		}
-		watchdog();
-
 		
-		if(PktHandle2S_time < PktHandleTimeOut)
+		watchdog();
+		while( OPEN == __PlusSwitchState ){bPulse = TRUE;watchdog();};
+		
+		if(PktHandle2S_time < PktHandleTimeOut || TRUE == bPulse)
 		{						//没有超时则发包
 			sendPkt();
 		}
