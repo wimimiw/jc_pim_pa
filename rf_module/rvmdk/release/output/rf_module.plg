@@ -3,19 +3,127 @@
 <pre>
 <h1>礦ision Build Log</h1>
 <h2>Project:</h2>
-D:\Work\公司资料\塔放\firmware\[jctma-0708-01-r1a].-.fw_stm32f100c8\rf_module\rvmdk\rf_module.uvproj
-Project File Date:  01/21/2015
+C:\Users\Administrator\Documents\jc_pim_pa\rf_module\rvmdk\rf_module.uvproj
+Project File Date:  04/15/2015
 
 <h2>Output:</h2>
-Rebuild target 'Release'
+Build target 'Release'
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16984 RO-data=7588 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16984 RO-data=7588 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+compiling main.c...
+..\app\main.c(79): warning:  #177-D: function "InitWatchdog" was declared but never referenced
+..\app\main.c(150): warning:  #177-D: function "TaskWatchdog" was declared but never referenced
+..\app\main.c(120): warning:  #177-D: function "TaskDebug" was declared but never referenced
+compiling dev_e2prom.c...
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16596 RO-data=7976 RW-data=184 ZI-data=4312  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 4 Warning(s).
+Build target 'Release'
+compiling dev_e2prom.c...
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16624 RO-data=7948 RW-data=184 ZI-data=4312  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16624 RO-data=7948 RW-data=184 ZI-data=4312  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+compiling main.c...
+compiling dev_e2prom.c...
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16984 RO-data=7588 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+compiling dev_e2prom.c...
+..\device\dev_e2prom.c(61): error:  #147-D: declaration is incompatible with "BOOL WriteE2prom(U16, U8 *, U16)" (declared at line 28 of "..\device\dev_e2prom.h")
+..\device\dev_e2prom.c(79): error:  #167: argument of type "const U8 *" is incompatible with parameter of type "U8 *"
+Target not created
+Build target 'Release'
+compiling dev_e2prom.c...
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16984 RO-data=7588 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
 compiling main.c...
 compiling rf_control.c...
+..\app\rf_control.c(130): warning:  #177-D: variable "temp" was declared but never referenced
 compiling rf_protocol.c...
+..\app\rf_protocol.c(393): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(472): error:  #167: argument of type "volatile U8 *" is incompatible with parameter of type "const U8 *"
+..\app\rf_protocol.c(518): error:  #167: argument of type "volatile U8 *" is incompatible with parameter of type "const U8 *"
+..\app\rf_protocol.c(566): warning:  #174-D: expression has no effect
+..\app\rf_protocol.c(626): warning:  #177-D: variable "resultCode" was declared but never referenced
+..\app\rf_protocol.c(626): warning:  #177-D: variable "downresult" was declared but never referenced
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(744): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(757): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(784): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(818): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(843): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
 compiling rf_parameter.c...
 compiling task.c...
 compiling target.c...
-compiling stm32f10x_it.c...
-compiling system_stm32f10x.c...
+compiling dev_spi.c...
+compiling dev_att.c...
+compiling dev_e2prom.c...
+..\device\dev_e2prom.c(79): error:  #167: argument of type "const U8 *" is incompatible with parameter of type "U8 *"
+compiling dev_temp.c...
+compiling user_timer.c...
+compiling user_adc.c...
+compiling user_i2c.c...
+compiling user_uart.c...
+compiling user_flash.c...
+Target not created
+Build target 'Release'
+compiling main.c...
+compiling rf_control.c...
+..\app\rf_control.c(130): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_protocol.c...
+..\app\rf_protocol.c(393): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(472): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(518): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(566): warning:  #174-D: expression has no effect
+..\app\rf_protocol.c(626): warning:  #177-D: variable "resultCode" was declared but never referenced
+..\app\rf_protocol.c(626): warning:  #177-D: variable "downresult" was declared but never referenced
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(744): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(757): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(784): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(818): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(843): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+compiling rf_parameter.c...
+compiling task.c...
+compiling target.c...
 compiling dev_spi.c...
 compiling dev_att.c...
 compiling dev_e2prom.c...
@@ -25,54 +133,561 @@ compiling user_adc.c...
 compiling user_i2c.c...
 compiling user_uart.c...
 compiling user_flash.c...
-compiling misc.c...
-compiling stm32f10x_adc.c...
-compiling stm32f10x_gpio.c...
-compiling stm32f10x_i2c.c...
-compiling stm32f10x_rcc.c...
-compiling stm32f10x_tim.c...
-compiling stm32f10x_usart.c...
-compiling stm32f10x_flash.c...
-compiling stm32f10x_iwdg.c...
-compiling stm32f10x_pwr.c...
-compiling core_cm3.c...
-assembling startup_stm32f10x_md_vl.s...
 linking...
-Program Size: Code=19132 RO-data=2732 RW-data=68 ZI-data=5452  
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16984 RO-data=7588 RW-data=184 ZI-data=4448  
 FromELF: creating hex file...
-User command #1: .\outConv.exe release/output/rf_module.hex ../release/jctma-0708-01-r1a 0x0000 0x7000  0x5ff0
-".\release\output\rf_module.axf" - 0 Error(s), 0 Warning(s).
+".\release\output\rf_module.axf" - 0 Error(s), 19 Warning(s).
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(393): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(472): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(518): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(566): warning:  #174-D: expression has no effect
+..\app\rf_protocol.c(626): warning:  #177-D: variable "resultCode" was declared but never referenced
+..\app\rf_protocol.c(626): warning:  #177-D: variable "downresult" was declared but never referenced
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(744): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(757): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(784): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(818): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(843): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16984 RO-data=7588 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 18 Warning(s).
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(393): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(472): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(518): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(566): warning:  #174-D: expression has no effect
+..\app\rf_protocol.c(626): warning:  #177-D: variable "resultCode" was declared but never referenced
+..\app\rf_protocol.c(626): warning:  #177-D: variable "downresult" was declared but never referenced
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(744): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(757): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(784): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(818): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(843): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16984 RO-data=7588 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 18 Warning(s).
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(393): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(472): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(518): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(566): warning:  #174-D: expression has no effect
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(743): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(756): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(783): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(817): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(842): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16984 RO-data=7588 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 16 Warning(s).
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(393): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(472): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(518): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(566): warning:  #174-D: expression has no effect
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(745): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(758): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(785): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(819): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(844): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16996 RO-data=7576 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 16 Warning(s).
 Build target 'Release'
 linking...
-Program Size: Code=19132 RO-data=2732 RW-data=68 ZI-data=5452  
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16996 RO-data=7576 RW-data=184 ZI-data=4448  
 FromELF: creating hex file...
-User command #1: .\outConv.exe release/output/rf_module.hex ../release/jctma-0708-01-r1a 0x0000 0x7000  0x5ff0
-Convert Started!
-    ../release/[jctma-0708-01-r1a]-[20150121162347]-[9C0D]-[UpgradeSct]-[Vx.2].BIN  FileSize = 28672 Bytes
-    ../release/[jctma-0708-01-r1a]-[20150121162347]-[9C0D]-[UpgradeAll]-[V6.x].BIN  FileSize = 32768 Bytes
-    ../release/[jctma-0708-01-r1a]-[20150121162347]-[9C0D]-[AllPage]-[BootV1.1].BIN  FileSize = 65536 Bytes
-    ../release/[jctma-0708-01-r1a]-[20150121162347]-[9C0D]-[AllPage]-[BootV1.1].HEX  FileSize = 84357 Bytes
-".\release\output\rf_module.axf" - 0 Error(s), 0 Warning(s).
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
 Build target 'Release'
 linking...
-Program Size: Code=19132 RO-data=2732 RW-data=68 ZI-data=5452  
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=16996 RO-data=7576 RW-data=184 ZI-data=4448  
 FromELF: creating hex file...
-User command #1: .\outConv.exe release/output/rf_module.hex ../release/jctma-0708-01-r1a 0x0000 0x7000  0x5ff0
-Convert Started!
-    ../release/[jctma-0708-01-r1a]-[20150121162406]-[9C0D]-[UpgradeSct]-[Vx.2].BIN  FileSize = 28672 Bytes
-    ../release/[jctma-0708-01-r1a]-[20150121162406]-[9C0D]-[UpgradeAll]-[V6.x].BIN  FileSize = 32768 Bytes
-    ../release/[jctma-0708-01-r1a]-[20150121162406]-[9C0D]-[AllPage]-[BootV1.1].BIN  FileSize = 65536 Bytes
-    ../release/[jctma-0708-01-r1a]-[20150121162406]-[9C0D]-[AllPage]-[BootV1.1].HEX  FileSize = 84357 Bytes
-".\release\output\rf_module.axf" - 0 Error(s), 0 Warning(s).
-Rebuild target 'Release'
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(393): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(472): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(518): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(745): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(758): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(785): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(819): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(844): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17004 RO-data=7568 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 15 Warning(s).
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(393): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(472): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(518): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(745): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(758): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(785): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(819): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(844): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17000 RO-data=7572 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 15 Warning(s).
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(393): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(474): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(520): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(747): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(760): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(787): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(821): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(846): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17028 RO-data=7544 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 15 Warning(s).
+Build target 'Release'
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17028 RO-data=7544 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(130): warning:  #177-D: variable "temp" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17028 RO-data=7544 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 2 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(130): warning:  #177-D: variable "temp" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17028 RO-data=7544 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 2 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(130): warning:  #177-D: variable "temp" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17028 RO-data=7544 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 2 Warning(s).
+Build target 'Release'
+compiling rf_parameter.c...
+..\app\rf_parameter.c(25): error:  #20: identifier "JC_LAYER1" is undefined
+..\app\rf_parameter.c(25): error:  #20: identifier "layer" is undefined
+..\app\rf_parameter.c(25): error:  #29: expected an expression
+..\app\rf_parameter.c(25): error:  #65: expected a ";"
+..\app\rf_parameter.c(24): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_parameter.c(32): error:  #20: identifier "JC_LAYER1" is undefined
+..\app\rf_parameter.c(32): error:  #20: identifier "layer" is undefined
+..\app\rf_parameter.c(32): error:  #29: expected an expression
+..\app\rf_parameter.c(32): error:  #65: expected a ";"
+..\app\rf_parameter.c(31): warning:  #177-D: variable "result" was declared but never referenced
+Target not created
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(380): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(381): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(387): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(388): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(406): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(487): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(533): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(760): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(773): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(800): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(834): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(859): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+compiling rf_parameter.c...
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17028 RO-data=7544 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 19 Warning(s).
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(368): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(369): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(375): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(376): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(394): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(475): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(521): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(748): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(761): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(788): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(822): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(847): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17028 RO-data=7544 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 19 Warning(s).
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(360): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(361): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(367): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(368): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(386): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(467): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(513): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(740): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(753): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(780): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(814): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(839): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17028 RO-data=7544 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 19 Warning(s).
+Build target 'Release'
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17028 RO-data=7544 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(359): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(360): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(370): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(371): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(378): error:  #247: function "exec1" has already been defined
+..\app\rf_protocol.c(380): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(381): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(385): error:  #247: function "exec2" has already been defined
+..\app\rf_protocol.c(387): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(388): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(392): error:  #247: function "exec1" has already been defined
+..\app\rf_protocol.c(394): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(395): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(399): error:  #247: function "exec2" has already been defined
+..\app\rf_protocol.c(401): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(402): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(406): error:  #247: function "exec1" has already been defined
+..\app\rf_protocol.c(408): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(409): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(413): error:  #247: function "exec2" has already been defined
+..\app\rf_protocol.c(415): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(416): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(434): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(515): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(561): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(788): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(801): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(828): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(862): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(887): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+Target not created
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(300): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(301): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(311): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(312): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(325): error:  #20: identifier "tPALim" is undefined
+..\app\rf_protocol.c(321): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(322): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(350): error:  #20: identifier "tempLen" is undefined
+..\app\rf_protocol.c(353): error:  #20: identifier "tPALim" is undefined
+..\app\rf_protocol.c(341): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(342): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(372): error:  #20: identifier "fRcvData" is undefined
+..\app\rf_protocol.c(369): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(370): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(385): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(386): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(392): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(393): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(397): error:  #247: function "exec2" has already been defined
+..\app\rf_protocol.c(399): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(400): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(418): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(499): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(545): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(772): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(785): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(812): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(846): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(871): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+Target not created
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(300): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(301): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(311): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(312): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(321): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(322): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(349): error:  #20: identifier "tempLen" is undefined
+..\app\rf_protocol.c(352): error:  #20: identifier "tPALim" is undefined
+..\app\rf_protocol.c(340): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(341): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(371): error:  #20: identifier "fRcvData" is undefined
+..\app\rf_protocol.c(368): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(369): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(384): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(385): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(391): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(392): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(396): error:  #247: function "exec2" has already been defined
+..\app\rf_protocol.c(398): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(399): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(417): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(498): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(544): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(771): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(784): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(811): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(845): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(870): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+Target not created
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(300): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(301): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(311): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(312): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(321): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(322): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(340): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(341): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(371): error:  #20: identifier "fRcvData" is undefined
+..\app\rf_protocol.c(368): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(369): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(384): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(385): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(391): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(392): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(396): error:  #247: function "exec2" has already been defined
+..\app\rf_protocol.c(398): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(399): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(417): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(498): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(544): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(771): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(784): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(811): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(845): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(870): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+Target not created
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(300): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(301): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(311): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(312): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(321): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(322): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(340): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(341): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(371): error:  #20: identifier "fRcvData" is undefined
+..\app\rf_protocol.c(368): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(369): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(384): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(385): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(391): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(392): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(398): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(399): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(417): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(498): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(544): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(771): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(784): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(811): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(845): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(870): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+Target not created
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(300): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(301): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(311): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(312): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(321): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(322): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(340): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(341): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(368): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(369): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(384): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(385): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(391): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(392): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(398): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(399): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(417): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(498): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(544): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(771): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(784): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(811): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(845): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(870): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17048 RO-data=7524 RW-data=184 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 31 Warning(s).
+Build target 'Release'
 compiling main.c...
 compiling rf_control.c...
+..\app\rf_control.c(130): warning:  #177-D: variable "temp" was declared but never referenced
 compiling rf_protocol.c...
+..\app\rf_protocol.c(300): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(301): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(311): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(312): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(321): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(322): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(340): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(341): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(368): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(369): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(384): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(385): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(391): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(392): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(398): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(399): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_protocol.c(417): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(498): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(544): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(64): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(65): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(66): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(67): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(173): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(211): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(771): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(784): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(811): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(845): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(870): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
 compiling rf_parameter.c...
 compiling task.c...
 compiling target.c...
-compiling stm32f10x_it.c...
-compiling system_stm32f10x.c...
 compiling dev_spi.c...
 compiling dev_att.c...
 compiling dev_e2prom.c...
@@ -82,25 +697,1009 @@ compiling user_adc.c...
 compiling user_i2c.c...
 compiling user_uart.c...
 compiling user_flash.c...
-compiling misc.c...
-compiling stm32f10x_adc.c...
-compiling stm32f10x_gpio.c...
-compiling stm32f10x_i2c.c...
-compiling stm32f10x_rcc.c...
-compiling stm32f10x_tim.c...
-compiling stm32f10x_usart.c...
-compiling stm32f10x_flash.c...
-compiling stm32f10x_iwdg.c...
-compiling stm32f10x_pwr.c...
-compiling core_cm3.c...
-assembling startup_stm32f10x_md_vl.s...
 linking...
-Program Size: Code=19132 RO-data=2732 RW-data=68 ZI-data=5452  
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17048 RO-data=7524 RW-data=192 ZI-data=4448  
 FromELF: creating hex file...
-User command #1: .\outConv.exe release/output/rf_module.hex ../release/jctma-0708-01-r1a 0x0000 0x7000  0x5ff0
-Convert Started!
-    ../release/[jctma-0708-01-r1a]-[20150121162422]-[9C0D]-[UpgradeSct]-[Vx.2].BIN  FileSize = 28672 Bytes
-    ../release/[jctma-0708-01-r1a]-[20150121162422]-[9C0D]-[UpgradeAll]-[V6.x].BIN  FileSize = 32768 Bytes
-    ../release/[jctma-0708-01-r1a]-[20150121162422]-[9C0D]-[AllPage]-[BootV1.1].BIN  FileSize = 65536 Bytes
-    ../release/[jctma-0708-01-r1a]-[20150121162422]-[9C0D]-[AllPage]-[BootV1.1].HEX  FileSize = 84357 Bytes
-".\release\output\rf_module.axf" - 0 Error(s), 0 Warning(s).
+".\release\output\rf_module.axf" - 0 Error(s), 32 Warning(s).
+Build target 'Release'
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17048 RO-data=7524 RW-data=192 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+compiling main.c...
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(143): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(153): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(172): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(200): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(216): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(223): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(230): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(236): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_protocol.c...
+..\app\rf_protocol.c(295): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(376): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(422): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(47): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(48): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(49): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(50): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(156): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(194): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(649): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(662): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(689): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(723): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(748): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+compiling rf_parameter.c...
+compiling task.c...
+compiling target.c...
+compiling dev_spi.c...
+compiling dev_att.c...
+compiling dev_e2prom.c...
+compiling dev_temp.c...
+compiling user_timer.c...
+compiling user_adc.c...
+compiling user_i2c.c...
+compiling user_uart.c...
+compiling user_flash.c...
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17052 RO-data=7520 RW-data=192 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 32 Warning(s).
+Build target 'Release'
+compiling main.c...
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(143): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(153): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(172): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(200): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(216): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(223): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(230): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(236): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_protocol.c...
+..\app\rf_protocol.c(295): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(376): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(422): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(47): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(48): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(49): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(50): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(156): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(194): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(649): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(662): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(689): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(723): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(748): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+compiling rf_parameter.c...
+compiling task.c...
+compiling target.c...
+compiling dev_spi.c...
+compiling dev_att.c...
+compiling dev_e2prom.c...
+compiling dev_temp.c...
+compiling user_timer.c...
+compiling user_adc.c...
+compiling user_i2c.c...
+compiling user_uart.c...
+compiling user_flash.c...
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17052 RO-data=7520 RW-data=192 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 32 Warning(s).
+Build target 'Release'
+compiling rf_parameter.c...
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17052 RO-data=7520 RW-data=192 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_protocol.c...
+..\app\rf_protocol.c(238): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(319): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(365): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(47): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(48): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(49): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(50): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(156): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(194): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(592): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(605): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(632): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(666): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(691): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+compiling rf_parameter.c...
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17052 RO-data=7520 RW-data=192 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 32 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_parameter.c...
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17052 RO-data=7520 RW-data=192 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 18 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17052 RO-data=7520 RW-data=192 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 18 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17052 RO-data=7520 RW-data=192 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 18 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17052 RO-data=7520 RW-data=192 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 18 Warning(s).
+Build target 'Release'
+compiling main.c...
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(237): error:  #20: identifier "rfPramModified" is undefined
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_protocol.c...
+..\app\rf_protocol.c(238): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(319): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(365): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(47): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(48): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(49): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(50): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(156): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(194): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(592): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(605): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(632): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(666): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(691): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+compiling rf_parameter.c...
+..\app\rf_parameter.c(74): error:  #20: identifier "rfPramModified" is undefined
+..\app\rf_parameter.c(74): error:  #44: expression must have pointer type
+compiling task.c...
+compiling target.c...
+compiling dev_spi.c...
+compiling dev_att.c...
+compiling dev_e2prom.c...
+compiling dev_temp.c...
+compiling user_timer.c...
+compiling user_adc.c...
+compiling user_i2c.c...
+compiling user_uart.c...
+compiling user_flash.c...
+Target not created
+Build target 'Release'
+compiling main.c...
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(237): error:  #20: identifier "rfPramModified" is undefined
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_parameter.c...
+Target not created
+Build target 'Release'
+compiling main.c...
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(237): error:  #20: identifier "rfPramModified" is undefined
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_protocol.c...
+..\app\rf_protocol.c(238): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(319): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(365): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(47): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(48): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(49): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(50): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(156): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(194): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(592): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(605): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(632): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(666): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(691): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+compiling rf_parameter.c...
+compiling task.c...
+compiling target.c...
+compiling dev_spi.c...
+compiling dev_att.c...
+compiling dev_e2prom.c...
+compiling dev_temp.c...
+compiling user_timer.c...
+compiling user_adc.c...
+compiling user_i2c.c...
+compiling user_uart.c...
+compiling user_flash.c...
+Target not created
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(237): error:  #20: identifier "rfPramModified" is undefined
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_parameter.c...
+Target not created
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(237): error:  #20: identifier "rfPramModified" is undefined
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_parameter.c...
+Target not created
+Build target 'Release'
+compiling main.c...
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(237): error:  #20: identifier "rfPramModified" is undefined
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_protocol.c...
+..\app\rf_protocol.c(238): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(319): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(365): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(47): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(48): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(49): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(50): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(156): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(194): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(592): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(605): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(632): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(666): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(691): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+compiling rf_parameter.c...
+compiling task.c...
+compiling target.c...
+compiling dev_spi.c...
+compiling dev_att.c...
+compiling dev_e2prom.c...
+compiling dev_temp.c...
+compiling user_timer.c...
+compiling user_adc.c...
+compiling user_i2c.c...
+compiling user_uart.c...
+compiling user_flash.c...
+Target not created
+Build target 'Release'
+compiling main.c...
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(237): error:  #20: identifier "rfPramModified" is undefined
+..\app\rf_control.c(235): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_protocol.c...
+..\app\rf_protocol.c(238): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(319): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(365): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(47): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(48): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(49): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(50): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(156): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(194): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(592): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(605): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(632): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(666): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(691): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+compiling rf_parameter.c...
+compiling task.c...
+compiling target.c...
+compiling dev_spi.c...
+compiling dev_att.c...
+compiling dev_e2prom.c...
+compiling dev_temp.c...
+compiling user_timer.c...
+compiling user_adc.c...
+compiling user_i2c.c...
+compiling user_uart.c...
+compiling user_flash.c...
+Target not created
+Build target 'Release'
+compiling main.c...
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(225): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(226): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(232): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(233): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(241): error:  #20: identifier "rfPramModified" is undefined
+..\app\rf_control.c(239): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_protocol.c...
+..\app\rf_protocol.c(238): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(319): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(365): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(47): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(48): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(49): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(50): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(156): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(194): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(592): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(605): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(632): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(666): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(691): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+compiling rf_parameter.c...
+compiling task.c...
+compiling target.c...
+compiling dev_spi.c...
+compiling dev_att.c...
+compiling dev_e2prom.c...
+compiling dev_temp.c...
+compiling user_timer.c...
+compiling user_adc.c...
+compiling user_i2c.c...
+compiling user_uart.c...
+compiling user_flash.c...
+Target not created
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(225): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(226): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(232): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(233): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(241): error:  #20: identifier "rfPramModified" is undefined
+..\app\rf_control.c(239): warning:  #177-D: variable "temp" was declared but never referenced
+compiling rf_protocol.c...
+..\app\rf_protocol.c(238): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(319): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(365): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(47): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(48): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(49): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(50): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(156): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(194): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(594): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(607): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(634): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(668): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(693): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+Target not created
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(225): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(226): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(232): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(233): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(241): error:  #20: identifier "rfPramModified" is undefined
+..\app\rf_control.c(239): warning:  #177-D: variable "temp" was declared but never referenced
+Target not created
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(225): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(226): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(232): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(233): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(239): error:  #20: identifier "rfPramModified" is undefined
+Target not created
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(225): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(226): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(232): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(233): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17060 RO-data=7512 RW-data=176 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(225): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(226): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(232): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(233): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17060 RO-data=7512 RW-data=176 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17060 RO-data=7512 RW-data=176 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+compiling rf_protocol.c...
+..\app\rf_protocol.c(238): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_protocol.c(319): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(365): warning:  #167-D: argument of type "volatile U8 *" is incompatible with parameter of type "U8 *"
+..\app\rf_protocol.c(47): warning:  #177-D: variable "nextSoftPktSn" was declared but never referenced
+..\app\rf_protocol.c(48): warning:  #177-D: variable "preSoftChecksum" was declared but never referenced
+..\app\rf_protocol.c(49): warning:  #550-D: variable "__softChecksum" was set but never used
+..\app\rf_protocol.c(50): warning:  #177-D: variable "softLen" was declared but never referenced
+..\app\rf_protocol.c(156): warning:  #177-D: function "ReturnUpgradeFlag" was declared but never referenced
+..\app\rf_protocol.c(194): warning:  #177-D: function "ReturnResetFlag" was declared but never referenced
+..\app\rf_protocol.c(597): warning:  #177-D: function "ProcSetLoadStart" was declared but never referenced
+..\app\rf_protocol.c(610): warning:  #177-D: function "ProcSetLoading" was declared but never referenced
+..\app\rf_protocol.c(637): warning:  #177-D: function "ProcSetLoadingPrev" was declared but never referenced
+..\app\rf_protocol.c(671): warning:  #177-D: function "ProcSetLoadEndPrev" was declared but never referenced
+..\app\rf_protocol.c(696): warning:  #177-D: function "ProcSetLoadEnd" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17068 RO-data=7504 RW-data=176 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 15 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(131): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(132): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(141): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(142): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(151): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(152): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(170): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(171): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(198): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(199): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(214): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(215): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(225): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(226): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(232): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(233): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17068 RO-data=7504 RW-data=176 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(128): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(129): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(138): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(139): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(148): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(149): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(167): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(168): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(195): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(196): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(211): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(212): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(223): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(230): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17064 RO-data=7508 RW-data=176 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(127): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(128): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(137): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(138): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(147): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(148): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(166): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(167): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(194): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(195): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(210): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(211): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17064 RO-data=7508 RW-data=176 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17064 RO-data=7508 RW-data=176 ZI-data=4448  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(127): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(128): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(137): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(138): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(147): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(148): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(166): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(167): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(194): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(195): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(210): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(211): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17084 RO-data=7488 RW-data=180 ZI-data=4452  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(127): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(128): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(137): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(138): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(147): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(148): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(166): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(167): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(194): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(195): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(210): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(211): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+compiling rf_parameter.c...
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17084 RO-data=7488 RW-data=180 ZI-data=4452  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(127): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(128): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(137): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(138): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(147): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(148): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(166): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(167): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(194): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(195): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(210): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(211): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17084 RO-data=7488 RW-data=180 ZI-data=4452  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(127): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(128): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(137): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(138): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(147): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(148): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(166): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(167): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(194): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(195): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(210): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(211): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17084 RO-data=7488 RW-data=180 ZI-data=4452  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(127): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(128): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(137): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(138): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(147): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(148): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(166): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(167): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(194): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(195): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(210): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(211): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17092 RO-data=7480 RW-data=180 ZI-data=4452  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(127): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(128): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(137): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(138): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(147): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(148): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(166): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(167): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(194): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(195): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(210): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(211): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17092 RO-data=7480 RW-data=180 ZI-data=4452  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(127): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(128): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(137): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(138): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(147): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(148): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(166): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(167): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(194): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(195): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(210): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(211): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17092 RO-data=7480 RW-data=180 ZI-data=4452  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(127): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(128): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(137): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(138): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(147): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(148): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(166): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(167): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(194): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(195): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(210): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(211): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17092 RO-data=7480 RW-data=180 ZI-data=4452  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Release'
+compiling rf_control.c...
+..\app\rf_control.c(127): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(128): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(137): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(138): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(147): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(148): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(166): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(167): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(194): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(195): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(210): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(211): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(221): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(222): warning:  #177-D: variable "layer" was declared but never referenced
+..\app\rf_control.c(228): warning:  #177-D: variable "result" was declared but never referenced
+..\app\rf_control.c(229): warning:  #177-D: variable "layer" was declared but never referenced
+linking...
+.\release\output\rf_module.axf: Warning: L6319W: Ignoring --keep command. Cannot find section rf_control.o(POINTER).
+Program Size: Code=17092 RO-data=7480 RW-data=180 ZI-data=4452  
+FromELF: creating hex file...
+".\release\output\rf_module.axf" - 0 Error(s), 17 Warning(s).
