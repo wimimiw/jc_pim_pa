@@ -32,8 +32,8 @@ typedef struct
 	U8 varLen;
 	U16 min;
 	U16 max;
-	BOOL (*proc)(U8*,U16);
-}STABLE_COMMAND;
+	BOOL (*proc)(U8,U8*,U16,U16*);
+}JC_COMMAND;
 /* Public define -------------------------------------------------------------*/
 #define ID_SET_MODE						0x10
 #define ID_GET_MODE                     0x11
@@ -89,34 +89,33 @@ typedef struct
 
 #define NORMAL_STATE			0x00
 #define HOT_STANDBY				0x03
-/*软件下载标志*/
-#define	UNDO		0x00		
-#define	DOING		0x01
-#define	DONE		0x10
 
-#define FALSE 		0
-#define TRUE 		1
+/******************紫光功放参数**********************/
+#define	UNDO			0x00		
+#define	DOING			0x01
+#define	DONE			0x10
 
-#define CLOSE 		0
-#define OPEN 		1
+#define FALSE 			0
+#define TRUE 			1
+
+#define CLOSE 			0
+#define OPEN 			1
 
 #define SRC_INTERNAL	0
 #define SRC_EXTERNAL 	1
 
-#define	 Ver_High  0x05
-#define  Ver_Low  0x04
-
-//#define	WAKE_UP	0x3C04				//AD芯片MAX5741唤醒	
+#define	FW_VERSION_H  	0x06
+#define FW_VERSION_L  	0x00
 
 //在这里选择使用的ADC通道
-#define CHANNEL_0	0x01			//AD转换通道
-#define CHANNEL_1	0x02
-#define CHANNEL_2	0x04
-#define CHANNEL_3	0x08
-#define CHANNEL_4	0x10
-#define CHANNEL_5	0x20
-#define CHANNEL_6	0x40
-#define CHANNEL_7	0x80
+#define CHANNEL_0		0x01
+#define CHANNEL_1		0x02
+#define CHANNEL_2		0x04
+#define CHANNEL_3		0x08
+#define CHANNEL_4		0x10
+#define CHANNEL_5		0x20
+#define CHANNEL_6		0x40
+#define CHANNEL_7		0x80
 
 #define TEMP_LOW  			__temp_que[0]
 #define TEMP_LOW_VALUE  	__temp_que[1]
@@ -126,18 +125,19 @@ typedef struct
 #define TEMP_HIGH_VALUE  	__temp_que[5]
 /* Public macro --------------------------------------------------------------*/
 /* Public variables ----------------------------------------------------------*/    
-__RF_CONTROL_EXT__	S16 gcurRfTemp;				//当前温度值
-__RF_CONTROL_EXT__	S16 gpreRfTemp;				//上一次温度值
+__RF_CONTROL_EXT__	S16 gCurRfTemp;				//当前温度值
+__RF_CONTROL_EXT__	S16 gPreRfTemp;				//上一次温度值
 __RF_CONTROL_EXT__	S16 gainCo;
 /****debug****/
-__RF_CONTROL_EXT__	S16 gtestRfTemp;			//测试温度值
-__RF_CONTROL_EXT__	U8 	gtestflag;				//调试命令标志，0为正常状态，1为调试状态
+__RF_CONTROL_EXT__	S16 gTestRfTemp;			//测试温度值
+__RF_CONTROL_EXT__	U8 	gTestflag;				//调试命令标志，0为正常状态，1为调试状态
 __RF_CONTROL_EXT__	U8  gTempgain;				//1字节，温补基准值设定
 __RF_CONTROL_EXT__	U8 	gBaseTemp;				//温度基准值
 /****gain*****/
 __RF_CONTROL_EXT__	U8  gAtteVal;				//0x0001      	//1字节，增益设定值
 __RF_CONTROL_EXT__	U8  gGainOffset;			//0x0002		//1字节，增益调整值
 __RF_CONTROL_EXT__	U8  gAtt1;					//0x0003		//1字节，1#衰减器，1U5
+__RF_CONTROL_EXT__	U8  gAtt2;					//0x0003		//1字节，1#衰减器，1U5
 /****PA******/
 __RF_CONTROL_EXT__	U16 gDAoutA;				//0x0034		//2字节，输出功率限幅值
 __RF_CONTROL_EXT__	U16 gDAoutB;				//0x0036		//2字节，输出功率限幅值
@@ -177,12 +177,12 @@ __RF_CONTROL_EXT__ 	U8  gGain;
 __RF_CONTROL_EXT__	U8  gRF_No;					//0x00C0		//1字节，射频模块编号
 __RF_CONTROL_EXT__	U8  gPASW;					//0x00C1      	//1字节，功放开关
 __RF_CONTROL_EXT__	U8  gRFSW;					//0x00C2      	//1字节，射频开关
-__RF_CONTROL_EXT__	U8  AutoSwitch;				//1个字节
 /****************other parameter********************/
 __RF_CONTROL_EXT__ 	U8  gAtttempval;			//温度补偿值		
-__RF_CONTROL_EXT__ 	U8 	rfPramModified;	   		//射频参数修改标志(0:无效，1：有效)//4次
-__RF_CONTROL_EXT__ 	U16 all_checksum;			//程序校验和
+__RF_CONTROL_EXT__ 	U8 	gRFModify;	   			//射频参数修改标志(0:无效，1：有效)//4次
+__RF_CONTROL_EXT__ 	U16 gFWCheck;				//程序校验和
 __RF_CONTROL_EXT__ 	U8  gDownFlag;				//0x01FF		//1字节，升级标志
+__RF_CONTROL_EXT__  U8  gModuleNo[10];			//0x00E4		//10字节，模块序列号
 /*********apparatus parameter************/
 __RF_CONTROL_EXT__	U8  PaAdjEquModulus;        //0x00F0  	    //1字节, 功放的校准方程的补偿系数
 __RF_CONTROL_EXT__	U16 PaLastAdjDate_year;	    //0x00F1	    //2字节，放的最终校准日期(年)
@@ -191,42 +191,25 @@ __RF_CONTROL_EXT__	U16 PaLastAdjDate_day;	    //0x00F1	    //1字节，放的最终校准
 __RF_CONTROL_EXT__	U16 PaUpLimit;		        //0x00F5		//2字节，功放上限
 __RF_CONTROL_EXT__	U8  AppModel;	            //0x00F7	    //1字节，仪表型号
 /****************单次脉冲触发变量********************/
-__RF_CONTROL_EXT__	U8 	__PlusSwitchState;     	//脉冲开关状态变量
-__RF_CONTROL_EXT__	U8 	__PlusReqAddr;			//请求地址
-__RF_CONTROL_EXT__	U8 	__PlusReqPower;			//请求功率值 单位dB
-__RF_CONTROL_EXT__	U16 __PlusReqFreq;			//请求频率值 单位MHz
-__RF_CONTROL_EXT__	S8	__temp_que[6];			//温补操作队列   
-
-//全局变量
-__RF_CONTROL_EXT__ U8	gRFSrcSelect;
-__RF_CONTROL_EXT__ U8 	LNA_state;				//低噪放故障状态
-__RF_CONTROL_EXT__ U8 	Lim_state;				//限幅状态
-__RF_CONTROL_EXT__ U8 	PLL_state;				//中频失锁状态
-__RF_CONTROL_EXT__ U16  PA_current;				//功放电流
-__RF_CONTROL_EXT__ U16  OutputPwr;				//输出功率
-__RF_CONTROL_EXT__ U16  re_Pwr;					//反射功率
-__RF_CONTROL_EXT__ U16  InputPwr;				//输入功率
-__RF_CONTROL_EXT__ U8 	PaSwitch;				//功放开关
-__RF_CONTROL_EXT__ U8 	RfSwitch;				//射频开关
-__RF_CONTROL_EXT__ U8 	TempOverAlm;
-/* Public function prototypes ------------------------------------------------*/
-#define delay(tim)		
-#define readE2promStr(len,add,data)
-#define writeE2promStr(len,add,data)
-#define gPALimCompensate()
-#define updateAlmInfo()
-#define watchdog()
-#define writeAD5314(value,chan)
-#define writeAtt1(att)
-#define writeLM75(p,v,n)
-#define writePLL()
-
+__RF_CONTROL_EXT__	U8 	gPlusSwitchState;     	//脉冲开关状态变量
+__RF_CONTROL_EXT__	U8  gPlusValue[4];
+__RF_CONTROL_EXT__	S8	gTempValue[6];			//温补操作队列   
+//控制参数
+__RF_CONTROL_EXT__ U8	gRFSrcSel;
+__RF_CONTROL_EXT__ U8 	gLNAState;				//低噪放故障状态
+__RF_CONTROL_EXT__ U8 	gLimState;				//限幅状态
+__RF_CONTROL_EXT__ U8 	gPLLLock;				//中频失锁状态
+__RF_CONTROL_EXT__ U16  gPACurrent;				//功放电流
+__RF_CONTROL_EXT__ U16  gPwrOut;				//输出功率
+__RF_CONTROL_EXT__ U16  gPwrRef;				//反射功率
+__RF_CONTROL_EXT__ U16  gPwrIn;					//输入功率
+/* Public function prototypes ------------------------------------------------*/	
 #define TaskControlEnter		((Procf)(BANK_CTRL_START_ADDR|0x1UL))
 #define InitTaskCtrl()			TaskControlEnter(NULL,1)
 
 __RF_CONTROL_EXT_FUNC__ int TaskControl(int*argv[],int argc);
 __RF_CONTROL_EXT_FUNC__ void InitTaskControl(void);
-__RF_CONTROL_EXT_FUNC__ STABLE_COMMAND*GetTable(void);
+__RF_CONTROL_EXT_FUNC__ JC_COMMAND*GetTable(void);
 __RF_CONTROL_EXT_FUNC__ int GetTableMebCnt(void);
 #endif/*__RF_CONTROL_H__*/
 /********************************END OF FILE***********************************/

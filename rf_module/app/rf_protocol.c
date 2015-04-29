@@ -26,6 +26,24 @@ typedef struct
 	U8 ack;
 	U8 para[1];
 }SLAYER2;
+
+typedef struct 
+{
+	U8 rev1;
+	U8 totLen;
+	U8 pm1;
+	U8 pm2;
+	U8 objLen;
+	U8 mode;
+	U8 ack;
+	U8 get;
+	U8 upgrade1;	
+	U8 upgrade2;
+	U8 id1;
+	U8 id2;
+	U8 idLen;
+	U8 idBuf[1];
+}JC_LAYER1;
 /* Private define ------------------------------------------------------------*/
 #define MODE_Nocheck					0x00
 #define MODE_UseChecksum				0x06
@@ -42,12 +60,7 @@ typedef struct
 #define ACK_Fault                  		0x08
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-//static U16 loadFwCnt;
-/*软件下载*/
-static U16  nextSoftPktSn;				//请求软件下载包的序号
-static U16  preSoftChecksum = 0xFFFF;	//前次下载软件的校验和
-static U16  __softChecksum;				//整个软件的checksum值
-static U16  softLen = 0;				//软件总长度
+static int loadFwCnt;
 /* Private function prototypes -----------------------------------------------*/
 //static BOOL ProcSetLoadStart(U8*buf,U16 len);
 //static BOOL ProcSetLoading(U8*buf,U16 len);
@@ -85,141 +98,141 @@ U16	CalcCRC16Value(U8 *ptr,U16 len)
 
 	return(crc);
 }
-///* Private functions ---------------------------------------------------------*/
-///**
-//  * @brief  :
-//  			references 3GPP 25462-651 A.5 Option 15.1
-//  * @param  :None
-//  * @retval :None
-//  * @author	:mashuai
-//  * @version:v1.0
-//  * @date	:2012.4.20
-//  */
-//static U16 HdlcConvertData(U8 type,U8 ptr[],U16 len)
-//{
-//	U8 buf[512];
-//	U16 i,j;
+/* Private functions ---------------------------------------------------------*/
+/**
+  * @brief  :
+  			references 3GPP 25462-651 A.5 Option 15.1
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v1.0
+  * @date	:2012.4.20
+  */
+U16 HdlcConvertData(U8 type,U8 ptr[],U16 len)
+{
+	U8 buf[512];
+	U16 i,j;
 
-//	for(i=0;i<len;i++)buf[i]=ptr[i];
+	for(i=0;i<len;i++)buf[i]=ptr[i];
 
-//	if ( type == 0x00 )
-//	{
-//		for (i=0,j=0;j<len;i++,j++)
-//		{
-//			if ( buf[i] == 0x7E && i!=0 && j!=len-1 )
-//			{
-//				ptr[j] = 0x7D;
-//				j++,len++;
-//				ptr[j] = 0x5E;
-//			}
-//			else if ( buf[i] == 0x7D)
-//			{
-//				ptr[j] = 0x7D;
-//				j++,len++;
-//				ptr[j] = 0x5D;
-//			}
-//			else
-//			{
-//				ptr[j] = buf[i];
-//			}
-//		}
-//	}
-//	else if ( type == 0x01 )
-//	{
-//		for (i=0,j=0;j<len;i++,j++)
-//		{
-//			if ( buf[i] == 0x7D && buf[i+1] == 0x5E )
-//			{
-//				ptr[j] = 0x7E;i++,len--;
-//			}
-//			else if ( buf[i] == 0x7D && buf[i+1] == 0x5D )
-//			{
-//				ptr[j] = 0x7D;i++,len--;
-//			}
-//			else
-//			{
-//				ptr[j] = buf[i];
-//			}
-//		}
-//	}
+	if ( type == 0x00 )
+	{
+		for (i=0,j=0;j<len;i++,j++)
+		{
+			if ( buf[i] == 0x7E && i!=0 && j!=len-1 )
+			{
+				ptr[j] = 0x7D;
+				j++,len++;
+				ptr[j] = 0x5E;
+			}
+			else if ( buf[i] == 0x7D)
+			{
+				ptr[j] = 0x7D;
+				j++,len++;
+				ptr[j] = 0x5D;
+			}
+			else
+			{
+				ptr[j] = buf[i];
+			}
+		}
+	}
+	else if ( type == 0x01 )
+	{
+		for (i=0,j=0;j<len;i++,j++)
+		{
+			if ( buf[i] == 0x7D && buf[i+1] == 0x5E )
+			{
+				ptr[j] = 0x7E;i++,len--;
+			}
+			else if ( buf[i] == 0x7D && buf[i+1] == 0x5D )
+			{
+				ptr[j] = 0x7D;i++,len--;
+			}
+			else
+			{
+				ptr[j] = buf[i];
+			}
+		}
+	}
 
-//	return len;
-//}
-///**
-//  * @brief  :Return the upgrade flag
-//  * @param  :None
-//  * @retval :None
-//  * @author	:mashuai
-//  * @version:v2.0
-//  * @date	:2011.10.20
-//  */
-//static void ReturnUpgradeFlag(U8 port)
-//{
-//	U8 *buf;
-//	U16 len,crc16;
+	return len;
+}
+/**
+  * @brief  :Return the upgrade flag
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+void ReturnUpgradeFlag(U8 port)
+{
+	U8 *buf;
+	U16 len,crc16;
 
-//	/*在应用编程完成以后，MCU重启后向主机发送确认消息*/
-// 	GetUartBufInfo(port,(U8**)&buf,NULL);
+	/*在应用编程完成以后，MCU重启后向主机发送确认消息*/
+ 	GetUartBufInfo(port,(U8**)&buf,NULL);
 
-//	buf[0] = 0x7E;
-//	buf[1] = MODE_UseCRC;
-//	buf[2] = modelAddr;
-//	buf[3] = ID_LOAD_END;
-//	buf[4] = ACK_Success;
-//	buf[5] = 6;
-//	buf[6] = (U8)modelFwCrc;
-//	buf[7] = modelFwCrc>>8;
-//	buf[8] = 0;
-//	buf[9] = 0;
-//	buf[10] = 0;
-//	buf[11] = 0;
+	buf[0] = 0x7E;
+	buf[1] = MODE_UseCRC;
+	buf[2] = modelAddr;
+	buf[3] = ID_LOAD_END;
+	buf[4] = ACK_Success;
+	buf[5] = 6;
+	buf[6] = (U8)modelFwCrc;
+	buf[7] = modelFwCrc>>8;
+	buf[8] = 0;
+	buf[9] = 0;
+	buf[10] = 0;
+	buf[11] = 0;
 
-//	crc16 = CalcCRC16Value(&buf[1],11);
+	crc16 = CalcCRC16Value(&buf[1],11);
 
-//	buf[12] = crc16;
-//	buf[13] = crc16/256;
-//	buf[14] = 0x7E;
+	buf[12] = crc16;
+	buf[13] = crc16/256;
+	buf[14] = 0x7E;
 
-//	len = HdlcConvertData(0x00,buf,15);
-//	UartTxOpen(port,len);
-//}
-///**
-//  * @brief  :Return the upgrade flag
-//  * @param  :None
-//  * @retval :None
-//  * @author	:mashuai
-//  * @version:v2.0
-//  * @date	:2011.10.20
-//  */
-//static void ReturnResetFlag(U8 port)
-//{
-//	U8 *buf;
-//	U16 len,crc16;
+	len = HdlcConvertData(0x00,buf,15);
+	UartTxOpen(port,len);
+}
+/**
+  * @brief  :Return the upgrade flag
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+void ReturnResetFlag(U8 port)
+{
+	U8 *buf;
+	U16 len,crc16;
 
-// 	GetUartBufInfo(port,(U8**)&buf,NULL);
+ 	GetUartBufInfo(port,(U8**)&buf,NULL);
 
-//	buf[0] = 0x7E;
-//	buf[1] = MODE_UseCRC;
-//	buf[2] = modelAddr;
-//	buf[3] = ID_RESET;
-//	buf[4] = ACK_Success;
-//	buf[5] = 6;
-//	buf[6] = 0;
-//	buf[7] = 0;
-//	buf[8] = 0;
-//	buf[9] = 0;
-//	buf[10] = 0;
-//	buf[11] = 0;
+	buf[0] = 0x7E;
+	buf[1] = MODE_UseCRC;
+	buf[2] = modelAddr;
+	buf[3] = ID_RESET;
+	buf[4] = ACK_Success;
+	buf[5] = 6;
+	buf[6] = 0;
+	buf[7] = 0;
+	buf[8] = 0;
+	buf[9] = 0;
+	buf[10] = 0;
+	buf[11] = 0;
 
-//	crc16 = CalcCRC16Value(&buf[1],11);
+	crc16 = CalcCRC16Value(&buf[1],11);
 
-//	buf[12] = crc16;
-//	buf[13] = crc16/256;
-//	buf[14] = 0x7E;
+	buf[12] = crc16;
+	buf[13] = crc16/256;
+	buf[14] = 0x7E;
 
-//	len = HdlcConvertData(0x00,buf,15);
-//	UartTxOpen(port,len);
-//}
+	len = HdlcConvertData(0x00,buf,15);
+	UartTxOpen(port,len);
+}
 /*
 *********************************************************************************************************
 *                         RF模块射频参数查询
@@ -235,14 +248,13 @@ void sendInitpacket(U8 port)
 {
 	U8 	xor,i,
 		*buf,
-		*bufPtr;
-	
-	readE2promStr(sizeof(gDownFlag),EE_DOWN_FLAG,&gDownFlag);
+		*bufPtr;	
 	
 	if(gDownFlag == 0xFF)
 	{
-		gDownFlag = 0x00;		
-		writeE2promStr(1,EE_DOWN_FLAG,&gDownFlag);
+		gDownFlag = 0x00;	
+
+		WriteE2prom(EE_DOWN_FLAG,(U8*)&gDownFlag,sizeof(gDownFlag));	
 			
 		GetUartBufInfo(port,(U8**)&buf,NULL);
 		
@@ -273,319 +285,7 @@ void sendInitpacket(U8 port)
 		UartTxOpen(port,14);
 	}
 }
-/*
-*********************************************************************************************************
-*                         工厂参数设置命令
-*
-* Description: 标号分配为0x0ADA，对各个工厂参数进行设置，查询在另一命令中
-*
-* Arguments  : 无
-*
-* Returns    : 无
-*********************************************************************************************************
-*/
-void execFctParamSet(U8 *buf,U16 rxLen,U16 *txLen)
-{
-	U8 	tempLen,
-		temp[4],
-		*fReqFlag,
-		*fRcvLen,
-		*fRcvGet,
-		*fRcvID,
-		*fRcvDataLen,
-		*fRcvData;
 
-	U16 param_addr,		
-		tmpInt=0,
-		tPALim;
-
-	fReqFlag 	= buf+6;
-	fRcvLen		= buf+1;
-	fRcvGet		= buf+7;
-	fRcvID		= buf+10;
-	fRcvDataLen	= buf+12;
-	fRcvData	= buf+13;
-
-	//参数对应的EEPROM地址
-	param_addr 	= *(U16*)fRcvID;
-	tempLen 	= *fRcvDataLen;
-	tPALim 		= gPALim;
-
-	//工厂参数查询
-	if(*fRcvGet==0)
-	{
-		//一般参数在E2PROM中读取
-		readE2promStr(tempLen,param_addr,fRcvData);
-		//个别参数则需要实时查询
-		switch(param_addr)
-		{
-			case EE_CenFreq:
-				if ( gRFSrcSelect == 0 )
-				{
-					memset(fRcvData,0,4);
-				}
-				break;
-			case EE_DA_CHANNEL_B:
-				*(fRcvData+0) = gDAoutB*gRFSW;
-				*(fRcvData+1) = (gDAoutB*gRFSW)>>8;
-				break;
-			case EE_DA_CHANNEL_C:
-				*(fRcvData+0) = gDAoutC*gRFSW;
-				*(fRcvData+1) = (gDAoutC*gRFSW)>>8;
-				break;
-			case EE_PAProtectLim:
-				//IRcvStr(0x90,0x03,temp,2);         //0x90 由1 ，0 ，0 ，1 ,  A2  ，A1， A0，R/W 组成，高四位固定，低四位是地址位、读写位
-				*(fRcvData+0) = temp[0];             //0x03表示要读取的IIC器件内部寄存器地址
-				break;
-			case EE_PAResetLim:
-				//IRcvStr(0x90,0x02,temp,2);
-				*(fRcvData+0) = temp[0];
-				break;
-			case EE_PASW:
-			case EE_RFSW:
-				*(fRcvData+0) = gRFSW;
-				break;
-				/*
-			case 0x00C4:
-				*(fRcvData+0) = PLL_state;
-				break;
-
-			case 0x00C5:								    //2字节，程序校验和
-				*(fRcvData+0) = Lim_state;
-				break;
-			case 0x00C6:	  							    //2字节，程序版本号
-				*(fRcvData+0) = (U8)PA_current;
-				*(fRcvData+1) = (U8)(PA_current >> 8);
-				break;
-			case 0x00C7:								    //2字节，程序校验和
-				*(fRcvData+0) = (U8)OutputPwr;
-				*(fRcvData+1) = (U8)(OutputPwr >> 8);
-				break;
-			case 0x00C8:	  							    //2字节，程序版本号
-				*(fRcvData+0) = (U8)re_Pwr;
-				*(fRcvData+1) = (U8)(re_Pwr >> 8);
-				break;
-				*/
-			case EE_CURRENT_TEMP:
-				*(fRcvData+0) = (U8)gcurRfTemp;
-				*(fRcvData+1) = (U8)(gcurRfTemp >> 8);
-				break;
-			case EE_VERSION:	  							//2字节，程序版本号
-				*(fRcvData+0) = Ver_Low;
-				*(fRcvData+1) = Ver_High;
-				break;
-			case EE_ALL_CHECKSUM:							//2字节，程序校验和
-				*(fRcvData+0) = (U8)all_checksum;
-				*(fRcvData+1) = (U8)(all_checksum >> 8);
-				break;
-  			default:
-			    break;
-		}
-	}
-	//工厂参数设定
-	else
-	{
-		if (tempLen==2)
-		{
-			tmpInt = *(U16*)fRcvData;
-		}
-
-		//主要用于对接收的数据进行检验，是否为正常值的范围内，若不是，则不存入EEPROM
-		switch(param_addr)
-		{
-			//2字节，功放限幅
-			case EE_DA_CHANNEL_B:
-			case EE_DA_CHANNEL_C:
-				if ( tmpInt > 1023 )
-					*fReqFlag |= DATRANGE_ERR;
-				break;
-			//2字节,功放偏压值
-			case EE_gPALim:
-				if( ((S16)tmpInt<0)||(tmpInt>1023) )
-				{
-					*fReqFlag |= DATRANGE_ERR;
-				}
-				break;
-			//1字节，增益温补系数分子
-			case EE_GainNumer:
-			//1字节，增益温补系数分母
-			case EE_GainDenomi:
-				if(((S8)*(fRcvData+0)<0)||(*(fRcvData+0)>255))
-				{
-					*fReqFlag |= DATRANGE_ERR;
-				}
-				break;
-			//1字节，功放重起温度下限
-			case EE_PAResetLim:
-				if(((S8)*(fRcvData+0)<0)||(*(fRcvData+0)>125))
-				{
-					*fReqFlag |= DATRANGE_ERR;
-				}
-				break;
-			//1字节，调试状态
-			case EE_TEST_MARK:
-				if(((S8)*(fRcvData+0)<0)||(*(fRcvData+0)>2))
-				{
-					*fReqFlag |= DATRANGE_ERR;
-				}
-				break;
-			//1字节，温补基准值
-			case EE_TEMP_VALUE:
-				if(((S8)*(fRcvData+0)<0)||(*(fRcvData+0)>200))
-				{
-					*fReqFlag |= DATRANGE_ERR;
-				}
-				break;
-			default:
-				break;
-		}
-
-		//接收的数据为正常值，则开始将数据存EEPROM
-		if(*fReqFlag==0x0A)
-		{
-			if(param_addr != EE_FREQ_ADD_POWEWR)
-			{
-				if ( param_addr == EE_FREQ_ADD_POWEWR && tempLen == 6 )
-				{
-					writeE2promStr(4,EE_CenFreq,fRcvData);
-					writeE2promStr(2,EE_gPALim,fRcvData+4);
-				}
-				else
-				{
-					writeE2promStr(tempLen,param_addr,&*(fRcvData+0));
-				}
-			}
-
-			rfPramModified = TRUE;//射频参数修改标志有效
-
-			switch(param_addr)
-			{
-				case EE_TEMPER_BUCHANG:
-					memcpy((U8*)__temp_que,fRcvData,sizeof(__temp_que));
-				break;
-				//触发单次脉冲信号
-				case EE_PLUS_TRIGER:
-					//EA = 0;
-					__PlusSwitchState 	= OPEN;
-					__PlusReqAddr		= *(fRcvData+0);
-					__PlusReqPower    	= *(fRcvData+1);
-					__PlusReqFreq		= *(fRcvData+2)+(*(fRcvData+3)<<8);
-					//EA = 1;
-				break;
-				case EE_DA_CHANNEL_B:
-					gDAoutB = tmpInt;
-					writeAD5314(gDAoutB,'B');
-				break;
-				case EE_DA_CHANNEL_C:
-					gDAoutC = tmpInt;
-					writeAD5314(gDAoutC,'C');
-				break;
-				//信源选择
-				case EE_SOURCE_SELECT:
-					//RFSrcSelect = (*(fRcvData+0) != SRC_INTERNAL && *(fRcvData+0) != SRC_EXTERNAL)?SRC_INTERNAL:*(fRcvData+0);
-					writePLL();
-				break;
-				//衰减器设置
-				case EE_Att1:
-				   gGain=*(fRcvData+0);
-				   writeAtt1(gGain);
-				   updateAlmInfo();
-				//2字节，输出功率限幅值
-				case EE_gPALim:
-					//2012.10.26
-					gPALimCompensate();
-					gPALim = (gPALim + tPALim)/2;
-					//writeAD5314(gPALim,DAPOWER_LIM_CHAN);
-					updateAlmInfo();
-
-					delay(1);
-
-					gPALimCompensate();
-					//writeAD5314(gPALim,DAPOWER_LIM_CHAN);
-					updateAlmInfo();
-					//Task5S_time = getTime() + 100;
-					break;
-				//4字节，中心频率
-				case EE_CenFreq:
-				//6字节，中心频率+限幅值
-				case EE_FREQ_ADD_POWEWR:
-					//swapBytes(&*(fRcvData+0),(U8 *)&gCenFreq,4);
-					writePLL();
-					delay(1);		//改变中心频率需要同时进行限幅补偿
-					//gPALimCompensate();
-                	//writeAD5314(gPALim,'B');
-					//2012.10.26
-					if ( tempLen == 6 )
-					{
-						gPALimCompensate();
-						gPALim = (gPALim + tPALim)/2;
-						//writeAD5314(gPALim,DAPOWER_LIM_CHAN);
-						updateAlmInfo();
-
-						//;delay(1);
-
-						gPALimCompensate();
-						//writeAD5314(gPALim,DAPOWER_LIM_CHAN);
-						updateAlmInfo();
-					}
-					break;
-				//2字节，频率步进值
-				case EE_FreqStep:
-				//4字节，参考频率
-				case EE_RefFreq:
-					writePLL();
-					break;
-				//功率限幅补偿分子
-				case 0x0075:
-				//功率补偿分母
-				case 0x0077:
-				//基准频率
-				case EE_gPBmFreq:
-					//2012.10.26
-					gPALimCompensate();
-					gPALim = (gPALim + tPALim)/2;
-					writeAD5314(gPALim,DAPOWER_LIM_CHAN);
-					updateAlmInfo();
-
-					delay(1);
-
-					gPALimCompensate();
-					writeAD5314(gPALim,DAPOWER_LIM_CHAN);
-					updateAlmInfo();
-					break;
-				//2字节，功放保护温度下限
-				case EE_PAProtectLim:
-					gPAProtecttLim = *(fRcvData+0);
-					writeLM75(0x03,gPAProtecttLim,3);
-					break;
-				//2字节，功放重起温度下限
-				case EE_PAResetLim:
-					gPAResetLim = *(fRcvData+0);
-					writeLM75(0x02,gPAResetLim,3);
-					break;
-				//1字节，射频模块编号
-				case EE_RF_No:
-					gRF_No = *(fRcvData+0);
-					break;
-				//1字节，射频开关
-				case EE_RFSW:
-					if(AutoSwitch != *(fRcvData+0));
-					{
-						AutoSwitch = *(fRcvData+0);
-						updateAlmInfo();
-						writeAtt1(gGain);
-						writePLL();//射频开关动作了，每次要从新操作锁相
-					}
-					//watchdog();
-					break;
-				default:
-					break;
-			}
-		}
-	}
-
-	*txLen = *fRcvLen + 2;
-}
 /*
 *********************************************************************************************************
 *                         RF模块射频参数查询
@@ -597,138 +297,66 @@ void execFctParamSet(U8 *buf,U16 rxLen,U16 *txLen)
 * Returns    : 无
 *********************************************************************************************************
 */
-void execRFParamQ(U8 *buf,U16 rxLen,U16*txLen)
+BOOL execRFParamQ(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {
 	U8 i;
-	U16 CKS = 0;
-	static U16 tmpCurr=0;
+	U16 cks = 0;
+	JC_LAYER1 *layer = (JC_LAYER1*)buf;
 
-	//tmpCurr = (tmpCurr + PA_current + PA_current)/3;					 //电流值与前值平均
-
-	if(buf[7]==0)										
+	layer->ack = NO_ERR;
+	
+	if(layer->get==0)										
 	{//定时数据查询
-		buf[1] = 18; //数据包长度									
-		buf[4] = 16; //监控对象的长度									
-		buf[8] = Lim_state;
-		buf[9] = gRFSW;
-		buf[10] = gRFSW;
-		buf[11] = (U8)tmpCurr; 		//低位在前	
-		buf[12] = (U8)(tmpCurr>>8);	//高位在后	
-		buf[13] = (U8)OutputPwr;
-		buf[14] = (U8)(OutputPwr>>8);
-  		buf[15] = (U8)re_Pwr;
-		buf[16] = (U8)(re_Pwr>>8);
-		buf[17] = (S8)gcurRfTemp;
-		buf[18] = (S8)(gcurRfTemp>>8);
-		buf[19] = PLL_state;			//080220 增加	
+		layer->totLen = 18;								
+		layer->objLen = 16;		
+		
+		*(U8 *)(buf+8 ) = !gLimState;
+		*(U8 *)(buf+9 ) = gRFSW;
+		*(U8 *)(buf+10) = gRFSW;
+		*(U16*)(buf+11) = gPACurrent;
+		*(U16*)(buf+13) = gPwrOut;
+		*(U16*)(buf+15) = gPwrRef;
+		*(U16*)(buf+17) = gCurRfTemp;
+		*(U8 *)(buf+19) = !gPLLLock;
 		
 		*txLen = 20;
 	}
-	else if(buf[7]==1)	  							
+	else if(layer->get==1)	  							
 	{//工厂参数查询数据包
-		buf[1] = 94;					//数据包长度				
-		buf[4] = 92;					//监控对象的长度				
+		layer->totLen = 94;								
+		layer->objLen = 92;							
 		
-		readE2promStr(5,EE_AtteVal,&buf[10]);			//增益参数
-		readE2promStr(4,EE_Att1slopeval,&buf[15]);
-		readE2promStr(11,EE_gPALim,&buf[19]);			//功放参数
-		readE2promStr(3,EE_gPALimNumer,&buf[30]);
-		readE2promStr(20,EE_BandWidth,&buf[37]);		//频率参数
-		readE2promStr(4,EE_gPBmFreq,&buf[57]);
-		readE2promStr(14,EE_CurCo,&buf[61]);			//电流参数
-		readE2promStr(4,EE_GainNumer,&buf[75]);			//温度参数
-		readE2promStr(3,EE_RF_No,&buf[79]);				//模块参数
-				
-		memcpy((U8*)&gCenFreq,buf+33,sizeof(gCenFreq));
-		
+		ReadE2prom(EE_AtteVal		,buf+10,5);
+		ReadE2prom(EE_Att1slopeval	,buf+15,4);
+		ReadE2prom(EE_gPALim		,buf+19,11);
+		ReadE2prom(EE_gPALimNumer	,buf+30,3);
+		ReadE2prom(EE_CenFreq		,buf+33,4);
+		ReadE2prom(EE_BandWidth		,buf+37,20);
+		ReadE2prom(EE_gPBmFreq		,buf+57,4);
+		ReadE2prom(EE_CurCo			,buf+61,14);
+		ReadE2prom(EE_GainNumer		,buf+75,4);
+		ReadE2prom(EE_RF_No			,buf+79,3);
+		ReadE2prom(EE_MODULE_No		,buf+86,10);
+						
 		buf[80] = gRFSW;
 		buf[81] = gRFSW;
-		buf[82] = Ver_Low;
-		buf[83] = Ver_High;
-		buf[84] = (U8)all_checksum;
-		buf[85] = (U8)(all_checksum >> 8);
 		
-		readE2promStr(10,EE_MODULE_No,&buf[86]);		//模块参数	
-		
-	   	//watchdog();
-		
-		for(i=0;i<86;i++)
-		{
-			CKS += buf[10+i];
-		}
-		
-		buf[8] = (U8)(CKS);
-		buf[9] = (U8)(CKS>>8);
+		*(U16*)(buf+82) = (FW_VERSION_H<<8) + FW_VERSION_L;		
+		*(U16*)(buf+84) = gFWCheck;
+				
+		for(i=0;i<86;i++)cks += buf[10+i];
+
+		*(U16*)(buf+8) = cks;
 		
 		*txLen = 96;
 	}
 	else
 	{
-		//ack_flag = OC_ERR;
+		layer->ack |= OC_ERR;
 	}
-}
-/*
-*********************************************************************************************************
-*                         RF模块软件下载						
-*
-* Description: 标号分配为0x0AFE，对射频模块的程序进行在系统升级
-*
-* Arguments  : 无
-*
-* Returns    : 无
-*********************************************************************************************************
-*/
-U8 execDwnldSoft(U8 *buf)
-{
-	U8 *bufPtr;
-	U16 dataLen;
-	U16 curPktIdx;
-
-	bufPtr = buf;
-
-	bufPtr += 7;//取到数据的开头，包序号
-	curPktIdx 	= *(U16*)bufPtr;//取到包序号置于curSoftPktSn中
-	bufPtr += 2;//指针指向数据长度
-	dataLen 	= *(U16*)bufPtr;//取到数据长度	
-	bufPtr += 2;//指向数据部分										
 	
-	if( curPktIdx == 0 )									//第一个包
-	{
-		if( dataLen != 0x1C )								//取得数据长度并指向起始地址
-		{																					 
-			return OTHER_ERR;								//其他错误
-		}
-		
-		bufPtr += 0x18;										//指针指向文件CHECKSUM字节		
-		__softChecksum = *(U16*)bufPtr;
-		InitCode2Flash();
-	}
-	else			  										
-	{
-		Code2Flash(bufPtr,dataLen);		
-	}	
-	
-	return NO_ERR;											//其他错误
+	return TRUE;
 }
-/*
-*********************************************************************************************************
-*                         软件下载成功或查询模块信息
-*
-* Description: 标号分配为0x0AFD，软件下载完成要将程序从EEPROM中读出到flash中，并程序转移到0x0000执行
-*
-* Arguments  : 无
-*
-* Returns    : 无
-*********************************************************************************************************
-*/
-U8 endDwnldSoft()
-{	
-	EndCode2Flash();
-	gDownFlag = 0xFF;	
-	writeE2promStr(1,EE_DOWN_FLAG,&gDownFlag);			//下载时添加下载标志的设置 20090415 by zxl
-   	return TRUE;
-}
-
 /*
 *********************************************************************************************************
 *                         数据包解码
@@ -740,93 +368,160 @@ U8 endDwnldSoft()
 * Returns    : 无
 *********************************************************************************************************
 */
-void execute_cmd(U8 *buf,U16 rxLen,U16 *tlen)
+//软件下载确认或查询模块信息
+BOOL execFWEnter(U8 flag,U8*buf,U16 rxLen,U16 *txLen)
 {
-	U8 	resultCode = NO_ERR,
-		downresult = NO_ERR,
-		*fMode,
-		*fRcvGet,
-		*fRcvUpgrade,
-		*fRcvAck;
+	BOOL result = TRUE;
+	JC_LAYER1 *layer = (JC_LAYER1*)buf;
 	
-	fMode = buf+5;
-	fRcvAck = buf+6;
-	fRcvGet = buf+7;
-	fRcvUpgrade = buf+8;
+	result = result;
+	layer->ack = NO_ERR;
 	
-	switch(*fMode)
+	if(layer->get == 1)
 	{
-		//查询和设置工厂参数
-		case ID_FCT_PARAM_WR:										
-		{
-			execFctParamSet(buf,rxLen,tlen);
-			break;
-	    }
-		//RF模块采样查询
-		case ID_FCT_PARAM_SAMPLE:										
-		{
-			execRFParamQ(buf,rxLen,tlen);
-			break;
+		if(layer->upgrade1 == 0)
+		{//下载取消
+			//
 		}
-		//软件下载确认或查询模块信息
-		case ID_FIRMWARE_UPGRAD_ENTER:										
-		{
-			if(*fRcvGet==0x01)
+		else
+		{//下载确认	
+			//00 55 AA 00 08 A0 FF 06 FD 0A 01 01 00 A6 
+			if(EndCode2Flash() == TRUE)
 			{
-				if(*fRcvUpgrade==0)							
-				{//下载取消
-					*tlen = 10;
-					//softDownLoad = UNDO;
-				}
-				else									
-				{//下载确认
-					//if(softDownLoad == DOING)
-					{//错误代码标志
-						downresult = endDwnldSoft();
-			 			*fRcvAck |= downresult;				
-					}
-					//else
-					{//错误代码标志
-						*fRcvAck |= OTHER_ERR;				
-					}
-					
-					*tlen = 10;
-				}
+				gDownFlag = 0xFF;
+				if(FALSE == WriteE2prom(EE_DOWN_FLAG,(U8*)&gDownFlag,sizeof(gDownFlag)))
+				{
+					layer->ack |= EEPROM_ERR;
+				}				
 			}
-			break;
-		}
-		//软件下载
-		case ID_FIRMWARE_UPGRAD_LOAD:										
-		{
-		  //DwnldSoft1m_time = getTime();
-			//resultCode = execDwnldSoft();
-			
-			buf[1] = 9;//数据包长度								
-			buf[4] = 7;
- 			buf[6] |= resultCode;	//错误代码标志					
-			buf[9] = (U8)nextSoftPktSn;
-			buf[10] = (U8)(nextSoftPktSn>>8);
-			
-			*tlen = 11;
-			
-			break;
-		}
-		//软件复位 
-		case ID_FIRMWARE_UPGRAD_REBOOT:
-		{
-			if(*fRcvGet == 0x01)
+			else
 			{
-				//AUXR1 = 8;                                
+				layer->ack |= EEPROM_ERR;
 			}
-			break;
 		}
-		//命令编号错,监控对象标号无法识别
-		default:										
-		{
-			*fRcvAck |= OCID_ERR;						
-			break;
-		}
+		
+		*txLen = 10;
 	}
+	
+	return TRUE;
+}
+
+BOOL execFWLoad(U8 flag,U8*buf,U16 rxLen,U16 *txLen)
+{
+	BOOL result = TRUE;
+	U8 *bufPtr;
+	U16 dataLen;
+	U16 curPktIdx;	
+	JC_LAYER1 *layer = (JC_LAYER1*)buf;	
+	static U16 nextPktIdx = 0,checksum;
+	
+	layer->rev1 = 0;
+	layer->pm2 = 0;
+	//layer->mode = 0x0A;
+	//layer->ack = NO_ERR;
+	
+	result = result;
+	
+	bufPtr = buf;
+
+	curPktIdx 	= *(U16*)(bufPtr+7);//取到包序号置于curSoftPktSn中
+	dataLen 	= *(U16*)(bufPtr+9);//取到数据长度	
+	bufPtr += 18;					//指向数据部分										
+	
+	if( curPktIdx == 0 )			//第一个包
+	{
+		if( dataLen != 0x1C )		//取得数据长度并指向起始地址
+		{																					 
+			layer->ack |= LEN_ERR;	//其他错误
+			return FALSE;
+		}
+		
+		bufPtr += 0x18;				//指针指向文件CHECKSUM字节		
+		checksum = *(U16*)bufPtr;
+		
+		if(InitCode2Flash()==FALSE)
+			layer->ack |= EEPROM_ERR;
+	}
+	else			  										
+	{
+		if( curPktIdx != nextPktIdx )
+		{
+			layer->ack |= OC_ERR;;
+		}
+		else if(Code2Flash(bufPtr,dataLen)==FALSE)
+		{
+			layer->ack |= OTHER_ERR;	
+		}
+	}	
+
+	nextPktIdx = curPktIdx + 1;
+	
+	layer->totLen = 9;
+	layer->objLen = 7;
+	*(U16*)&layer->upgrade2 = nextPktIdx;
+
+	*txLen = 11;
+			
+	return TRUE;
+}
+//软件复位 
+BOOL execFWReboot(U8 flag,U8*buf,U16 rxLen,U16 *txLen)
+{
+	BOOL result = TRUE;
+	JC_LAYER1 *layer = (JC_LAYER1*)buf;	
+	
+	result = result;
+	layer->ack = NO_ERR;
+
+	*txLen = 10;
+	
+	return TRUE;
+}
+
+void execAnaylize(U8 *buf,U16 rxLen,U16 *tlen)
+{
+	U8 i;
+	U16 cmd;
+	S32 temp;
+	BOOL recvflag = FALSE;
+	JC_LAYER1 *layer = (JC_LAYER1*)buf;
+	JC_COMMAND *sc = GetTable();
+	
+	for(i=0;i<GetTableMebCnt();i++)
+	{
+		if(sc[i].cmd == layer->mode)
+		{
+			recvflag = TRUE;
+			cmd = layer->id1 + (layer->id2<<8);
+			
+			if(cmd == sc[i].sub)
+			{
+				if(layer->get == 0)
+				{//查询 
+					memcpy(layer->idBuf,sc[i].var,layer->idLen);
+				}
+				else if( layer->get == 1 )
+				{//设置
+					if(sc[i].max != 0 && sc[i].min != 0)
+					{
+						//
+					}					
+					
+					memcpy(sc[i].var,layer->idBuf,layer->idLen);					
+					WriteE2prom(sc[i].sub,sc[i].var,sc[i].varLen);
+
+					gRFModify = TRUE;					
+				}
+
+				*tlen = layer->totLen + 2;		
+			}	
+
+			if(sc[i].proc != NULL)sc[i].proc(layer->get,buf,rxLen,tlen);
+		}				
+	}	
+	
+	//命令编号错,监控对象标号无法识别
+	if(recvflag == FALSE)layer->ack |= OCID_ERR;	
 }
 /**
   * @brief  :
@@ -843,39 +538,53 @@ static void TMAPktHandle(U8 port)
 		
 	U16 len,
 		tLen,
-		i,j;	
+		i,j;
+	
+	JC_LAYER1 *layer;
 
 	GetUartBufInfo(port,(U8**)&buf,&len);
 
-	if ( len > 8  )
+	if ( len > 5  )
 	{
 		//帧格式: 00 55 AA 00 06 A0 FF 04 F0 0A 00 A7 
 		//找到帧起始
-		for( i = 0 ; i < 10 ; i++)
+		for( i = 0 ; i < 5 ; i++)
 			if( buf[i] == SYNC1 )
 				break;
 		//不存在起始
-		if( i > 10 )
+		if( i > 5 )
 			return;
 		//确认帧起始
-		if( buf[i+1] != SYNC2 )		
-			return;		
+		if( buf[i+1] != SYNC2 )				
+			return;	
+
+		layer = (JC_LAYER1*)&buf[i+2];
+		
 		//确认接收完成一帧数据
-		if( len > (i+5) && buf[i+3] <= (len-i-5) )
+		if( len > (i+5) && layer->totLen == (len-i-5) )
 		{
+			ResetUartBuf(port);
 			//计数校验和
 			for( j = i+2,xor = 0; j < len - 1; j++)
 				xor ^= buf[j];	
 				
 			if( xor != buf[len-1] )
-			{
-				ResetUartBuf(port);
+			{	
+				layer->ack |= DEFSUM_ERR;
+				
+				//计数校验和
+				for( j = 0,xor = 0; j < layer->totLen ; j++) 
+				{
+					xor ^= buf[i+j+2];
+				}		
+				
+				buf[i+2+layer->totLen] = xor;
+				//发送数据
+				UartTxOpen(port,i+3+layer->totLen);				
 				return;
 			}			
-			//数据单元中的应答标志
-			buf[i+5] = 0;
 			//执行命令
-			execute_cmd(buf+i+2,len-i-3,&tLen);
+			execAnaylize(buf+i+2,len-i-3,&tLen);
 			//计数校验和
 			for( j = 0,xor = 0; j < tLen ; j++) 
 			{
@@ -883,132 +592,132 @@ static void TMAPktHandle(U8 port)
 			}			
 			buf[i+2+tLen] = xor;
 			//发送数据
-			UartTxOpen(port,i+2+tLen);
+			UartTxOpen(port,i+3+tLen);
 		}			
 	}		
 }
-///**
-//  * @brief  :
-//  * @param  :None
-//  * @retval :None
-//  * @author	:mashuai
-//  * @version:v1.0
-//  * @date	:2012.4.20
-//  */
-//static BOOL ProcSetLoadStart(U8*buf,U16 len)
-//{
-//	loadFwCnt = 0;
-//	return InitCode2Flash();
-//}
-///**
-//  * @brief  :
-//  * @param  :None
-//  * @retval :None
-//  * @author	:mashuai
-//  * @version:v1.0
-//  * @date	:2012.4.20
-//  */
-//static BOOL ProcSetLoading(U8*buf,U16 len)
-//{
-//	BOOL result;
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v1.0
+  * @date	:2012.4.20
+  */
+BOOL ProcSetLoadStart(U8*buf,U16 len)
+{
+	loadFwCnt = 0;
+	return InitCode2Flash();
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v1.0
+  * @date	:2012.4.20
+  */
+BOOL ProcSetLoading(U8*buf,U16 len)
+{
+	BOOL result;
 
-//	result = Code2Flash(buf,len);
+	result = Code2Flash(buf,len);
 
-//	if ( result == TRUE )
-//	{
-//		loadFwCnt += len;
-//		buf[0] = (U8)loadFwCnt;
-//		buf[1] = loadFwCnt/256;
-//		buf[2] = 0;
-//		buf[3] = 0;
-//		buf[4] = 0;
-//		buf[5] = 0;
-//	}
+	if ( result == TRUE )
+	{
+		loadFwCnt += len;
+		buf[0] = (U8)loadFwCnt;
+		buf[1] = loadFwCnt/256;
+		buf[2] = 0;
+		buf[3] = 0;
+		buf[4] = 0;
+		buf[5] = 0;
+	}
 
-//	return result;
-//}
-///**
-//  * @brief  :
-//  * @param  :None
-//  * @retval :None
-//  * @author	:mashuai
-//  * @version:v1.0
-//  * @date	:2012.4.20
-//  */
-//static BOOL ProcSetLoadingPrev(U8*buf,U16 len)
-//{
-//	BOOL result;
+	return result;
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v1.0
+  * @date	:2012.4.20
+  */
+BOOL ProcSetLoadingPrev(U8*buf,U16 len)
+{
+	BOOL result;
 
-//	if ( (len + loadFwCnt) > SIZEOF_BUFFER )
-//	{
-//		len = SIZEOF_BUFFER - loadFwCnt;
-//	}
+	if ( (len + loadFwCnt) > SIZEOF_BUFFER )
+	{
+		len = SIZEOF_BUFFER - loadFwCnt;
+	}
 
-//	if ( len == 0 )return FALSE;
+	if ( len == 0 )return FALSE;
 
-//	result = Code2Flash(buf,len);
+	result = Code2Flash(buf,len);
 
-//	if ( result == TRUE )
-//	{
-//		loadFwCnt += len;
-//		buf[0] = (U8)loadFwCnt;
-//		buf[1] = loadFwCnt/256;
-//		buf[2] = 0;
-//		buf[3] = 0;
-//		buf[4] = 0;
-//		buf[5] = 0;
-//	}
+	if ( result == TRUE )
+	{
+		loadFwCnt += len;
+		buf[0] = (U8)loadFwCnt;
+		buf[1] = loadFwCnt/256;
+		buf[2] = 0;
+		buf[3] = 0;
+		buf[4] = 0;
+		buf[5] = 0;
+	}
 
-//	return result;
-//}
-///**
-//  * @brief  :
-//  * @param  :None
-//  * @retval :None
-//  * @author	:mashuai
-//  * @version:v1.0
-//  * @date	:2012.4.20
-//  */
-//static BOOL ProcSetLoadEndPrev(U8*buf,U16 len)
-//{
-//	U16 crc16;
+	return result;
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v1.0
+  * @date	:2012.4.20
+  */
+BOOL ProcSetLoadEndPrev(U8*buf,U16 len)
+{
+	U16 crc16;
 
-//	crc16 = *(U16*)buf;
+	crc16 = *(U16*)buf;
 
-//	//hardware version is consistency
-//	if ( HARDWARE_VERSION != HARDWARE_VERSION_BAK )return FALSE;
-//	//UpgradeAll version is consistency
-//	if ( (SOFTWARE_VERSION&0xF0) != (SOFTWARE_VERSION_BAK&0xF0) )return FALSE;
+	//hardware version is consistency
+	if ( HARDWARE_VERSION != HARDWARE_VERSION_BAK )return FALSE;
+	//UpgradeAll version is consistency
+	if ( (SOFTWARE_VERSION&0xF0) != (SOFTWARE_VERSION_BAK&0xF0) )return FALSE;
 
-//	if ( modelFwCrc == crc16 ) return TRUE;
+	if ( modelFwCrc == crc16 ) return TRUE;
 
-//	if( crc16 != CalcFirmwareBufCRC16())return FALSE;
+	if( crc16 != CalcFirmwareBufCRC16())return FALSE;
 
-//	return EndCode2FlashRrev();
-//}
-///**
-//  * @brief  :
-//  * @param  :None
-//  * @retval :None
-//  * @author	:mashuai
-//  * @version:v1.0
-//  * @date	:2012.4.20
-//  */
-//static BOOL ProcSetLoadEnd(U8*buf,U16 len)
-//{
-//	U16 crc16;
+	return EndCode2FlashRrev();
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v1.0
+  * @date	:2012.4.20
+  */
+BOOL ProcSetLoadEnd(U8*buf,U16 len)
+{
+	U16 crc16;
 
-//	crc16 = *(U16*)buf;
+	crc16 = *(U16*)buf;
 
-//	//hardware version is consistency
-//	if ( HARDWARE_VERSION != HARDWARE_VERSION_BAK )return FALSE;
+	//hardware version is consistency
+	if ( HARDWARE_VERSION != HARDWARE_VERSION_BAK )return FALSE;
 
-//	if ( modelFwCrc == crc16 ) return TRUE;
+	if ( modelFwCrc == crc16 ) return TRUE;
 
-//	if( crc16 != CalcFirmwareBufCRC16())return FALSE;
+	if( crc16 != CalcFirmwareBufCRC16())return FALSE;
 
-//	return EndCode2Flash();
-//}
+	return EndCode2Flash();
+}
 /**
   * @brief  :Init the protocol
   * @param  :None
@@ -1046,7 +755,7 @@ void InitProtocol(void)
 int TaskProtocol(int*argv[],int argc)
 {
 	TMAPktHandle(UART1);
-	TMAPktHandle(UART2);
+	//TMAPktHandle(UART2);
 	return 0;
 }
 /********************************END OF FILE***********************************/

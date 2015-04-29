@@ -318,10 +318,5 @@ __RF_PROTOCOL_EXT__ int TaskProtocol(int*argv[],int argc);
 __RF_PROTOCOL_EXT__ void InitProtocol(void);
 __RF_PROTOCOL_EXT__ U16	CalcCRC16Value(U8 *ptr,U16 len);
 
-__RF_PROTOCOL_EXT__ BOOL execRFParamQ(U8 flag,U8 *buf,U16 rxLen,U16*txLen);
-__RF_PROTOCOL_EXT__ BOOL execFWEnter(U8 flag,U8*buf,U16 rxLen,U16 *txLen);
-__RF_PROTOCOL_EXT__ BOOL execFWLoad(U8 flag,U8*buf,U16 rxLen,U16 *txLen);
-__RF_PROTOCOL_EXT__ BOOL execFWReboot(U8 flag,U8*buf,U16 rxLen,U16 *txLen);
-
 #endif/*__RF_PROTOCOL_H*/
 /********************************END OF FILE***********************************/

@@ -55,7 +55,6 @@ int main(void)
 	InitTarget();
 	InitWatchdog();
 	InitParam();		
-	InitTaskCtrl();	
 	InitProtocol();
 	InitTaskControl();
 	/* warining£º

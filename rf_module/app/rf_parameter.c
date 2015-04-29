@@ -245,17 +245,23 @@ BOOL RebootFlagSet(void)
   * @date	:2011.10.20
   */
 void InitParam(void)
-{
-	U16 i;
-	STABLE_COMMAND *sc = GetTable();
-	
-	ReadE2prom(EEPROM_ADDR_UPGRADE,(U8*)&modelUpgrade,sizeof(modelUpgrade));
-	ReadE2prom(EEPROM_ADDR_REBOOT ,(U8*)&modelReset  ,sizeof(modelReset));
-	
+{	
+	U16 i;	
+	U32 flash;
+	JC_COMMAND *sc = GetTable();
+		
 	for(i = 0; i < GetTableMebCnt();i++)
 	{
-		ReadE2prom(sc->sub,(U8*)&sc->var,sc->varLen);		
+		if(sc[i].var != NULL)
+			ReadE2prom(sc[i].sub,sc[i].var,sc[i].varLen);		
 	}
+	
+	gFWCheck = 0;
+	
+	for ( flash = 0x8000000; flash < 0x8008000; flash++)
+	{
+		gFWCheck += *(U8*)flash;
+	}		
 }
 /**
   * @brief  :parameter aask routine
