@@ -533,8 +533,9 @@ void execAnaylize(U8 *buf,U16 rxLen,U16 *tlen)
   */
 static void TMAPktHandle(U8 port)
 {
-	U8 *buf,		
-		xor;
+	U8 *buf,
+		result,
+		chk;
 		
 	U16 len,
 		tLen,
@@ -543,8 +544,76 @@ static void TMAPktHandle(U8 port)
 	JC_LAYER1 *layer;
 
 	GetUartBufInfo(port,(U8**)&buf,&len);
+	
+	if( buf[1] == 'F' )
+	{
+		if( buf[2] == 'S' && 
+			buf[3] == 'T' &&
+			buf[4] == 'A' )
+		{
+			ResetUartBuf(port);
+			memset(buf+1,0,4);
+			result = 'N';
+			
+			if(InitCode2Flash()==TRUE)
+				result = 'Y';
+			
+			buf[0] = 0;
+			buf[1] = result;
+			buf[2] = 0;
+			UartTxOpen(port,2);
+		}		
+		else if( buf[2] == 'D' &&
+				 buf[3] == 'O' &&
+				 buf[4] == 'W' && len >= 6 )
+		{
+			ResetUartBuf(port);
+			memset(buf+1,0,4);
+			result = 'N';
+			chk = 0;
+			
+			tLen = buf[5] + (buf[6]<<8);
+						
+			for(i = 0 ; i< tLen;i++)
+			{
+				chk ^= buf[i+7];
+			}
+			
+			if(chk == buf[tLen+7] && Code2Flash(buf+7,tLen)== TRUE )
+			{
+				result = 'Y';
+			}
+			
+			buf[0] = 0;
+			buf[1] = result;
+			buf[2] = 0;
+			UartTxOpen(port,2);				
+		}
+		else if( buf[2] == 'E' && 
+				 buf[3] == 'X' && 
+				 buf[4] == 'E' )
+		{
+			ResetUartBuf(port);
+			memset(buf+1,0,4);
+			result = 'N';
+			
+			if(EndCode2Flash() == TRUE)
+			{
+				gDownFlag = 0xFF;
+				if(TRUE == WriteE2prom(EE_DOWN_FLAG,(U8*)&gDownFlag,sizeof(gDownFlag)))
+				{
+					result = 'Y';
+				}
+			}
 
-	if ( len > 5  )
+			buf[0] = 0;
+			buf[1] = result;
+			buf[2] = 0;			
+						
+			UartTxOpen(port,2);			
+		}
+	}		
+	else if ( len > 5  )
 	{
 		//帧格式: 00 55 AA 00 06 A0 FF 04 F0 0A 00 A7 
 		//找到帧起始
@@ -565,20 +634,20 @@ static void TMAPktHandle(U8 port)
 		{
 			ResetUartBuf(port);
 			//计数校验和
-			for( j = i+2,xor = 0; j < len - 1; j++)
-				xor ^= buf[j];	
+			for( j = i+2,chk = 0; j < len - 1; j++)
+				chk ^= buf[j];	
 				
-			if( xor != buf[len-1] )
+			if( chk != buf[len-1] )
 			{	
 				layer->ack |= DEFSUM_ERR;
 				
 				//计数校验和
-				for( j = 0,xor = 0; j < layer->totLen ; j++) 
+				for( j = 0,chk = 0; j < layer->totLen ; j++) 
 				{
-					xor ^= buf[i+j+2];
+					chk ^= buf[i+j+2];
 				}		
 				
-				buf[i+2+layer->totLen] = xor;
+				buf[i+2+layer->totLen] = chk;
 				//发送数据
 				UartTxOpen(port,i+3+layer->totLen);				
 				return;
@@ -586,11 +655,11 @@ static void TMAPktHandle(U8 port)
 			//执行命令
 			execAnaylize(buf+i+2,len-i-3,&tLen);
 			//计数校验和
-			for( j = 0,xor = 0; j < tLen ; j++) 
+			for( j = 0,chk = 0; j < tLen ; j++) 
 			{
-				xor ^= buf[i+j+2];
+				chk ^= buf[i+j+2];
 			}			
-			buf[i+2+tLen] = xor;
+			buf[i+2+tLen] = chk;
 			//发送数据
 			UartTxOpen(port,i+3+tLen);
 		}			

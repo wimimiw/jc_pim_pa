@@ -925,7 +925,7 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>STM32F10X_MD_VL,USE_STDPERIPH_DRIVER</Define>
+              <Define>STM32F10X_MD_VL,USE_STDPERIPH_DRIVER,WATCHDOG_EN</Define>
               <Undefine></Undefine>
               <IncludePath>..\app;..\device;..\driver\inc;..\driver;..\cpu</IncludePath>
             </VariousControls>
@@ -948,7 +948,7 @@
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>0</umfTarg>
+            <umfTarg>1</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>

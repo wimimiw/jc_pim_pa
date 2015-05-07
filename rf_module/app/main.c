@@ -52,18 +52,18 @@ static int TaskDebug(int*argv[],int argc);
 #ifdef __DEBUG__
 int main(void)				  
 {				
-	InitTarget();
-	InitWatchdog();
+	InitTarget();	
 	InitParam();		
 	InitProtocol();
 	InitTaskControl();
+	InitWatchdog();
 	/* warining£º
 	   the amount of task is limited, the default value is 10, define by TASK_MAX_NUM */	
 	AddTaskTimer( TaskParameter,USER_TIMER_1S(2) );		//2s
-	AddTaskTimer( TaskControl,USER_TIMER_1MS(10) );
+	AddTaskTimer( TaskControl,USER_TIMER_1MS(5) );
 	AddTaskTimer( TaskDebug,USER_TIMER_1S(1) );
 	AddTaskTimer( TaskProtocol,USER_TIMER_NO_DELAY );	//poll
-	AddTaskTimer( TaskWatchdog,USER_TIMER_NO_DELAY );	//poll
+	AddTaskTimer( TaskWatchdog,USER_TIMER_1MS(10) );	//poll
 	InitTaskTimer();   //Initialize the timer of task
 	TaskTimerRoutine();//the task running
 }
@@ -102,7 +102,7 @@ static void InitWatchdog(void)
 	                      = LsiFreq/(32 * 4)
 	                      = LsiFreq/128
 	*/
-	IWDG_SetReload(40000/128);	  //~~300ms
+	IWDG_SetReload(64000/128);	  //~~500ms
 	/* Reload IWDG counter */
 	IWDG_ReloadCounter();	
 	/* Enable IWDG (the LSI oscillator will be enabled by hardware) */

@@ -212,8 +212,8 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
 	//R1
 	WriteSpiOneWord(&attBus[0],&spiType,counterTemp);
 		
-	counterN  	 = (counterN/freqRef)<<15;										
 	counterTemp  = ((counterN%freqRef)/freqStep)<<3;
+	counterN  	 = (counterN/freqRef)<<15;											
 	counterTemp |= counterN;	
 	//R0
 	WriteSpiOneWord(&attBus[0],&spiType,counterTemp);
@@ -267,15 +267,12 @@ void InitTaskControl(void)
 	
 	FWR_DET_ENABLE(TRUE);
 	
-	SOURCE_SWITCH(gRFSrcSel);	
-	
-	VCO_CE(gRFSrcSel == SRC_INTERNAL && gRFSW == TRUE);
-	
-	WritePLL(gCenFreq,gRefFreq,gFreqStep,3,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
-	
-	setALCRef(0);
+	SOURCE_SWITCH(gRFSrcSel);		
 	
 	PA_POWER_SWITCH(FALSE);
+	
+	setAtt(gAtt1/2);
+	setALCRef(0);
 }
 		
 int TaskControl(int*argv[],int argc)
@@ -295,6 +292,10 @@ int TaskControl(int*argv[],int argc)
 	if(IS_ALARM_TEMPERATURE())
 	{
 		gCurRfTemp = 80*2;
+		
+		gPASW = FALSE;
+		gRFSW = FALSE;
+		PA_POWER_SWITCH(gPASW);
 	}
 	//电流警报
 	if(IS_ALARM_CURRENT())
@@ -315,7 +316,7 @@ int TaskControl(int*argv[],int argc)
 		//切换信源
 		SOURCE_SWITCH(gRFSrcSel);
 		//写衰减器
-		setAtt(gAtt1);
+		setAtt(gAtt1/2);
 		//ALC参数限辐
 		setALCRef(gPALim*4);
 		//设置信源
