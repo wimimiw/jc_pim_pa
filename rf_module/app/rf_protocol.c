@@ -494,6 +494,11 @@ void execAnaylize(U8 *buf,U16 rxLen,U16 *tlen)
 			recvflag = TRUE;
 			cmd = layer->id1 + (layer->id2<<8);
 			
+			if( layer->get == 1 )
+			{								
+				WriteE2prom(cmd,layer->idBuf,layer->idLen);				
+			}
+			
 			if(cmd == sc[i].sub)
 			{
 				if(layer->get == 0)
@@ -505,11 +510,10 @@ void execAnaylize(U8 *buf,U16 rxLen,U16 *tlen)
 					if(sc[i].max != 0 && sc[i].min != 0)
 					{
 						//
-					}					
+					}	
 					
-					memcpy(sc[i].var,layer->idBuf,layer->idLen);					
-					WriteE2prom(sc[i].sub,sc[i].var,sc[i].varLen);
-
+					memcpy(sc[i].var,layer->idBuf,layer->idLen);
+					
 					gRFModify = TRUE;					
 				}
 
@@ -545,7 +549,7 @@ static void TMAPktHandle(U8 port)
 
 	GetUartBufInfo(port,(U8**)&buf,&len);
 	
-	if( buf[1] == 'F' )
+	if( FALSE && buf[1] == 'F' && len > 5 )
 	{
 		if( buf[2] == 'S' && 
 			buf[3] == 'T' &&
@@ -613,7 +617,8 @@ static void TMAPktHandle(U8 port)
 			UartTxOpen(port,2);			
 		}
 	}		
-	else if ( len > 5  )
+		
+	if ( len > 5  )
 	{
 		//帧格式: 00 55 AA 00 06 A0 FF 04 F0 0A 00 A7 
 		//找到帧起始

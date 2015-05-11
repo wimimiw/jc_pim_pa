@@ -126,8 +126,8 @@ static void InitGpio(void)
     U32 i;
 	GPIO_InitTypeDef GPIO_InitStructure;
 
-	/* JTAG-DP Disabled and SW-DP Enable */
-    GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
+	/* Full SWJ Disabled (JTAG-DP + SW-DP) */
+    GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE);
 
     for (i = 0; i < sizeof(gpioTable) / sizeof(GPIO_FUNC); i++)
     {

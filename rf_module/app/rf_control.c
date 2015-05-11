@@ -57,6 +57,8 @@ const U8 BootloaderV 	__attribute__((at(ADDR_BYTE_BOOTLOADERV))) = 0x11;
 const U8 SoftwareV 		__attribute__((at(ADDR_BYTE_SOFTWAREV  ))) = 0x62;
 const U8 HardwareV 		__attribute__((at(ADDR_BYTE_HARDWAREV  ))) = 0x50;
 /* Private variables ---------------------------------------------------------*/
+BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen);								   
+								   
 const JC_COMMAND tabInfo[] = {	
 //信源选择
 	{ID_FCT_PARAM_WR,EE_SOURCE_SELECT	,0,(U8*)&gRFSrcSel,sizeof(gRFSrcSel)			,0,0,NULL},
@@ -64,7 +66,7 @@ const JC_COMMAND tabInfo[] = {
 	{ID_FCT_PARAM_WR,EE_TEMPER_BUCHANG	,0,(U8*)&gTempValue,sizeof(gTempValue)			,0,0,NULL},
 	{ID_FCT_PARAM_WR,EE_AtteVal			,0,(U8*)&gAtteVal,sizeof(gAtteVal)				,0,0,NULL},//0x0001     //1字节，增益设定值
 	{ID_FCT_PARAM_WR,EE_GainOffset		,0,(U8*)&gGainOffset,sizeof(gGainOffset)		,0,0,NULL},//0x0002		//1字节，增益调整值
-	{ID_FCT_PARAM_WR,EE_Att1			,0,(U8*)&gAtt1,sizeof(gAtt1)					,0,0,NULL},//0x0003		//1字节，1#衰减器，1U5  	
+	{ID_FCT_PARAM_WR,EE_Att1			,0,(U8*)&gAtt1,sizeof(gAtt1)					,0,0,execAtt1Set},//0x0003		//1字节，1#衰减器，1U5  	
 	{ID_FCT_PARAM_WR,EE_Att2			,0,(U8*)&gAtt2,sizeof(gAtt2)					,0,0,NULL},//0x0003		//1字节，2#衰减器，1U5  
 /**DAchannel**/
 	{ID_FCT_PARAM_WR,EE_DA_CHANNEL_A	,0,(U8*)&gDAoutA,sizeof(gDAoutA)				,0,0,NULL},//0x0034		//2字节，输出功率限幅值
@@ -257,6 +259,11 @@ U16 ReadPowerADC(void)
 	return adcValue/4;
 }
 
+BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{		
+	return TRUE;
+}
+
 void InitTaskControl(void)
 {		
 	gRFModify = FALSE;
@@ -271,12 +278,15 @@ void InitTaskControl(void)
 	
 	PA_POWER_SWITCH(FALSE);
 	
-	setAtt(gAtt1/2);
+	setAtt(gAtt1);
 	setALCRef(0);
+	
+	//VCO_CE(TRUE);
+	//WritePLL(gCenFreq,gRefFreq,gFreqStep,3,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
 }
 		
 int TaskControl(int*argv[],int argc)
-{	
+{		
 	//限幅状态
 	gLimState = IS_ALC_LOCK();
 	//VCO锁定状态
@@ -312,11 +322,11 @@ int TaskControl(int*argv[],int argc)
 	{		
 		gRFModify = FALSE;			
 		
-		PA_POWER_SWITCH(gPASW);		
+		PA_POWER_SWITCH(gPASW);
+		//写衰减器
+		setAtt(gAtt1);		
 		//切换信源
 		SOURCE_SWITCH(gRFSrcSel);
-		//写衰减器
-		setAtt(gAtt1/2);
 		//ALC参数限辐
 		setALCRef(gPALim*4);
 		//设置信源
