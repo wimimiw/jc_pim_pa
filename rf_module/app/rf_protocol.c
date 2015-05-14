@@ -319,7 +319,7 @@ BOOL execRFParamQ(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		*(U16*)(buf+17) = gCurRfTemp;
 		*(U8 *)(buf+19) = !gPLLLock;
 		
-		*txLen = 20;
+		*txLen = layer->totLen+2;
 	}
 	else if(layer->get==1)	  							
 	{//工厂参数查询数据包
@@ -348,7 +348,7 @@ BOOL execRFParamQ(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 
 		*(U16*)(buf+8) = cks;
 		
-		*txLen = 96;
+		*txLen = layer->totLen+2;
 	}
 	else
 	{
@@ -481,46 +481,50 @@ BOOL execFWReboot(U8 flag,U8*buf,U16 rxLen,U16 *txLen)
 void execAnaylize(U8 *buf,U16 rxLen,U16 *tlen)
 {
 	U8 i;
-	U16 cmd;
+	U16 objCmd;
 	S32 temp;
 	BOOL recvflag = FALSE;
 	JC_LAYER1 *layer = (JC_LAYER1*)buf;
 	JC_COMMAND *sc = GetTable();
 	
+	objCmd = layer->id1 + (layer->id2<<8);
+	
+	if( layer->get == 1 && layer->mode == ID_FCT_PARAM_WR )
+	{								
+		WriteE2prom(objCmd,layer->idBuf,layer->idLen);				
+	}		
+	
 	for(i=0;i<GetTableMebCnt();i++)
 	{
-		if(sc[i].cmd == layer->mode)
-		{
-			recvflag = TRUE;
-			cmd = layer->id1 + (layer->id2<<8);
-			
-			if( layer->get == 1 )
-			{								
-				WriteE2prom(cmd,layer->idBuf,layer->idLen);				
-			}
-			
-			if(cmd == sc[i].sub)
-			{
-				if(layer->get == 0)
-				{//查询 
-					memcpy(layer->idBuf,sc[i].var,layer->idLen);
-				}
-				else if( layer->get == 1 )
-				{//设置
-					if(sc[i].max != 0 && sc[i].min != 0)
-					{
-						//
-					}	
-					
-					memcpy(sc[i].var,layer->idBuf,layer->idLen);
-					
-					gRFModify = TRUE;					
-				}
-
-				*tlen = layer->totLen + 2;		
-			}	
-
+		recvflag = TRUE;
+		
+		if(sc[i].cmd == layer->mode && sc[i].sub == NULL)
+		{			
+			*tlen = layer->totLen + 2;
 			if(sc[i].proc != NULL)sc[i].proc(layer->get,buf,rxLen,tlen);
+			break;
+		}
+		else if(sc[i].cmd == layer->mode && sc[i].sub == objCmd)
+		{
+			if(layer->get == 0 && sc[i].var != NULL )
+			{//查询 
+				memcpy(layer->idBuf,sc[i].var,layer->idLen);
+			}
+			else if( layer->get == 1 && sc[i].var != NULL )
+			{//设置
+				if(sc[i].max != 0 && sc[i].min != 0)
+				{	
+					
+				}
+				
+				memcpy(sc[i].var,layer->idBuf,layer->idLen);
+				
+				gRFModify = TRUE;					
+			}
+							
+			*tlen = layer->totLen + 2;
+			if(sc[i].proc != NULL)sc[i].proc(layer->get,buf,rxLen,tlen);			
+			break;
 		}				
 	}	
 	
@@ -549,12 +553,12 @@ static void TMAPktHandle(U8 port)
 
 	GetUartBufInfo(port,(U8**)&buf,&len);
 	
-	if( FALSE && buf[1] == 'F' && len > 5 )
-	{
+	if( buf[1] == 'F' && len >= 5 )
+	{		
 		if( buf[2] == 'S' && 
 			buf[3] == 'T' &&
 			buf[4] == 'A' )
-		{
+		{//00 46 53 54 41
 			ResetUartBuf(port);
 			memset(buf+1,0,4);
 			result = 'N';
@@ -564,13 +568,12 @@ static void TMAPktHandle(U8 port)
 			
 			buf[0] = 0;
 			buf[1] = result;
-			buf[2] = 0;
 			UartTxOpen(port,2);
 		}		
 		else if( buf[2] == 'D' &&
 				 buf[3] == 'O' &&
 				 buf[4] == 'W' && len >= 6 )
-		{
+		{//00 46 44 4F 57 00 00
 			ResetUartBuf(port);
 			memset(buf+1,0,4);
 			result = 'N';
@@ -590,13 +593,13 @@ static void TMAPktHandle(U8 port)
 			
 			buf[0] = 0;
 			buf[1] = result;
-			buf[2] = 0;
 			UartTxOpen(port,2);				
 		}
-		else if( buf[2] == 'E' && 
+		else 
+		if( buf[2] == 'E' && 
 				 buf[3] == 'X' && 
 				 buf[4] == 'E' )
-		{
+		{//00 46 45 58 45
 			ResetUartBuf(port);
 			memset(buf+1,0,4);
 			result = 'N';
@@ -611,14 +614,11 @@ static void TMAPktHandle(U8 port)
 			}
 
 			buf[0] = 0;
-			buf[1] = result;
-			buf[2] = 0;			
-						
+			buf[1] = result;									
 			UartTxOpen(port,2);			
 		}
-	}		
-		
-	if ( len > 5  )
+	}				
+	else if ( len > 5  )
 	{
 		//帧格式: 00 55 AA 00 06 A0 FF 04 F0 0A 00 A7 
 		//找到帧起始
@@ -626,7 +626,7 @@ static void TMAPktHandle(U8 port)
 			if( buf[i] == SYNC1 )
 				break;
 		//不存在起始
-		if( i > 5 )
+		if( i >= 5 )
 			return;
 		//确认帧起始
 		if( buf[i+1] != SYNC2 )				

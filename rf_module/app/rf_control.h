@@ -194,6 +194,7 @@ __RF_CONTROL_EXT__	U8  AppModel;	            //0x00F7	    //1字节，仪表型号
 __RF_CONTROL_EXT__	U8 	gPlusSwitchState;     	//脉冲开关状态变量
 __RF_CONTROL_EXT__	U8  gPlusValue[4];
 __RF_CONTROL_EXT__	S8	gTempValue[6];			//温补操作队列   
+__RF_CONTROL_EXT__	U8	gFreqLim[6];
 //控制参数
 __RF_CONTROL_EXT__ U8	gRFSrcSel;
 __RF_CONTROL_EXT__ U8 	gLNAState;				//低噪放故障状态

@@ -30,7 +30,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "config.h"
 /* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/ 
+/* Private define ------------------------------------------------------------*/
+#define AD4350_PWR_LIM			(1)   //-1dBm
 #define IS_ALARM_TEMPERATURE()	(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_2) != Bit_SET)   	//温度警报
 #define IS_ALARM_CURRENT()		(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_3) != Bit_SET)	//电流警报
 #define IS_ALARM_VSWR()			(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_4) != Bit_SET)	//驻波警报
@@ -57,24 +58,29 @@ const U8 BootloaderV 	__attribute__((at(ADDR_BYTE_BOOTLOADERV))) = 0x11;
 const U8 SoftwareV 		__attribute__((at(ADDR_BYTE_SOFTWAREV  ))) = 0x62;
 const U8 HardwareV 		__attribute__((at(ADDR_BYTE_HARDWAREV  ))) = 0x50;
 /* Private variables ---------------------------------------------------------*/
-BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen);								   
+BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+BOOL execPASW(U8 flag,U8 *buf,U16 rxLen,U16*txLen);									   
 								   
 const JC_COMMAND tabInfo[] = {	
 //信源选择
-	{ID_FCT_PARAM_WR,EE_SOURCE_SELECT	,0,(U8*)&gRFSrcSel,sizeof(gRFSrcSel)			,0,0,NULL},
+	{ID_FCT_PARAM_WR,EE_SOURCE_SELECT	,0,(U8*)&gRFSrcSel,sizeof(gRFSrcSel)			,0,0,execSwitchSource	},
 /****gain*****/
-	{ID_FCT_PARAM_WR,EE_TEMPER_BUCHANG	,0,(U8*)&gTempValue,sizeof(gTempValue)			,0,0,NULL},
-	{ID_FCT_PARAM_WR,EE_AtteVal			,0,(U8*)&gAtteVal,sizeof(gAtteVal)				,0,0,NULL},//0x0001     //1字节，增益设定值
-	{ID_FCT_PARAM_WR,EE_GainOffset		,0,(U8*)&gGainOffset,sizeof(gGainOffset)		,0,0,NULL},//0x0002		//1字节，增益调整值
-	{ID_FCT_PARAM_WR,EE_Att1			,0,(U8*)&gAtt1,sizeof(gAtt1)					,0,0,execAtt1Set},//0x0003		//1字节，1#衰减器，1U5  	
-	{ID_FCT_PARAM_WR,EE_Att2			,0,(U8*)&gAtt2,sizeof(gAtt2)					,0,0,NULL},//0x0003		//1字节，2#衰减器，1U5  
+	{ID_FCT_PARAM_WR,EE_TEMPER_BUCHANG	,0,(U8*)&gTempValue,sizeof(gTempValue)			,0,0,NULL				},
+	{ID_FCT_PARAM_WR,EE_AtteVal			,0,(U8*)&gAtteVal,sizeof(gAtteVal)				,0,0,NULL				},//0x0001     //1字节，增益设定值
+	{ID_FCT_PARAM_WR,EE_GainOffset		,0,(U8*)&gGainOffset,sizeof(gGainOffset)		,0,0,NULL				},//0x0002		//1字节，增益调整值
+	{ID_FCT_PARAM_WR,EE_Att1			,0,(U8*)&gAtt1,sizeof(gAtt1)					,0,0,execAtt1Set		},//0x0003		//1字节，1#衰减器，1U5  	
+	{ID_FCT_PARAM_WR,EE_Att2			,0,(U8*)&gAtt2,sizeof(gAtt2)					,0,0,NULL				},//0x0003		//1字节，2#衰减器，1U5  
 /**DAchannel**/
 	{ID_FCT_PARAM_WR,EE_DA_CHANNEL_A	,0,(U8*)&gDAoutA,sizeof(gDAoutA)				,0,0,NULL},//0x0034		//2字节，输出功率限幅值
 	{ID_FCT_PARAM_WR,EE_DA_CHANNEL_B	,0,(U8*)&gDAoutB,sizeof(gDAoutB)				,0,0,NULL},//0x0036		//2字节，输出功率限幅值
 	{ID_FCT_PARAM_WR,EE_DA_CHANNEL_C	,0,(U8*)&gDAoutC,sizeof(gDAoutC)				,0,0,NULL},//0x0038		//2字节，输出功率限幅值
 	{ID_FCT_PARAM_WR,EE_DA_CHANNEL_D	,0,(U8*)&gDAoutD,sizeof(gDAoutD)				,0,0,NULL},//0x003A		//2字节，输出功率限幅值
 /****PA******/	
-	{ID_FCT_PARAM_WR,EE_gPALim			,0,(U8*)&gPALim,sizeof(gPALim)					,0,0,NULL},//0x0020		//2字节，输出功率限幅值
+	{ID_FCT_PARAM_WR,EE_gPALim			,0,(U8*)&gPALim,sizeof(gPALim)					,0,0,execALC			},//0x0020		//2字节，输出功率限幅值
 	{ID_FCT_PARAM_WR,EE_gOutPwrVal		,0,(U8*)&gOutPwrVal,sizeof(gOutPwrVal)			,0,0,NULL},//0x0022		//2字节，输出功率定标值
 	{ID_FCT_PARAM_WR,EE_gOutPwrSlopeVal	,0,(U8*)&gOutPwrSlopeVal,sizeof(gOutPwrSlopeVal),0,0,NULL},//0x0024		//2字节，输出功率设定值定标
 	{ID_FCT_PARAM_WR,EE_gRefPwrVal		,0,(U8*)&gRefPwrVal,sizeof(gRefPwrVal)			,0,0,NULL},//0x0026		//2字节，反射功率定标
@@ -85,7 +91,7 @@ const JC_COMMAND tabInfo[] = {
 	{ID_FCT_PARAM_WR,EE_gPequDenomi		,0,(U8*)&gPequDenomi,sizeof(gPequDenomi)		,0,0,NULL},//0x0077		//1字节，功率补偿分母	
 /***frequency***/
 	{ID_FCT_PARAM_WR,EE_gPBmFreq		,0,(U8*)&gPBmFreq,sizeof(gPBmFreq)				,0,0,NULL},//0x0078		//4字节，基准频率
-	{ID_FCT_PARAM_WR,EE_CenFreq			,0,(U8*)&gCenFreq,sizeof(gCenFreq)				,0,0,NULL},//0x0040		//4字节，中心频率 KHz为单位
+	{ID_FCT_PARAM_WR,EE_CenFreq			,0,(U8*)&gCenFreq,sizeof(gCenFreq)				,0,0,execVCO		    },//0x0040		//4字节，中心频率 KHz为单位
 	{ID_FCT_PARAM_WR,EE_BandWidth		,0,(U8*)&gBandWidth,sizeof(gBandWidth)			,0,0,NULL},//0x0044		//4字节，带宽
 	{ID_FCT_PARAM_WR,EE_IFOffset		,0,(U8*)&gIFOffset,sizeof(gIFOffset)			,0,0,NULL},//0x0048		//2字节，中频调整值
 	{ID_FCT_PARAM_WR,EE_FreqStep		,0,(U8*)&gFreqStep,sizeof(gFreqStep)			,0,0,NULL},//0x004A		//2字节，频率步进值
@@ -93,7 +99,7 @@ const JC_COMMAND tabInfo[] = {
 	{ID_FCT_PARAM_WR,EE_Freq			,0,(U8*)&gFreq,sizeof(gFreq)					,0,0,NULL},//0x0050		//4字节，本振频率
 	{ID_FCT_PARAM_WR,EE_RefFreq			,0,(U8*)&gRefFreq,sizeof(gRefFreq)				,0,0,NULL},//0x0054		//4字节，参考频?
 	
-	{ID_FCT_PARAM_WR,EE_FREQ_ADD_POWEWR	,0,(U8*)&gPALim,sizeof(gPALim)					,0,0,NULL},//0x0020		//6字节，中心频率+限幅值
+	{ID_FCT_PARAM_WR,EE_FREQ_ADD_POWEWR	,0,(U8*)&gFreqLim[0],sizeof(gFreqLim)			,0,0,execVCOLim			},//0x0020		//6字节，中心频率+限幅值
 /*****current*****/
 	{ID_FCT_PARAM_WR,EE_CURRENT_TEMP	,0,(U8*)&gCurRfTemp,sizeof(gCurRfTemp)			,0,0,NULL},//0x0080		//2字节，当前电流
 	{ID_FCT_PARAM_WR,EE_CurCo			,0,(U8*)&gCurCo,sizeof(gCurCo)					,0,0,NULL},//0x0080		//2字节，电流斜率
@@ -108,7 +114,7 @@ const JC_COMMAND tabInfo[] = {
 	{ID_FCT_PARAM_WR,EE_TEMP_VALUE		,0,(U8*)&gPAResetLim,sizeof(gPAResetLim)		,0,0,NULL},//0x00A5		//1字节，功放回复温度
 /*****module*******/
 	{ID_FCT_PARAM_WR,EE_RF_No			,0,(U8*)&gRF_No,sizeof(gRF_No)					,0,0,NULL},//0x00C0		//1字节，射频模块编号		
-	{ID_FCT_PARAM_WR,EE_PASW			,0,(U8*)&gPASW,sizeof(gPASW)					,0,0,NULL},//0x00C1     //1字节，功放开关		
+	{ID_FCT_PARAM_WR,EE_PASW			,0,(U8*)&gPASW,sizeof(gPASW)					,0,0,execPASW			},//0x00C1     //1字节，功放开关		
 	{ID_FCT_PARAM_WR,EE_RFSW			,0,(U8*)&gRFSW,sizeof(gRFSW)					,0,0,NULL},//0x00C2     //1字节，射频开?
 	{ID_FCT_PARAM_WR,EE_TEST_MARK		,0,(U8*)&gRFSW,sizeof(gRFSW)					,0,0,NULL},//0x00C2     //1字节，射频开关?	
 /****************other parameter********************/
@@ -117,12 +123,12 @@ const JC_COMMAND tabInfo[] = {
 	{ID_FCT_PARAM_WR,EE_DOWN_FLAG		,0,(U8*)&gDownFlag,sizeof(gDownFlag)			,0,0,NULL},//0x01FF		//1字节，升级标志
 	{ID_FCT_PARAM_WR,EE_MODULE_No		,0,(U8*)&gModuleNo,sizeof(gModuleNo)			,0,0,NULL},//0x01FF		//1字节，升级标志		
 /*********apparatus parameter************/
-	{ID_FCT_PARAM_WR,0					,0,(U8*)&PaAdjEquModulus,sizeof(PaAdjEquModulus),0,0,NULL},//0x00F0  	//1字节, 功放的校准方程的补偿系数
-	{ID_FCT_PARAM_WR,0					,0,(U8*)&PaLastAdjDate_year,sizeof(PaLastAdjDate_year)	,0,0,NULL},//0x00F1	    //2字节，放的最终校准日期(年)
-	{ID_FCT_PARAM_WR,0					,0,(U8*)&PaLastAdjDate_month,sizeof(PaLastAdjDate_month),0,0,NULL},//0x00F3	    //1字节，放的最终校准日期(月)
-	{ID_FCT_PARAM_WR,0					,0,(U8*)&PaLastAdjDate_day,sizeof(PaLastAdjDate_day)	,0,0,NULL},//0x00F1	    //1字节，放的最终校准日期(年)
-	{ID_FCT_PARAM_WR,0					,0,(U8*)&PaUpLimit,sizeof(PaUpLimit)			,0,0,NULL},//0x00F5		//2字节，功放上限
-	{ID_FCT_PARAM_WR,0					,0,(U8*)&AppModel,sizeof(AppModel)				,0,0,NULL},//0x00F7	    //1字节，仪表型号            
+//	{ID_FCT_PARAM_WR,0					,0,(U8*)&PaAdjEquModulus,sizeof(PaAdjEquModulus),0,0,NULL},//0x00F0  	//1字节, 功放的校准方程的补偿系数
+//	{ID_FCT_PARAM_WR,0					,0,(U8*)&PaLastAdjDate_year,sizeof(PaLastAdjDate_year)	,0,0,NULL},//0x00F1	    //2字节，放的最终校准日期(年)
+//	{ID_FCT_PARAM_WR,0					,0,(U8*)&PaLastAdjDate_month,sizeof(PaLastAdjDate_month),0,0,NULL},//0x00F3	    //1字节，放的最终校准日期(月)
+//	{ID_FCT_PARAM_WR,0					,0,(U8*)&PaLastAdjDate_day,sizeof(PaLastAdjDate_day)	,0,0,NULL},//0x00F1	    //1字节，放的最终校准日期(年)
+//	{ID_FCT_PARAM_WR,0					,0,(U8*)&PaUpLimit,sizeof(PaUpLimit)			,0,0,NULL},//0x00F5		//2字节，功放上限
+//	{ID_FCT_PARAM_WR,0					,0,(U8*)&AppModel,sizeof(AppModel)				,0,0,NULL},//0x00F7	    //1字节，仪表型号            
 /****************单次脉冲触发变量********************/
 	{ID_FCT_PARAM_WR,EE_PLUS_TRIGER		,0,(U8*)&gPlusValue,sizeof(gPlusValue),0,0,NULL},//脉冲开关状态变量
 /****************固件操作********************/	
@@ -155,11 +161,11 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
 	//DB31~DB28  DB27       DB26 DB25 DB24 DB23  ~ DB16 DB15 DB14 DB13 DB12 DB11 ~ DB4 DB3 DB2 DB1 DB0
 	//0			  8			 	   			0     0		  8					  0    0      1
 	//0   ~0     1			 0    0    0    0    ~   0   1    0    0    0    0    ~ 0	  0	  0   0   1 
-	#define R2_INIT		0x18004EC2L
+	#define R2_INIT		0x18004FC2L
 	//     NOISE-MODE[1:0] MUXOUT[2:0]	   REF-DOU RDIV2    					 DOUB-BUFF	CHARGE-PUMP[3:0]  LDF LDP PD-POLA PD  CP-THR  COUNT-RESET
 	//DB31 DB30 DB29       DB28 DB27 DB26  DB25    DB24   DB23 ~ DB16 DB15 DB14 DB13       DB12 DB11 B10 DB9 DB8 DB7 DB6     DB5 DB4     DB3         DB2 DB1 DB0
 	//1							8						  0	   0	   4						 E				  C						  2
-	//0    0    0          1    1    0     0       0      0    ~ 0    0    1    0			0	 1	  1	  1	  0	  1	  1	      0	  0		  0           0   1   0
+	//0    0    0          1    1    0     0       0      0    ~ 0    0    1    0			0	 1	  1	  1	  1	  1	  1	      0	  0		  0           0   1   0
 	#define R3_INIT		0x000004B3L
 	//					CSR		  CLK-DIV[1:0]
 	//DB31 ~ DB20 DB19 DB18 DB17 DB16 DB15    DB14 DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
@@ -260,7 +266,67 @@ U16 ReadPowerADC(void)
 }
 
 BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{	
+	if(flag == TRUE)
+	{
+		//写衰减器
+		setAtt(gAtt1);	
+	}
+	return TRUE;
+}
+
+BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	if(flag == TRUE)
+	{	
+		//切换信源
+		SOURCE_SWITCH(gRFSrcSel);
+		//设置信源
+		VCO_CE(gRFSrcSel == SRC_INTERNAL && gRFSW == TRUE);	
+	}
+	return TRUE;
+}
+
+BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {		
+	if(flag == TRUE)
+	{	
+		//ALC参数限辐
+		setALCRef(gPALim*4);
+	}
+	return TRUE;
+}
+
+BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{		
+	if(flag == TRUE)
+	{	
+		//写VCO
+		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+	}
+	return TRUE;
+}
+
+BOOL execPASW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{		
+	if(flag == TRUE)
+	{	
+		PA_POWER_SWITCH(gPASW);
+	}
+	return TRUE;
+}
+
+BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{	
+	if(flag == TRUE)
+	{	
+		gCenFreq = *(U32*)&gFreqLim[0];
+		gPALim = *(U16*)&gFreqLim[4];
+		//ALC参数限辐
+		setALCRef(gPALim*4);	
+		//写VCO
+		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+	}
 	return TRUE;
 }
 
@@ -281,8 +347,8 @@ void InitTaskControl(void)
 	setAtt(gAtt1);
 	setALCRef(0);
 	
-	//VCO_CE(TRUE);
-	//WritePLL(gCenFreq,gRefFreq,gFreqStep,3,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+	VCO_CE(TRUE);
+	WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
 }
 		
 int TaskControl(int*argv[],int argc)
@@ -291,7 +357,7 @@ int TaskControl(int*argv[],int argc)
 	gLimState = IS_ALC_LOCK();
 	//VCO锁定状态
 	gPLLLock  = IS_VCO_LOCK();
-			
+	//电流值预设	
 	gPACurrent = 500;
 	//读前向功率
 	gPwrOut = ReadPowerADC(); 
@@ -320,19 +386,17 @@ int TaskControl(int*argv[],int argc)
 	//参数变化后修改
 	if(TRUE == gRFModify)
 	{		
-		gRFModify = FALSE;			
-		
-		PA_POWER_SWITCH(gPASW);
+		gRFModify = FALSE;
+		//PA_POWER_SWITCH(gPASW);		
 		//写衰减器
-		setAtt(gAtt1);		
+		//setAtt(gAtt1);
 		//切换信源
-		SOURCE_SWITCH(gRFSrcSel);
-		//ALC参数限辐
-		setALCRef(gPALim*4);
+		//SOURCE_SWITCH(gRFSrcSel);
 		//设置信源
-		VCO_CE(gRFSrcSel == SRC_INTERNAL && gRFSW == TRUE);
-		//写VCO
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,3,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);						
+		//VCO_CE(gRFSrcSel == SRC_INTERNAL && gRFSW == TRUE);		
+		//ALC参数限辐
+		//setALCRef(gPALim*4);		
+		//WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
 	}
 		
 	return 1;
