@@ -640,7 +640,7 @@
             <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>1</RunUserProg1>
+            <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>C:\Program Files\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin -o rf_module.bin ./release/output/rf_module.axf</UserProg1Name>
             <UserProg2Name>mdkConv.exe     \release\output\rf_module.hex  ..\[FW].-.[JCSG-0727-M2]</UserProg2Name>
