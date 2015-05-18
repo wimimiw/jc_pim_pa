@@ -35,6 +35,7 @@
 #define ATT_VALUE_MAX				63
 
 #define COM_BAUDRATE				9600
+#define COM_BAUDRATE_IAP			115200
 
 #define ADC_CHANNEL_5V				5
 #define ADC_CHANNEL_9V				4

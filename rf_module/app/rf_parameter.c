@@ -258,7 +258,7 @@ void InitParam(void)
 	
 	gFWCheck = 0;
 	
-	for ( flash = 0x8000000; flash < 0x8008000; flash++)
+	for ( flash = BANK_WORK_START_ADDR; flash < BANK_WORK_END_ADDR; flash++ )
 	{
 		gFWCheck += *(U8*)flash;
 	}		

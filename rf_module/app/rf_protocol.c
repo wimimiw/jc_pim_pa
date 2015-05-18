@@ -246,43 +246,62 @@ void ReturnResetFlag(U8 port)
 */
 void sendInitpacket(U8 port)
 {
-	U8 	xor,i,
+	U8 	chk,i,
 		*buf,
 		*bufPtr;	
 	
+	UserTimerDef timer;
+	
+	chk = chk;
+	i = i;	
+	bufPtr = bufPtr;
+	
 	if(gDownFlag == 0xFF)
-	{
+	{		
 		gDownFlag = 0x00;	
 
 		WriteE2prom(EE_DOWN_FLAG,(U8*)&gDownFlag,sizeof(gDownFlag));	
 			
 		GetUartBufInfo(port,(U8**)&buf,NULL);
-		
+					
 		bufPtr = buf;
 		
-		*(bufPtr++) = 0x00;
-		*(bufPtr++) = 0x55;
-		*(bufPtr++) = 0xAA;		
-				
-		*(bufPtr++) = 0x00;	//主控板地址
-		*(bufPtr++) = 0x08;	//长度
-		*(bufPtr++) = 0xA0; //命令标识
-		*(bufPtr++) = 0x00;	//应答标志
-		*(bufPtr++) = 0x06;	//监控对象长度
-		*(bufPtr++) = 0xFD;
-		*(bufPtr++) = 0x0A;
-		*(bufPtr++) = 0x01;
-		*(bufPtr++) = 0x01;
-		*(bufPtr++) = 0x01;		
+		buf[0] = 0;
+		buf[1] = 'Y';
 		
-		for( i = 3 , xor = 0; i < 13 ; i++)
-		{
-			xor ^= buf[i];
-		}
+		InitUartIAP(port);
 		
-		*(bufPtr++) = xor;
+		UartTxOpen(port,2);
 		
-		UartTxOpen(port,14);
+		UserTimerReset(TIM2,&timer);
+		//此处延时少于100ms			
+		while(!UserTimerOver(TIM2,&timer,USER_TIMER_10MS(5)));	
+		
+		InitUart(port);
+		
+//		*(bufPtr++) = 0x00;
+//		*(bufPtr++) = 0x55;
+//		*(bufPtr++) = 0xAA;		
+//				
+//		*(bufPtr++) = 0x00;	//主控板地址
+//		*(bufPtr++) = 0x08;	//长度
+//		*(bufPtr++) = 0xA0; //命令标识
+//		*(bufPtr++) = 0x00;	//应答标志
+//		*(bufPtr++) = 0x06;	//监控对象长度
+//		*(bufPtr++) = 0xFD;
+//		*(bufPtr++) = 0x0A;
+//		*(bufPtr++) = 0x01;
+//		*(bufPtr++) = 0x01;
+//		*(bufPtr++) = 0x01;		
+//		
+//		for( i = 3 , chk = 0; i < 13 ; i++)
+//		{
+//			chk ^= buf[i];
+//		}
+//		
+//		*(bufPtr++) = chk;
+//		
+//		UartTxOpen(port,14);
 	}
 }
 
@@ -421,7 +440,7 @@ BOOL execFWLoad(U8 flag,U8*buf,U16 rxLen,U16 *txLen)
 	//layer->ack = NO_ERR;
 	
 	result = result;
-	
+	checksum = checksum;
 	bufPtr = buf;
 
 	curPktIdx 	= *(U16*)(bufPtr+7);//取到包序号置于curSoftPktSn中
@@ -487,6 +506,8 @@ void execAnaylize(U8 *buf,U16 rxLen,U16 *tlen)
 	JC_LAYER1 *layer = (JC_LAYER1*)buf;
 	JC_COMMAND *sc = GetTable();
 	
+	temp = temp;
+	
 	objCmd = layer->id1 + (layer->id2<<8);
 	
 	if( layer->get == 1 && layer->mode == ID_FCT_PARAM_WR )
@@ -548,8 +569,18 @@ static void TMAPktHandle(U8 port)
 	U16 len,
 		tLen,
 		i,j;
-	
+		
 	JC_LAYER1 *layer;
+	UserTimerDef timer;
+	static UserTimerDef rollTimer;
+	static BOOL bFWLoad = FALSE;
+	
+	/*波特率守护功能,下载过程中5秒内无动作则恢复串口默认配置*/
+	if(UserTimerOver(TIM2,&rollTimer,USER_TIMER_10MS(500)) && bFWLoad == TRUE)
+	{
+		bFWLoad = FALSE;
+		InitUart(port);
+	}
 
 	GetUartBufInfo(port,(U8**)&buf,&len);
 	
@@ -567,26 +598,37 @@ static void TMAPktHandle(U8 port)
 				result = 'Y';
 			
 			buf[0] = 0;
-			buf[1] = result;
+			buf[1] = result;			
 			UartTxOpen(port,2);
+			
+			UserTimerReset(TIM2,&timer);
+			//此处延时少于100ms			
+			while(!UserTimerOver(TIM2,&timer,USER_TIMER_10MS(5)));	
+			
+			InitUartIAP(port);
+			
+			//开启波特率守护功能
+			bFWLoad = TRUE;
+			UserTimerReset(TIM2,&rollTimer);
 		}		
 		else if( buf[2] == 'D' &&
 				 buf[3] == 'O' &&
-				 buf[4] == 'W' && len >= 6 )
+				 buf[4] == 'W' && len >= buf[5] + 7 )
 		{//00 46 44 4F 57 00 00
+			UserTimerReset(TIM2,&rollTimer);
 			ResetUartBuf(port);
 			memset(buf+1,0,4);
 			result = 'N';
 			chk = 0;
 			
-			tLen = buf[5] + (buf[6]<<8);
+			tLen = buf[5];
 						
 			for(i = 0 ; i< tLen;i++)
 			{
-				chk ^= buf[i+7];
+				chk ^= buf[i+6];
 			}
 			
-			if(chk == buf[tLen+7] && Code2Flash(buf+7,tLen)== TRUE )
+			if(chk == buf[tLen+6] && Code2Flash(buf+6,tLen)== TRUE )
 			{
 				result = 'Y';
 			}
@@ -595,22 +637,20 @@ static void TMAPktHandle(U8 port)
 			buf[1] = result;
 			UartTxOpen(port,2);				
 		}
-		else 
-		if( buf[2] == 'E' && 
+		else if( buf[2] == 'E' && 
 				 buf[3] == 'X' && 
 				 buf[4] == 'E' )
 		{//00 46 45 58 45
+			UserTimerReset(TIM2,&rollTimer);
 			ResetUartBuf(port);
 			memset(buf+1,0,4);
 			result = 'N';
 			
-			if(EndCode2Flash() == TRUE)
+			gDownFlag = 0xFF;
+			if(TRUE == WriteE2prom(EE_DOWN_FLAG,(U8*)&gDownFlag,sizeof(gDownFlag)))
 			{
-				gDownFlag = 0xFF;
-				if(TRUE == WriteE2prom(EE_DOWN_FLAG,(U8*)&gDownFlag,sizeof(gDownFlag)))
-				{
-					result = 'Y';
-				}
+				EndCode2Flash();
+				result = 'Y';
 			}
 
 			buf[0] = 0;

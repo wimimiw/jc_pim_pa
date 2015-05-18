@@ -303,9 +303,53 @@ void InitUart(U8 bus)
 	else
 	{
 		return;
-	}
-
+	}	
+	
 	USART_InitStructure.USART_BaudRate = COM_BAUDRATE;
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;
+	USART_InitStructure.USART_Parity = USART_Parity_No;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	
+	/* Configure USART1 */
+	USART_Init(pUart, &USART_InitStructure);
+	//clear the it flag
+	USART_ClearITPendingBit(pUart,USART_IT_RXNE);
+	USART_ClearITPendingBit(pUart,USART_IT_TC);
+	/* Enable USARTz Receive and Transmit interrupts */
+	USART_ITConfig(pUart, USART_IT_RXNE, ENABLE);		
+	USART_ITConfig(pUart, USART_IT_TC, ENABLE);
+	/* Enable the USARTy */
+	USART_Cmd(pUart, ENABLE);	
+}
+
+/**
+  * @brief  :串口通信初始化
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+void InitUartIAP(U8 bus)
+{
+	USART_TypeDef*pUart;
+	USART_InitTypeDef USART_InitStructure;
+
+	if ( bus == UART1 )
+	{
+		pUart = USART1;
+	}
+	else if ( bus == UART2 )
+	{
+		pUart = USART2;
+	}
+	else
+	{
+		return;
+	}	
+	
+	USART_InitStructure.USART_BaudRate = COM_BAUDRATE_IAP;
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;
 	USART_InitStructure.USART_Parity = USART_Parity_No;

@@ -34,6 +34,7 @@
 /* Public variables ----------------------------------------------------------*/
 /* Public function prototypes ------------------------------------------------*/
 __USER_UART_EXT__ void InitUart(U8 bus);
+__USER_UART_EXT__ void InitUartIAP(U8 bus);
 __USER_UART_EXT__ void InitUartBuf(U8 bus);
 __USER_UART_EXT__ void ResetUartBuf(U8 bus);
 __USER_UART_EXT__ void SetUartMode(U8 bus, U8 chkBit);
