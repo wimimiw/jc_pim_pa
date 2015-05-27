@@ -292,7 +292,7 @@ BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	if(flag == TRUE)
 	{	
 		//ALC²ÎÊýÏÞ·ø
-		setALCRef(gPALim*4);
+		setALCRef(gPALim * 3.3 / 1023.0 * 4095 / 5.0 );
 	}
 	return TRUE;
 }
