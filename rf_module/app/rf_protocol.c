@@ -515,13 +515,14 @@ void execAnaylize(U8 *buf,U16 rxLen,U16 *tlen)
 		WriteE2prom(objCmd,layer->idBuf,layer->idLen);				
 	}		
 	
+	*tlen = layer->totLen + 2;
+	
 	for(i=0;i<GetTableMebCnt();i++)
 	{
 		recvflag = TRUE;
 		
 		if(sc[i].cmd == layer->mode && sc[i].sub == NULL)
-		{			
-			*tlen = layer->totLen + 2;
+		{						
 			if(sc[i].proc != NULL)sc[i].proc(layer->get,buf,rxLen,tlen);
 			break;
 		}
@@ -542,11 +543,10 @@ void execAnaylize(U8 *buf,U16 rxLen,U16 *tlen)
 				
 				gRFModify = TRUE;					
 			}
-							
-			*tlen = layer->totLen + 2;
+										
 			if(sc[i].proc != NULL)sc[i].proc(layer->get,buf,rxLen,tlen);			
 			break;
-		}				
+		}
 	}	
 	
 	//命令编号错,监控对象标号无法识别
