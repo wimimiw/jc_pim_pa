@@ -516,6 +516,7 @@ void execAnaylize(U8 *buf,U16 rxLen,U16 *tlen)
 	}		
 	
 	*tlen = layer->totLen + 2;
+	layer->pm2 = 0;
 	
 	for(i=0;i<GetTableMebCnt();i++)
 	{
@@ -706,7 +707,22 @@ static void TMAPktHandle(U8 port)
 			}			
 			buf[i+2+tLen] = chk;
 			//发送数据
-			UartTxOpen(port,i+3+tLen);
+			if(i == 0)
+			{
+				for(j= i+4+tLen ;j > 0;j--)
+				{
+					buf[j] = buf[j-1];
+				}
+				buf[0] = 0;
+				buf[1] = SYNC1;
+				//发送数据
+				UartTxOpen(port,i+4+tLen);
+			}
+			else
+			{
+				//发送数据
+				UartTxOpen(port,i+3+tLen);
+			}
 		}			
 	}		
 }
