@@ -322,7 +322,8 @@ BOOL execRFParamQ(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	U16 cks = 0;
 	JC_LAYER1 *layer = (JC_LAYER1*)buf;
 
-	layer->ack = NO_ERR;
+	//layer->ack = NO_ERR;
+	layer->ack = 0x0A;
 	
 	if(layer->get==0)										
 	{//定时数据查询

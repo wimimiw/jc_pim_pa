@@ -18,6 +18,7 @@
 #include "config.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+#define SPI_INTERVAL 10
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -95,13 +96,13 @@ static void EndSpiBus(const SPI_BUS * spiBus,SPI_TYPE * spiType)
 
         case SPI_PULSE_LOW:
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  LOW);           /* 拉高使能脚                   */
-            usdelay(40);
+            usdelay(SPI_INTERVAL);
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  HIGH);          /* 拉高使能脚                   */
             break;
 
         case SPI_PULSE_HIGH:
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  HIGH);          /* 拉低使能脚                   */
-            usdelay(40);
+            usdelay(SPI_INTERVAL);
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  LOW);           /* 拉低使能脚                   */
             break;
 
@@ -126,33 +127,33 @@ static void StartSpiBus(const SPI_BUS* spiBus,SPI_TYPE* spiType)
         case SPI_LEVEL_LOW:
             WriteGpioPin(spiBus->clk[0],spiBus->clk[1], LOW);
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  HIGH);          /* 拉高使能脚                   */
-            usdelay(120);
+            usdelay(SPI_INTERVAL);
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  LOW);           /* 拉低使能脚                   */
             break;
 
         case SPI_LEVEL_HIGH:
             WriteGpioPin(spiBus->clk[0],spiBus->clk[1], LOW);
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  LOW);           /* 拉低使能脚                   */
-            usdelay(120);
+            usdelay(SPI_INTERVAL);
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  HIGH);          /* 拉高使能脚                   */
             break;
 
         case SPI_PULSE_LOW:
             WriteGpioPin(spiBus->clk[0],spiBus->clk[1], LOW);
-            usdelay(120);
+            usdelay(SPI_INTERVAL);
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  HIGH);          /* 拉高使能脚                   */
             break;
 
         case SPI_PULSE_HIGH:
             WriteGpioPin(spiBus->clk[0],spiBus->clk[1], LOW);
-            usdelay(120);
+            usdelay(SPI_INTERVAL);
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  LOW);           /* 拉低使能脚                   */
             break;
 
         default:
             WriteGpioPin(spiBus->clk[0],spiBus->clk[1], LOW);
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  HIGH);          /* 拉高使能脚                   */
-            usdelay(120);
+            usdelay(SPI_INTERVAL);
             WriteGpioPin(spiBus->cs[0],spiBus->cs[1],  LOW);           /* 拉低使能脚                   */
             break;
     }
@@ -181,16 +182,16 @@ BOOL WriteSpiOneWord(const SPI_BUS* spiBus, SPI_TYPE* spiType, U32 spiWord)
 
         data = ChkMaskBit(spiWord, spiType->mask, i, spiType->order);               /* 设置数据脚电平               */
 
-        usdelay(120);
+        usdelay(SPI_INTERVAL);
         WriteGpioPin(spiBus->data[0],spiBus->data[1], data);
-        usdelay(120);
+        usdelay(SPI_INTERVAL);
         WriteGpioPin(spiBus->clk[0],spiBus->clk[1],  HIGH);            /* 产生时钟脉冲                 */
-        usdelay(120);
+        usdelay(SPI_INTERVAL);
         WriteGpioPin(spiBus->clk[0],spiBus->clk[1],   LOW);
     }
 
     /* 结束SPI总线  */
-    usdelay(240);
+    usdelay(SPI_INTERVAL);
     EndSpiBus( spiBus,spiType );
 
     return TRUE;
