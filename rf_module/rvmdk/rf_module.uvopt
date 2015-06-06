@@ -13,7 +13,6 @@
     <tExt>*.txt; *.h; *.inc</tExt>
     <pExt>*.plm</pExt>
     <CppX>*.cpp</CppX>
-    <nMigrate>0</nMigrate>
   </Extensions>
 
   <DaveTm>
@@ -32,7 +31,6 @@
         <BeepAtEnd>1</BeepAtEnd>
         <RunSim>1</RunSim>
         <RunTarget>0</RunTarget>
-        <RunAbUc>0</RunAbUc>
       </OPTTT>
       <OPTHX>
         <HexSelection>1</HexSelection>
@@ -115,6 +113,7 @@
         <tRtrace>0</tRtrace>
         <sRSysVw>1</sRSysVw>
         <tRSysVw>1</tRSysVw>
+        <tPdscDbg>1</tPdscDbg>
         <sRunDeb>0</sRunDeb>
         <sLrtime>1</sLrtime>
         <nTsel>6</nTsel>
@@ -168,7 +167,6 @@
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
           <ItemText>0x2000000C</ItemText>
-          <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
       <MemoryWindow2>
@@ -176,7 +174,6 @@
           <WinNumber>2</WinNumber>
           <SubType>0</SubType>
           <ItemText>0x8005000</ItemText>
-          <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow2>
       <ToolboxButtons>
@@ -237,7 +234,6 @@
         <BeepAtEnd>1</BeepAtEnd>
         <RunSim>1</RunSim>
         <RunTarget>0</RunTarget>
-        <RunAbUc>0</RunAbUc>
       </OPTTT>
       <OPTHX>
         <HexSelection>1</HexSelection>
@@ -320,6 +316,7 @@
         <tRtrace>0</tRtrace>
         <sRSysVw>1</sRSysVw>
         <tRSysVw>1</tRSysVw>
+        <tPdscDbg>1</tPdscDbg>
         <sRunDeb>0</sRunDeb>
         <sLrtime>1</sLrtime>
         <nTsel>6</nTsel>
@@ -373,7 +370,6 @@
           <WinNumber>1</WinNumber>
           <SubType>258</SubType>
           <ItemText>0x20000674</ItemText>
-          <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
       <MemoryWindow2>
@@ -381,7 +377,6 @@
           <WinNumber>2</WinNumber>
           <SubType>0</SubType>
           <ItemText>0x08000000</ItemText>
-          <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow2>
       <Tracepoint>
@@ -420,7 +415,7 @@
 
   <Group>
     <GroupName>app</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

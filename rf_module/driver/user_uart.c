@@ -28,6 +28,7 @@ typedef struct _UART_Q_ {            /* UART GUEUE 结构体    */
 /* Private variables ---------------------------------------------------------*/
 		U8		uartBuf			[UART_MAX][UART_CPU_BUF_LEN];
 static UART_Q_S uartBufQS		[UART_MAX];
+static BOOL __flagRcvFrame = FALSE;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -208,6 +209,7 @@ void USART1_IRQHandler(void)
 		//process the timeout
 		if ( TRUE == UserTimerOver(TIM2,&rxTimer,USER_TIMER_1MS(5)) )
 		{
+			__flagRcvFrame = TRUE;
 			ResetUartBuf(UART1);
 		}
 		UserTimerReset(TIM2,&rxTimer);							
@@ -253,6 +255,7 @@ void USART2_IRQHandler(void)
 		//process the timeout
 		if ( TRUE == UserTimerOver(TIM2,&rxTimer,USER_TIMER_1MS(5)) )
 		{
+			__flagRcvFrame = TRUE;
 			ResetUartBuf(UART2);
 		}
 		UserTimerReset(TIM2,&rxTimer);							
@@ -279,6 +282,12 @@ void UartSendStr(USART_TypeDef* USARTx,u8*str,u8 len)
 	}
 }
 
+BOOL IsRcvFrame(void)
+{
+	BOOL result = __flagRcvFrame;	
+	__flagRcvFrame = FALSE;
+	return result;
+}
 /**
   * @brief  :串口通信初始化
   * @param  :None

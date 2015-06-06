@@ -614,7 +614,7 @@
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>0</DebugInformation>
-          <BrowseInformation>0</BrowseInformation>
+          <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\release\listing\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
@@ -641,9 +641,9 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>.\outConv.exe release/output/@L.hex ../release/jctma-0708-01-r1a 0x0000 0x7000  0x5ff0</UserProg1Name>
-            <UserProg2Name></UserProg2Name>
+            <RunUserProg2>1</RunUserProg2>
+            <UserProg1Name>C:\Program Files\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin -o rf_module.bin ./release/output/rf_module.axf</UserProg1Name>
+            <UserProg2Name>mdkConv.exe     \release\output\rf_module.hex  ..\[FW].-.[JCSG-0727-M2]</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
           </AfterMake>
@@ -952,7 +952,7 @@
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
-            <RepFail>1</RepFail>
+            <RepFail>0</RepFail>
             <useFile>0</useFile>
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
@@ -960,7 +960,7 @@
             <ScatterFile>.\release\output\rf_module.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc>--keep rf_control.o(POINTER) --keep rf_control.o(.text) --keep user_flash.o(BOOTLOADER)  --keep stm32f10x_flash.o(.text) --keep stm32f10x_iwdg.o(.text)</Misc>
+            <Misc>--keep user_flash.o(BOOTLOADER)  --keep stm32f10x_flash.o(.text) --keep stm32f10x_iwdg.o(.text)</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>

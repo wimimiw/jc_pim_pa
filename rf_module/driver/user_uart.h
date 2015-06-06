@@ -36,6 +36,7 @@
 __USER_UART_EXT__ void InitUart(U8 bus);
 __USER_UART_EXT__ void InitUartIAP(U8 bus);
 __USER_UART_EXT__ void InitUartBuf(U8 bus);
+__USER_UART_EXT__ BOOL IsRcvFrame(void);
 __USER_UART_EXT__ void ResetUartBuf(U8 bus);
 __USER_UART_EXT__ void SetUartMode(U8 bus, U8 chkBit);
 __USER_UART_EXT__ void GetUartBufInfo(U8 bus, U8**ppbuf, U16 *plen);
