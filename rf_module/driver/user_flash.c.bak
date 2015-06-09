@@ -1,0 +1,147 @@
+/*******************************Copyright (c)***********************************
+ *
+ *              Copyright (C), 1999-2011, Jointcom . Co., Ltd.
+ *
+ *------------------------------------------------------------------------------
+ * @file	:user_flash.c
+ * @author	:mashuai
+ * @version	:v2.0 
+ * @date	:2011.10.20
+ * @brief	:
+ *------------------------------------------------------------------------------
+ * @attention
+ 	本文件和官方flash操作函数需要进行分散加载
+ ******************************************************************************/
+#ifndef __USER_FLASH_C__
+#define __USER_FLASH_C__
+#endif
+/* Includes ------------------------------------------------------------------*/
+#include "config.h"
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+#if defined (STM32F10X_HD) || defined (STM32F10X_HD_VL) || defined (STM32F10X_CL) || defined (STM32F10X_XL)
+  #define FLASH_PAGE_SIZE    ((U16)0x800)
+#else
+  #define FLASH_PAGE_SIZE    ((U16)0x400)
+#endif
+
+#define BANK_WORK_START_ADDR  ((U32)0x08000000)
+#define BANK_WORK_END_ADDR    ((U32)0x08007000)
+
+#define BANK_BUF_START_ADDR   ((U32)0x08008000)
+#define BANK_BUF_END_ADDR     ((U32)0x08010000)
+
+#define NUMBER_WORK_PAGE 	  (BANK_WORK_END_ADDR - BANK_WORK_START_ADDR) / FLASH_PAGE_SIZE
+#define NUMBER_BUF_PAGE		  (BANK_BUF_END_ADDR  - BANK_BUF_START_ADDR ) / FLASH_PAGE_SIZE
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
+/**
+  * @brief  :flash upgrade process
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+BOOL FlashUpgrade(void)
+{	
+	U8 	i;
+	U32 wrAddr;
+	volatile FLASH_Status FLASHStatus = FLASH_COMPLETE;
+	void (*rebootEntry)(void) = (void(*)())0x0;
+
+	/* Unlock the Flash Bank1 Program Erase controller */
+	FLASH_Unlock();
+	/* Clear All pending flags */
+	FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);	
+	
+	/* Erase the WORK FLASH pages */
+	for(i = 0; (i < NUMBER_WORK_PAGE) && (FLASHStatus == FLASH_COMPLETE); i++)
+	{
+		FLASHStatus = FLASH_ErasePage(BANK_WORK_START_ADDR + (FLASH_PAGE_SIZE * i));
+	}	
+	/* Program WORK Flash Bank */
+	for(wrAddr  = BANK_BUF_START_ADDR;wrAddr <  
+	{
+	 	FLASH_ProgramWord(wrAddr, wrAddr);
+	}
+	/* Erase the BUF FLASH pages */
+	FLASHStatus = FLASH_COMPLETE;
+	for(i = 0; (i < NUMBER_BUF_PAGE) && (FLASHStatus == FLASH_COMPLETE); i++)
+	{
+		FLASHStatus = FLASH_ErasePage(BANK_BUF_START_ADDR + (FLASH_PAGE_SIZE * i));
+	}
+	FLASH_Lock();
+		
+	rebootEntry();
+	return TRUE;
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+BOOL code2Flash(U16 idx,U8*buf,U16 len)
+{
+	static U8  pageBuf[FLASH_PAGE_SIZE];
+	static U16 curPage = 0;
+	static U32 loadByteCnt = 0;
+	U32 i;
+	U32 EraseCounter = 0x00, Address = 0x00;
+	U32 Data = 0x3210ABCD;
+	U32 nbrOfPage = 0;
+	volatile FLASH_Status FLASHStatus = FLASH_COMPLETE;
+	//volatile TestStatus MemoryProgramStatus = PASSED;
+	
+	/*  len == FLASH_PAGE_SIZE 写FLASH
+
+	*/
+	for ( i = curPage ; i < 1000; i ++)
+	{
+		pageBuf[i] = buf[i];			
+	}	
+	/* Unlock the Flash Bank1 Program Erase controller */
+	FLASH_Unlock();
+	
+	/* Define the number of page to be erased */
+	nbrOfPage = (BANK_BUF_END_ADDR - BANK_BUF_START_ADDR) / FLASH_PAGE_SIZE;
+	
+	/* Clear All pending flags */
+	FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);	
+	
+	/* Erase the FLASH pages */
+	for(EraseCounter = 0; (EraseCounter < nbrOfPage) && (FLASHStatus == FLASH_COMPLETE); EraseCounter++)
+	{
+		FLASHStatus = FLASH_ErasePage(BANK_BUF_START_ADDR + (FLASH_PAGE_SIZE * EraseCounter));
+	}
+	
+	/* Program Flash Bank1 */
+	Address = BANK_BUF_START_ADDR;
+	
+	while((Address < BANK_BUF_END_ADDR) && (FLASHStatus == FLASH_COMPLETE))
+	{
+		FLASHStatus = FLASH_ProgramWord(Address, Data);
+		Address = Address + 4;
+	}
+	
+	FLASH_Lock();
+	
+	/* Check the correctness of written data */
+	Address = BANK_BUF_START_ADDR;
+	
+//	while((Address < BANK_BUF_END_ADDR) && (MemoryProgramStatus != FAILED))
+//	{
+//	if((*(__IO U32*) Address) != Data)
+//	{
+	  //MemoryProgramStatus = FAILED;
+//	}
+//	Address += 4;
+//	}
+	return TRUE;	
+}
+/********************************END OF FILE***********************************/
