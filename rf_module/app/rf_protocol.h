@@ -215,7 +215,7 @@ typedef struct __JOINTCOM_EXE_TABLE {
 #define EE_SOURCE_SELECT	0x003C		//选择信源选项
 
 /***frequency***/
-#define	EE_CenFreq 			0x0040		//4字节，中心频率,长整型数据
+#define	EE_CenFreq 			0x0140		//4字节，中心频率,长整型数据
 #define EE_BandWidth		0x0044		//4字节，带宽
 #define	EE_IFOffset			0x0048		//2字节，中频调整值
 #define	EE_FreqStep			0x004A		//2字节，频率步进值
@@ -265,7 +265,7 @@ typedef struct __JOINTCOM_EXE_TABLE {
 
 #define EE_PLUS_TRIGER 		0x0100		//触发单次脉冲信号 
 #define EE_TEMPER_BUCHANG	0x0110		//温补命令
-#define EE_FREQ_ADD_POWEWR	0x0140		//同时设置频率和功率
+#define EE_FREQ_ADD_POWEWR	0x0040		//同时设置频率和功率
 #define EE_DOWN_FLAG        0x01FF		//1字节，软件下载标志
 
 //应答标志常量列表

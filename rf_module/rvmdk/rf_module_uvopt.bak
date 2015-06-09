@@ -73,7 +73,7 @@
       <OPTFL>
         <tvExp>1</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
-        <IsCurrentTarget>0</IsCurrentTarget>
+        <IsCurrentTarget>1</IsCurrentTarget>
       </OPTFL>
       <CpuCode>255</CpuCode>
       <Books>
@@ -93,6 +93,16 @@
           <Path>datashts\arm\cortex_m3\r2p1\DUI0552A_CORTEX_M3_DGUG.PDF</Path>
         </Book>
       </Books>
+      <DllOpt>
+        <SimDllName>SARMCM3.DLL</SimDllName>
+        <SimDllArguments></SimDllArguments>
+        <SimDlgDllName>DARMSTM.DLL</SimDlgDllName>
+        <SimDlgDllArguments>-pSTM32F101C8</SimDlgDllArguments>
+        <TargetDllName>SARMCM3.DLL</TargetDllName>
+        <TargetDllArguments></TargetDllArguments>
+        <TargetDlgDllName>TARMSTM.DLL</TargetDlgDllName>
+        <TargetDlgDllArguments>-pSTM32F101C8</TargetDlgDllArguments>
+      </DllOpt>
       <DebugOpt>
         <uSim>0</uSim>
         <uTrg>1</uTrg>
@@ -110,13 +120,9 @@
         <tRmem>1</tRmem>
         <tRfunc>0</tRfunc>
         <tRbox>1</tRbox>
-        <tRtrace>0</tRtrace>
-        <sRSysVw>1</sRSysVw>
-        <tRSysVw>1</tRSysVw>
-        <tPdscDbg>1</tPdscDbg>
         <sRunDeb>0</sRunDeb>
         <sLrtime>1</sLrtime>
-        <nTsel>6</nTsel>
+        <nTsel>7</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -161,7 +167,6 @@
           <Name>-O14 -S0 -C0 -N00("ARM Cortex-M3") -D00(1BA00477) -L00(4) -FO7 -FD20000000 -FC800 -FN1 -FF0STM32F10x_128 -FS08000000 -FL010000)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
@@ -183,9 +188,6 @@
           <SecondString>seri_start(9600)</SecondString>
         </Wi>
       </ToolboxButtons>
-      <Tracepoint>
-        <THDelay>0</THDelay>
-      </Tracepoint>
       <DebugFlag>
         <trace>0</trace>
         <periodic>1</periodic>
@@ -276,7 +278,7 @@
       <OPTFL>
         <tvExp>1</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
-        <IsCurrentTarget>1</IsCurrentTarget>
+        <IsCurrentTarget>0</IsCurrentTarget>
       </OPTFL>
       <CpuCode>255</CpuCode>
       <Books>
@@ -296,6 +298,16 @@
           <Path>datashts\arm\cortex_m3\r2p1\DUI0552A_CORTEX_M3_DGUG.PDF</Path>
         </Book>
       </Books>
+      <DllOpt>
+        <SimDllName>SARMCM3.DLL</SimDllName>
+        <SimDllArguments></SimDllArguments>
+        <SimDlgDllName>DARMSTM.DLL</SimDlgDllName>
+        <SimDlgDllArguments>-pSTM32F101C8</SimDlgDllArguments>
+        <TargetDllName>SARMCM3.DLL</TargetDllName>
+        <TargetDllArguments></TargetDllArguments>
+        <TargetDlgDllName>TARMSTM.DLL</TargetDlgDllName>
+        <TargetDlgDllArguments>-pSTM32F101C8</TargetDlgDllArguments>
+      </DllOpt>
       <DebugOpt>
         <uSim>0</uSim>
         <uTrg>1</uTrg>
@@ -313,10 +325,6 @@
         <tRmem>1</tRmem>
         <tRfunc>0</tRfunc>
         <tRbox>1</tRbox>
-        <tRtrace>0</tRtrace>
-        <sRSysVw>1</sRSysVw>
-        <tRSysVw>1</tRSysVw>
-        <tPdscDbg>1</tPdscDbg>
         <sRunDeb>0</sRunDeb>
         <sLrtime>1</sLrtime>
         <nTsel>6</nTsel>
@@ -364,7 +372,6 @@
           <Name>-O14 -S0 -C0 -N00("ARM Cortex-M3") -D00(1BA00477) -L00(4) -FO7 -FD20000000 -FC800 -FN1 -FF0STM32F10x_128 -FS08000000 -FL010000)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
@@ -379,9 +386,6 @@
           <ItemText>0x08000000</ItemText>
         </Mm>
       </MemoryWindow2>
-      <Tracepoint>
-        <THDelay>0</THDelay>
-      </Tracepoint>
       <DebugFlag>
         <trace>0</trace>
         <periodic>1</periodic>
@@ -415,22 +419,22 @@
 
   <Group>
     <GroupName>app</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
-    <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>1</GroupNumber>
       <FileNumber>1</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126193176</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>177</TopLine>
+      <CurrentLine>177</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\app\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
@@ -438,12 +442,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126193264</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\app\rf_control.c</PathWithFileName>
       <FilenameWithoutPath>rf_control.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
@@ -451,12 +456,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126193264</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\app\rf_protocol.c</PathWithFileName>
       <FilenameWithoutPath>rf_protocol.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
@@ -464,12 +470,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126193264</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\app\rf_parameter.c</PathWithFileName>
       <FilenameWithoutPath>rf_parameter.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
@@ -477,12 +484,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126193264</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\app\task.c</PathWithFileName>
       <FilenameWithoutPath>task.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
@@ -490,12 +498,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126193264</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\app\target.c</PathWithFileName>
       <FilenameWithoutPath>target.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
@@ -503,12 +512,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126193264</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\app\stm32f10x_it.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_it.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
@@ -516,12 +526,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126193264</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\app\system_stm32f10x.c</PathWithFileName>
       <FilenameWithoutPath>system_stm32f10x.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
   </Group>
 
@@ -530,19 +541,19 @@
     <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
-    <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>2</GroupNumber>
       <FileNumber>9</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126231280</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\device\dev_spi.c</PathWithFileName>
       <FilenameWithoutPath>dev_spi.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
@@ -550,12 +561,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126231280</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\device\dev_att.c</PathWithFileName>
       <FilenameWithoutPath>dev_att.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
@@ -563,12 +575,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126231280</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\device\dev_e2prom.c</PathWithFileName>
       <FilenameWithoutPath>dev_e2prom.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
@@ -576,33 +589,34 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126231280</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\device\dev_temp.c</PathWithFileName>
       <FilenameWithoutPath>dev_temp.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
   </Group>
 
   <Group>
     <GroupName>driver</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
-    <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>3</GroupNumber>
       <FileNumber>13</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\user_timer.c</PathWithFileName>
       <FilenameWithoutPath>user_timer.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -610,12 +624,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\user_adc.c</PathWithFileName>
       <FilenameWithoutPath>user_adc.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -623,25 +638,27 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\user_i2c.c</PathWithFileName>
       <FilenameWithoutPath>user_i2c.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
       <FileNumber>16</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\user_uart.c</PathWithFileName>
       <FilenameWithoutPath>user_uart.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -649,12 +666,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\user_flash.c</PathWithFileName>
       <FilenameWithoutPath>user_flash.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -662,12 +680,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\src\misc.c</PathWithFileName>
       <FilenameWithoutPath>misc.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -675,12 +694,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\src\stm32f10x_adc.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_adc.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -688,12 +708,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\src\stm32f10x_gpio.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_gpio.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -701,12 +722,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\src\stm32f10x_i2c.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_i2c.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -714,12 +736,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\src\stm32f10x_rcc.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_rcc.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -727,12 +750,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\src\stm32f10x_tim.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_tim.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -740,12 +764,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\src\stm32f10x_usart.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_usart.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -753,12 +778,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\src\stm32f10x_flash.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_flash.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -766,12 +792,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\src\stm32f10x_iwdg.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_iwdg.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
@@ -779,12 +806,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126247064</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\src\stm32f10x_pwr.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_pwr.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
   </Group>
 
@@ -793,19 +821,19 @@
     <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
-    <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>4</GroupNumber>
       <FileNumber>28</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126301784</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\cpu\core_cm3.c</PathWithFileName>
       <FilenameWithoutPath>core_cm3.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
@@ -813,13 +841,31 @@
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+      <ColumnNumber>126301784</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6386508</TopLine>
+      <CurrentLine>2167940</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\cpu\startup_stm32f10x_md_vl.s</PathWithFileName>
       <FilenameWithoutPath>startup_stm32f10x_md_vl.s</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
     </File>
   </Group>
+
+  <MDIGroups>
+    <Orientation>1</Orientation>
+    <ActiveMDIGroup>0</ActiveMDIGroup>
+    <MDIGroup>
+      <Size>100</Size>
+      <ActiveTab>0</ActiveTab>
+      <Documents>
+        <Doc>
+          <Name>..\app\main.c</Name>
+          <ColumnNumber>126193176</ColumnNumber>
+          <TopLine>177</TopLine>
+          <CurrentLine>177</CurrentLine>
+        </Doc>
+      </Documents>
+    </MDIGroup>
+  </MDIGroups>
 
 </ProjectOpt>

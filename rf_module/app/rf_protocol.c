@@ -583,13 +583,11 @@ static void TMAPktHandle(U8 port)
 		bFWLoad = FALSE;
 		InitUart(port);
 	}
-	//判断接收一帧数据包
-	if( IsRcvFrame() != TRUE ) return;
-	//获取数据包
+
 	GetUartBufInfo(port,(U8**)&buf,&len);
-	//固件更新包
-	if( buf[1] == 'F' )
-	{	//开始下载
+	
+	if( buf[1] == 'F' && len >= 5 )
+	{		
 		if( buf[2] == 'S' && 
 			buf[3] == 'T' &&
 			buf[4] == 'A' )
@@ -618,8 +616,7 @@ static void TMAPktHandle(U8 port)
 		else if( buf[2] == 'D' &&
 				 buf[3] == 'O' &&
 				 buf[4] == 'W' && len >= buf[5] + 7 )
-		{ //下载数据
-			//00 46 44 4F 57 00 00
+		{//00 46 44 4F 57 00 00
 			UserTimerReset(TIM2,&rollTimer);
 			ResetUartBuf(port);
 			memset(buf+1,0,4);
@@ -645,8 +642,7 @@ static void TMAPktHandle(U8 port)
 		else if( buf[2] == 'E' && 
 				 buf[3] == 'X' && 
 				 buf[4] == 'E' )
-		{	//执行擦写
-			//00 46 45 58 45
+		{//00 46 45 58 45
 			UserTimerReset(TIM2,&rollTimer);
 			ResetUartBuf(port);
 			memset(buf+1,0,4);
@@ -664,7 +660,7 @@ static void TMAPktHandle(U8 port)
 			UartTxOpen(port,2);			
 		}
 	}				
-	else//功放命令解析
+	else if ( len > 5  )
 	{
 		//帧格式: 00 55 AA 00 06 A0 FF 04 F0 0A 00 A7 
 		//找到帧起始
@@ -681,8 +677,9 @@ static void TMAPktHandle(U8 port)
 		layer = (JC_LAYER1*)&buf[i+2];
 		
 		//确认接收完成一帧数据
-		if( layer->totLen == (len-i-5) )
-		{			
+		if( len > (i+5) && layer->totLen == (len-i-5) )
+		{
+			ResetUartBuf(port);
 			//计数校验和
 			for( j = i+2,chk = 0; j < len - 1; j++)
 				chk ^= buf[j];	
