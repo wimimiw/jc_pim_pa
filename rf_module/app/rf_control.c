@@ -63,7 +63,7 @@ BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen);
 BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
-BOOL execPASW(U8 flag,U8 *buf,U16 rxLen,U16*txLen);									   
+BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen);									   
 								   
 const JC_COMMAND tabInfo[] = {	
 //信源选择
@@ -114,8 +114,8 @@ const JC_COMMAND tabInfo[] = {
 	{ID_FCT_PARAM_WR,EE_TEMP_VALUE		,0,(U8*)&gPAResetLim,sizeof(gPAResetLim)		,0,0,NULL},//0x00A5		//1字节，功放回复温度
 /*****module*******/
 	{ID_FCT_PARAM_WR,EE_RF_No			,0,(U8*)&gRF_No,sizeof(gRF_No)					,0,0,NULL},//0x00C0		//1字节，射频模块编号		
-	{ID_FCT_PARAM_WR,EE_PASW			,0,(U8*)&gPASW,sizeof(gPASW)					,0,0,execPASW			},//0x00C1     //1字节，功放开关		
-	{ID_FCT_PARAM_WR,EE_RFSW			,0,(U8*)&gRFSW,sizeof(gRFSW)					,0,0,NULL},//0x00C2     //1字节，射频开?
+	{ID_FCT_PARAM_WR,EE_PASW			,0,(U8*)&gPASW,sizeof(gPASW)					,0,0,NULL},//0x00C1     //1字节，功放开关		
+	{ID_FCT_PARAM_WR,EE_RFSW			,0,(U8*)&gRFSW,sizeof(gRFSW)					,0,0,execRFSW			},//0x00C2     //1字节，射频开?
 	{ID_FCT_PARAM_WR,EE_TEST_MARK		,0,(U8*)&gRFSW,sizeof(gRFSW)					,0,0,NULL},//0x00C2     //1字节，射频开关?	
 /****************other parameter********************/
 //	{ID_FCT_PARAM_WR,0					,0,(U8*)&gAtttempval,sizeof(gAtttempval)		,0,0,NULL},//温度补偿值	
@@ -307,11 +307,11 @@ BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	return TRUE;
 }
 
-BOOL execPASW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {		
 	if(flag == TRUE)
 	{	
-		PA_POWER_SWITCH(gPASW);
+		PA_POWER_SWITCH(gRFSW);
 	}
 	return TRUE;
 }
@@ -371,7 +371,7 @@ int TaskControl(int*argv[],int argc)
 		
 		gPASW = FALSE;
 		gRFSW = FALSE;
-		PA_POWER_SWITCH(gPASW);
+		PA_POWER_SWITCH(gRFSW);
 	}
 	//电流警报
 	if(IS_ALARM_CURRENT())

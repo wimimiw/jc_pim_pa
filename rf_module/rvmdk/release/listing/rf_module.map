@@ -724,7 +724,7 @@ Image Symbol Table
     execSwitchSource                         0x080003cf   Thumb Code    74  rf_control.o(.text)
     execALC                                  0x08000419   Thumb Code    64  rf_control.o(.text)
     execVCO                                  0x08000459   Thumb Code    36  rf_control.o(.text)
-    execPASW                                 0x0800047d   Thumb Code    34  rf_control.o(.text)
+    execRFSW                                 0x0800047d   Thumb Code    34  rf_control.o(.text)
     execVCOLim                               0x0800049f   Thumb Code    64  rf_control.o(.text)
     InitTaskControl                          0x080004df   Thumb Code   134  rf_control.o(.text)
     TaskControl                              0x08000565   Thumb Code   166  rf_control.o(.text)
