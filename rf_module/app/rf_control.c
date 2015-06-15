@@ -49,7 +49,7 @@
 								   GPIO_WriteBit(GPIOA,GPIO_Pin_6,(x != SRC_INTERNAL)?Bit_SET:Bit_RESET);}while(0)
 
 #define PA_POWER_SWITCH(x)		(GPIO_WriteBit(GPIOB,GPIO_Pin_8,(x) == TRUE ? Bit_SET : Bit_RESET))
-#define PA_RESET(X)				(GPIO_WriteBit(GPIOB,GPIO_Pin_9,(x) == TRUE ? Bit_SET : Bit_RESET))
+#define PA_RESET(x)				(GPIO_WriteBit(GPIOB,GPIO_Pin_9,(x) == TRUE ? Bit_SET : Bit_RESET))
 
 #define setAtt(att)     		(WritePe4302(&attBus[1],(att)))
 #define setALCRef(x)			WriteAD5324((x),'B')
@@ -309,8 +309,21 @@ BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 
 BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {		
+	UserTimerDef Timer;
+	
 	if(flag == TRUE)
 	{	
+		//温度警报	电流警报 驻波警报
+		if(IS_ALARM_TEMPERATURE()||IS_ALARM_CURRENT()||IS_ALARM_VSWR())
+		{
+			PA_RESET(TRUE);
+			
+			UserTimerReset(TIM2,&Timer);
+			while(FALSE == UserTimerOver(TIM2,&Timer,USER_TIMER_10MS(5)));
+			
+			PA_RESET(FALSE);
+		}
+
 		PA_POWER_SWITCH(gRFSW);
 	}
 	return TRUE;
