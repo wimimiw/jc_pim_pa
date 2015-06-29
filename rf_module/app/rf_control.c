@@ -334,9 +334,14 @@ BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	if(flag == TRUE)
 	{	
 		gCenFreq = *(U32*)&gFreqLim[0];
-		gPALim = *(U16*)&gFreqLim[4];
-		//ALC参数限辐
-		setALCRef(gPALim*4);	
+					
+		if( buf[12] == 6 )
+		{
+			gPALim = *(U16*)&gFreqLim[4];	
+			//ALC参数限辐
+			setALCRef(gPALim*4);			
+		}		
+	
 		//写VCO
 		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
 	}
