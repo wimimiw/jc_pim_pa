@@ -1,0 +1,9 @@
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\bin\Release\JcMcuUpgrade.exe
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\bin\Release\JcMcuUpgrade.pdb
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Release\JcMcuUpgrade.AboutBox1.resources
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Release\JcMcuUpgrade.MyProgressBar.resources
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Release\JcMcuUpgrade.Properties.Resources.resources
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Release\JcMcuUpgrade.csproj.GenerateResource.Cache
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Release\JcMcuUpgrade.exe
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Release\JcMcuUpgrade.pdb
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Release\JcMcuUpgrade.csprojResolveAssemblyReference.cache

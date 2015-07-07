@@ -1,0 +1,18 @@
+c:\users\wimimiw\documents\visual studio 2013\Projects\JcMcuUpgrade\JcMcuUpgrade\bin\Debug\JcMcuUpgrade.exe
+c:\users\wimimiw\documents\visual studio 2013\Projects\JcMcuUpgrade\JcMcuUpgrade\bin\Debug\JcMcuUpgrade.pdb
+c:\users\wimimiw\documents\visual studio 2013\Projects\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.Form1.resources
+c:\users\wimimiw\documents\visual studio 2013\Projects\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.Properties.Resources.resources
+c:\users\wimimiw\documents\visual studio 2013\Projects\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.csproj.GenerateResource.Cache
+c:\users\wimimiw\documents\visual studio 2013\Projects\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.exe
+c:\users\wimimiw\documents\visual studio 2013\Projects\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.pdb
+c:\users\wimimiw\documents\visual studio 2013\Projects\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.csprojResolveAssemblyReference.cache
+c:\users\wimimiw\documents\visual studio 2013\Projects\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.AboutBox1.resources
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.exe
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.pdb
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\bin\Debug\JcMcuUpgrade.exe
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\bin\Debug\JcMcuUpgrade.pdb
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.AboutBox1.resources
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.Properties.Resources.resources
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.csproj.GenerateResource.Cache
+C:\Users\Administrator\Documents\JcMcuUpgrade\JcMcuUpgrade\obj\Debug\JcMcuUpgrade.MyProgressBar.resources
