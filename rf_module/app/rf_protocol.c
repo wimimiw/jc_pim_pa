@@ -350,7 +350,7 @@ BOOL execRFParamQ(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		ReadE2prom(EE_Att1slopeval	,buf+15,4);
 		ReadE2prom(EE_gPALim		,buf+19,11);
 		ReadE2prom(EE_gPALimNumer	,buf+30,3);
-		ReadE2prom(EE_FREQ_ADD_POWEWR,buf+33,4);
+		ReadE2prom(EE_CenFreq		,buf+33,4);
 		ReadE2prom(EE_BandWidth		,buf+37,20);
 		ReadE2prom(EE_gPBmFreq		,buf+57,4);
 		ReadE2prom(EE_CurCo			,buf+61,14);

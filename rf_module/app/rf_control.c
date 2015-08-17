@@ -32,27 +32,30 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #define AD4350_PWR_LIM			(1)   //-1dBm
-#define IS_ALARM_TEMPERATURE()	(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_2) != Bit_SET)   	//温度警报
-#define IS_ALARM_CURRENT()		(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_3) != Bit_SET)	//电流警报
-#define IS_ALARM_VSWR()			(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_4) != Bit_SET)	//驻波警报
-#define IS_VCO_LOCK()			(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_5) == Bit_SET)	//VCO锁定
-#define IS_ALC_LOCK()			(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_5) == Bit_SET)	//ALC锁定
-#define IS_ADD_REF()			(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_13)== Bit_SET)	//参考叠加
+#define IS_ALARM_TEMPERATURE()	(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_3) != Bit_SET)   	//温度警报
+#define IS_ALARM_CURRENT()		(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4) != Bit_SET)	//电流警报
+#define IS_ALARM_VSWR()			(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_5) != Bit_SET)	//驻波警报
+#define IS_VCO_LOCK()			(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_13)== Bit_SET)	//VCO锁定
+#define IS_ALC_LOCK()			(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_13)== Bit_SET)	//ALC锁定
 //VCO片选使能
-#define VCO_CE(x)				(GPIO_WriteBit(GPIOB,GPIO_Pin_0,(x) == TRUE ? Bit_SET : Bit_RESET))
-//前向功率检波使能
-#define FWR_DET_ENABLE(x)		(GPIO_WriteBit(GPIOA,GPIO_Pin_12,(x) != TRUE ? Bit_SET : Bit_RESET))
-//前向功率检测加入参考
-#define FWR_DET_ADD_REF(x)		(GPIO_WriteBit(GPIOA,GPIO_Pin_13,(x) != TRUE ? Bit_SET : Bit_RESET))
+#define VCO_CE(x)				(GPIO_WriteBit(GPIOB,GPIO_Pin_14,(x) == TRUE ? Bit_SET : Bit_RESET))
+//前向功率检波选择				高电平(1) = 电平输入 >< 低电(0) = 射频输入
+#define PWR_DET_SELECT(x)		(GPIO_WriteBit(GPIOA,GPIO_Pin_0,(x) == TRUE ? Bit_SET : Bit_RESET))
+//前向功率检波控制
+#define IS_OVER_3V()			(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_2) == Bit_SET)
+//前向功率参考读取
+#define PWRDTREF_RO(x)			(ReadAdcValue(ADC_Channel_3,&(x)))
+//前向功率电平读取
+#define PWRDTADJ_RO(x)			(ReadAdcValue(ADC_Channel_1,&(x)))
 //信源切换
-#define SOURCE_SWITCH(x)		do{GPIO_WriteBit(GPIOA,GPIO_Pin_7,(x == SRC_INTERNAL)?Bit_SET:Bit_RESET);\
-								   GPIO_WriteBit(GPIOA,GPIO_Pin_6,(x != SRC_INTERNAL)?Bit_SET:Bit_RESET);}while(0)
+#define SOURCE_SWITCH(x)		do{GPIO_WriteBit(GPIOA,GPIO_Pin_14,(x == SRC_INTERNAL)?Bit_SET:Bit_RESET);\
+								   GPIO_WriteBit(GPIOA,GPIO_Pin_15,(x != SRC_INTERNAL)?Bit_SET:Bit_RESET);}while(0)
 
 #define PA_POWER_SWITCH(x)		(GPIO_WriteBit(GPIOB,GPIO_Pin_8,(x) == TRUE ? Bit_SET : Bit_RESET))
 #define PA_RESET(x)				(GPIO_WriteBit(GPIOB,GPIO_Pin_9,(x) == TRUE ? Bit_SET : Bit_RESET))
 
 #define setAtt(att)     		(WritePe4302(&attBus[1],(att)))
-#define setALCRef(x)			WriteAD5324((x),'B')
+#define setALCRef(x)			(WriteAD5324((x),'B'))
 /* Private macro -------------------------------------------------------------*/
 const U8 BootloaderV 	__attribute__((at(ADDR_BYTE_BOOTLOADERV))) = 0x11;
 const U8 SoftwareV 		__attribute__((at(ADDR_BYTE_SOFTWAREV  ))) = 0x62;
@@ -249,19 +252,19 @@ void WriteAD5324(U16 value,U8 channel)
 U16 ReadPowerADC(void)
 {
 	U16 adcValue,refValue = 0;
-
-	FWR_DET_ADD_REF(FALSE);
 	
-	if(IS_ADD_REF())
+	PWRDTADJ_RO(adcValue);
+	PWRDTREF_RO(refValue);
+		
+	if(IS_OVER_3V())
 	{		
-		FWR_DET_ADD_REF(TRUE);
-		ReadAdcValue(ADC_Channel_0,&refValue);
+		PWRDTREF_RO(refValue);
+		adcValue += refValue;
 	}
 	
-	ReadAdcValue(ADC_Channel_1,&adcValue);
-	
-	adcValue += refValue;
-	
+	//归一化
+	adcValue = 4096 * adcValue / ( 4096 + refValue );
+		
 	return adcValue/4;
 }
 
@@ -334,6 +337,7 @@ BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	if(flag == TRUE)
 	{	
 		gCenFreq = *(U32*)&gFreqLim[0];
+		WriteE2prom(EE_CenFreq,(U8*)&gCenFreq,sizeof(gCenFreq));
 					
 		if( buf[12] == 6 )
 		{
@@ -356,7 +360,8 @@ void InitTaskControl(void)
 	gRFSW = CLOSE;
 	gRFSrcSel = SRC_INTERNAL;
 	
-	FWR_DET_ENABLE(TRUE);
+	//前向功率检测切换至射频 输入模式
+	PWR_DET_SELECT(0);
 	
 	SOURCE_SWITCH(gRFSrcSel);		
 	
@@ -416,6 +421,8 @@ int TaskControl(int*argv[],int argc)
 		//setALCRef(gPALim*4);		
 		//WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
 	}
+	
+	GPIO_WriteBit(GPIOB,GPIO_Pin_12,(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_2) == Bit_RESET) ? Bit_SET : Bit_RESET );
 		
 	return 1;
 }

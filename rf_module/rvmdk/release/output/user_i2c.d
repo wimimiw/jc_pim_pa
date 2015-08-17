@@ -1,10 +1,10 @@
 .\release\output\user_i2c.o: ..\driver\user_i2c.c
 .\release\output\user_i2c.o: ..\app\config.h
-.\release\output\user_i2c.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\release\output\user_i2c.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\release\output\user_i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\release\output\user_i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\output\user_i2c.o: ..\cpu\stm32f10x.h
 .\release\output\user_i2c.o: ..\cpu\core_cm3.h
-.\release\output\user_i2c.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\release\output\user_i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\release\output\user_i2c.o: ..\cpu\system_stm32f10x.h
 .\release\output\user_i2c.o: ..\app\stm32f10x_conf.h
 .\release\output\user_i2c.o: ..\driver\inc\stm32f10x_adc.h

@@ -2,7 +2,7 @@
 .\release\output\stm32f10x_adc.o: ..\driver\inc\stm32f10x_adc.h
 .\release\output\stm32f10x_adc.o: ..\cpu\stm32f10x.h
 .\release\output\stm32f10x_adc.o: ..\cpu\core_cm3.h
-.\release\output\stm32f10x_adc.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\release\output\stm32f10x_adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\release\output\stm32f10x_adc.o: ..\cpu\system_stm32f10x.h
 .\release\output\stm32f10x_adc.o: ..\app\stm32f10x_conf.h
 .\release\output\stm32f10x_adc.o: ..\driver\inc\stm32f10x_adc.h

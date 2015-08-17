@@ -95,8 +95,9 @@
             // 
             // toolStripComboBox1
             // 
-            this.toolStripComboBox1.BackColor = System.Drawing.SystemColors.InfoText;
-            this.toolStripComboBox1.ForeColor = System.Drawing.SystemColors.Info;
+            this.toolStripComboBox1.BackColor = System.Drawing.SystemColors.Window;
+            this.toolStripComboBox1.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.toolStripComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;            
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(75, 25);
             // 

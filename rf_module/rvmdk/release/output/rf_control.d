@@ -1,10 +1,10 @@
 .\release\output\rf_control.o: ..\app\rf_control.c
 .\release\output\rf_control.o: ..\app\config.h
-.\release\output\rf_control.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\release\output\rf_control.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\release\output\rf_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\release\output\rf_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\output\rf_control.o: ..\cpu\stm32f10x.h
 .\release\output\rf_control.o: ..\cpu\core_cm3.h
-.\release\output\rf_control.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\release\output\rf_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\release\output\rf_control.o: ..\cpu\system_stm32f10x.h
 .\release\output\rf_control.o: ..\app\stm32f10x_conf.h
 .\release\output\rf_control.o: ..\driver\inc\stm32f10x_adc.h

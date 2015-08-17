@@ -28,51 +28,51 @@ typedef struct _GPIO_FUNC_ {
 /* Private variables ---------------------------------------------------------*/
 const SPI_BUS attBus[] = 
 {
+	{{GPIO_PortSourceGPIOB,GPIO_Pin_15},{GPIO_PortSourceGPIOA,GPIO_Pin_12},{GPIO_PortSourceGPIOA,GPIO_Pin_8 }},
 	{{GPIO_PortSourceGPIOB,GPIO_Pin_1 },{GPIO_PortSourceGPIOB,GPIO_Pin_10},{GPIO_PortSourceGPIOB,GPIO_Pin_11}},
-	{{GPIO_PortSourceGPIOA,GPIO_Pin_14},{GPIO_PortSourceGPIOB,GPIO_Pin_3 },{GPIO_PortSourceGPIOB,GPIO_Pin_4 }},
-	{{GPIO_PortSourceGPIOA,GPIO_Pin_15},{GPIO_PortSourceGPIOB,GPIO_Pin_3 },{GPIO_PortSourceGPIOB,GPIO_Pin_4 }},
+	{{GPIO_PortSourceGPIOB,GPIO_Pin_0 },{GPIO_PortSourceGPIOB,GPIO_Pin_10},{GPIO_PortSourceGPIOB,GPIO_Pin_11}},
 //	{{GPIO_PortSourceGPIOB,GPIO_Pin_15},{GPIO_PortSourceGPIOB,GPIO_Pin_10},{GPIO_PortSourceGPIOB,GPIO_Pin_11}},
 };
 
 static const GPIO_FUNC gpioTable[] = {
     /* GPROUP0       */
-    {GPIOA, GPIO_Pin_0 , 0, GPIO_Mode_AIN	 	 }, /*ADC_PWR_DT_REF */
-    {GPIOA, GPIO_Pin_1 , 0, GPIO_Mode_AIN	 	 }, /*ADC_PWR_DT_ADJ */
-    {GPIOA, GPIO_Pin_2 , 0, GPIO_Mode_IPU  	 	 }, /*temp alarm	 */
-    {GPIOA, GPIO_Pin_3 , 0, GPIO_Mode_IPU		 }, /*current alarm  */
-    {GPIOA, GPIO_Pin_4 , 0, GPIO_Mode_IPU	 	 }, /*vswr alarm     */
-    {GPIOA, GPIO_Pin_5 , 0, GPIO_Mode_IPU 	 	 }, /*lock flag      */
-    {GPIOA, GPIO_Pin_6 , 0, GPIO_Mode_Out_PP 	 }, /*ref ctlB       */
-    {GPIOA, GPIO_Pin_7 , 0, GPIO_Mode_Out_PP 	 }, /*ref ctlA       */   
-    {GPIOA, GPIO_Pin_8 , 0, GPIO_Mode_Out_PP	 }, /*               */
-    {GPIOA, GPIO_Pin_9 , 0, GPIO_Mode_AF_PP 	 }, /*TXD1           */ 
-    {GPIOA, GPIO_Pin_10, 0, GPIO_Mode_IN_FLOATING}, /*RXD1           */
-    {GPIOA, GPIO_Pin_11, 0, GPIO_Mode_Out_PP	 }, /*          	 */
-    {GPIOA, GPIO_Pin_12, 0, GPIO_Mode_Out_PP	 }, /*pwr select  	 */
-    {GPIOA, GPIO_Pin_13, 0, GPIO_Mode_IPU	 	 }, /*pwr offset     */ //The configuration is forbided with SWD.
-    {GPIOA, GPIO_Pin_14, 0, GPIO_Mode_Out_PP	 }, /*Att LE         */
-    {GPIOA, GPIO_Pin_15, 0, GPIO_Mode_Out_PP	 }, /*DAC LE         */
+    {GPIOA, GPIO_Pin_0 , 0, GPIO_Mode_Out_PP 	 }, //PWRSELECT
+    {GPIOA, GPIO_Pin_1 , 0, GPIO_Mode_AIN	 	 }, //ADC_PWR_DT_ADJ
+    {GPIOA, GPIO_Pin_2 , 0, GPIO_Mode_IPU 	 	 }, //PWRDTCTRL	 
+    {GPIOA, GPIO_Pin_3 , 0, GPIO_Mode_AIN		 }, //ADC_PWR_DT_REF 
+    {GPIOA, GPIO_Pin_4 , 0, GPIO_Mode_IPU	 	 }, // 
+    {GPIOA, GPIO_Pin_5 , 0, GPIO_Mode_IPU 	 	 }, //   
+    {GPIOA, GPIO_Pin_6 , 0, GPIO_Mode_Out_PP 	 }, //    
+    {GPIOA, GPIO_Pin_7 , 0, GPIO_Mode_Out_PP 	 }, //        
+    {GPIOA, GPIO_Pin_8 , 0, GPIO_Mode_Out_PP	 }, //VCODATA               
+    {GPIOA, GPIO_Pin_9 , 0, GPIO_Mode_AF_PP 	 }, //TXD1            
+    {GPIOA, GPIO_Pin_10, 0, GPIO_Mode_IN_FLOATING}, //RXD1           
+    {GPIOA, GPIO_Pin_11, 0, GPIO_Mode_Out_PP	 }, //          	 
+    {GPIOA, GPIO_Pin_12, 0, GPIO_Mode_Out_PP	 }, //VCOCLK 
+    {GPIOA, GPIO_Pin_13, 0, GPIO_Mode_IPU	 	 }, //LockFlag 
+    {GPIOA, GPIO_Pin_14, 0, GPIO_Mode_Out_PP	 }, //REFCTRLB        
+    {GPIOA, GPIO_Pin_15, 0, GPIO_Mode_Out_PP	 }, //REFCTRLA        
                                                         	                     
-    {GPIOB, GPIO_Pin_0 , 0, GPIO_Mode_Out_PP 	 }, /*VCOCE          */
-    {GPIOB, GPIO_Pin_1 , 0, GPIO_Mode_Out_PP	 }, /*VCOLE		 	 */
-    {GPIOB, GPIO_Pin_2 , 0, GPIO_Mode_Out_PP	 }, /*BOOT1 		 */
-    {GPIOB, GPIO_Pin_3 , 0, GPIO_Mode_Out_PP	 }, /*CLK	 		 */
-    {GPIOB, GPIO_Pin_4 , 0, GPIO_Mode_Out_PP	 }, /*DATA   	 	 */
-    {GPIOB, GPIO_Pin_5 , 0, GPIO_Mode_IPU	 	 }, /*limite         */
-    {GPIOB, GPIO_Pin_6 , 0, GPIO_Mode_AF_OD		 }, /*SCL1(EEPROM)   */
-    {GPIOB, GPIO_Pin_7 , 0, GPIO_Mode_AF_OD		 }, /*SDA1(EEPROM)   */
-    {GPIOB, GPIO_Pin_8 , 0, GPIO_Mode_Out_PP	 }, /*PA 12V Enable  */
-    {GPIOB, GPIO_Pin_9 , 0, GPIO_Mode_Out_PP	 }, /*PA Reset       */
-    {GPIOB, GPIO_Pin_10, 0, GPIO_Mode_Out_PP 	 }, /*VCO-CLK 		 */
-    {GPIOB, GPIO_Pin_11, 0, GPIO_Mode_Out_PP 	 }, /*VCO-DATA		 */
-    {GPIOB, GPIO_Pin_12, 0, GPIO_Mode_Out_PP	 }, /*				 */
-    {GPIOB, GPIO_Pin_13, 0, GPIO_Mode_Out_PP	 }, /*				 */    
-    {GPIOB, GPIO_Pin_14, 0, GPIO_Mode_Out_PP	 }, /*            	 */
-    {GPIOB, GPIO_Pin_15, 0, GPIO_Mode_Out_PP	 }, /*			 	 */
+    {GPIOB, GPIO_Pin_0 , 0, GPIO_Mode_Out_PP 	 }, //DACLE         
+    {GPIOB, GPIO_Pin_1 , 0, GPIO_Mode_Out_PP	 }, //DATTLE		 	 
+    {GPIOB, GPIO_Pin_2 , 0, GPIO_Mode_Out_PP	 }, //BOOT1 		 
+    {GPIOB, GPIO_Pin_3 , 0, GPIO_Mode_IPU	 	 }, //ALARM	Temperature 		 
+    {GPIOB, GPIO_Pin_4 , 0, GPIO_Mode_IPU	 	 }, //ALARM Current
+    {GPIOB, GPIO_Pin_5 , 0, GPIO_Mode_IPU	 	 }, //ALARM VSWR
+    {GPIOB, GPIO_Pin_6 , 0, GPIO_Mode_AF_OD		 }, //SCL1(EEPROM)   
+    {GPIOB, GPIO_Pin_7 , 0, GPIO_Mode_AF_OD		 }, //SDA1(EEPROM)   
+    {GPIOB, GPIO_Pin_8 , 0, GPIO_Mode_Out_PP	 }, //PA EN
+    {GPIOB, GPIO_Pin_9 , 0, GPIO_Mode_Out_PP	 }, //PA Reset       
+    {GPIOB, GPIO_Pin_10, 0, GPIO_Mode_Out_PP 	 }, //CLK		 
+    {GPIOB, GPIO_Pin_11, 0, GPIO_Mode_Out_PP 	 }, //DATA	 
+    {GPIOB, GPIO_Pin_12, 0, GPIO_Mode_Out_PP	 }, //				 
+    {GPIOB, GPIO_Pin_13, 0, GPIO_Mode_IPU	 	 }, //LockSymbol				     
+    {GPIOB, GPIO_Pin_14, 0, GPIO_Mode_Out_PP	 }, //VCOCE            	 
+    {GPIOB, GPIO_Pin_15, 0, GPIO_Mode_Out_PP	 }, //VCOLE			 	 
 
-    {GPIOC, GPIO_Pin_13, 0, GPIO_Mode_Out_PP	 }, /*           	 */    
-    {GPIOC, GPIO_Pin_14, 0, GPIO_Mode_Out_PP	 }, /*        		 */
-    {GPIOC, GPIO_Pin_15, 0, GPIO_Mode_Out_PP	 }, /*        		 */
+    {GPIOC, GPIO_Pin_13, 0, GPIO_Mode_Out_PP	 }, //PA12VEN      	     
+    {GPIOC, GPIO_Pin_14, 0, GPIO_Mode_Out_PP	 }, //        		 
+    {GPIOC, GPIO_Pin_15, 0, GPIO_Mode_Out_PP	 }, //        		 
 };
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/

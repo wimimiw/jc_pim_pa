@@ -1,10 +1,10 @@
 .\release\output\dev_spi.o: ..\device\dev_spi.c
 .\release\output\dev_spi.o: ..\app\config.h
-.\release\output\dev_spi.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\release\output\dev_spi.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\release\output\dev_spi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\release\output\dev_spi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\output\dev_spi.o: ..\cpu\stm32f10x.h
 .\release\output\dev_spi.o: ..\cpu\core_cm3.h
-.\release\output\dev_spi.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\release\output\dev_spi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\release\output\dev_spi.o: ..\cpu\system_stm32f10x.h
 .\release\output\dev_spi.o: ..\app\stm32f10x_conf.h
 .\release\output\dev_spi.o: ..\driver\inc\stm32f10x_adc.h

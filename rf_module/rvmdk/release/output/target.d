@@ -1,10 +1,10 @@
 .\release\output\target.o: ..\app\target.c
 .\release\output\target.o: ..\app\config.h
-.\release\output\target.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\release\output\target.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\release\output\target.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\release\output\target.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\output\target.o: ..\cpu\stm32f10x.h
 .\release\output\target.o: ..\cpu\core_cm3.h
-.\release\output\target.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\release\output\target.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\release\output\target.o: ..\cpu\system_stm32f10x.h
 .\release\output\target.o: ..\app\stm32f10x_conf.h
 .\release\output\target.o: ..\driver\inc\stm32f10x_adc.h

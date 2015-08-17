@@ -57,6 +57,7 @@ int main(void)
 	InitProtocol();
 	InitTaskControl();
 	InitWatchdog();
+	
 	/* warining£º
 	   the amount of task is limited, the default value is 10, define by TASK_MAX_NUM */	
 	AddTaskTimer( TaskParameter,USER_TIMER_1S(2) );		//2s

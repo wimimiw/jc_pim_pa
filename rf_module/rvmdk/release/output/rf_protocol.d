@@ -1,10 +1,10 @@
 .\release\output\rf_protocol.o: ..\app\rf_protocol.c
 .\release\output\rf_protocol.o: ..\app\config.h
-.\release\output\rf_protocol.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\release\output\rf_protocol.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\release\output\rf_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\release\output\rf_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\output\rf_protocol.o: ..\cpu\stm32f10x.h
 .\release\output\rf_protocol.o: ..\cpu\core_cm3.h
-.\release\output\rf_protocol.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\release\output\rf_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\release\output\rf_protocol.o: ..\cpu\system_stm32f10x.h
 .\release\output\rf_protocol.o: ..\app\stm32f10x_conf.h
 .\release\output\rf_protocol.o: ..\driver\inc\stm32f10x_adc.h
