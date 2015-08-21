@@ -295,7 +295,8 @@ BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	if(flag == TRUE)
 	{	
 		//ALC²ÎÊýÏÞ·ø
-		setALCRef(gPALim * 3.3 / 1023.0 * 4095 / 5.0 );
+		//setALCRef(gPALim * 3.3 / 1023.0 * 4095 / 5.0 );	
+		setALCRef(gPALim*4);				
 	}
 	return TRUE;
 }
@@ -327,6 +328,9 @@ BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 			PA_RESET(FALSE);
 		}
 
+		VCO_CE(gRFSW);		
+		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW);
+		
 		PA_POWER_SWITCH(gRFSW);
 	}
 	return TRUE;
@@ -370,8 +374,9 @@ void InitTaskControl(void)
 	setAtt(gAtt1);
 	setALCRef(0);
 	
-	VCO_CE(TRUE);
-	WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+	//VCO_CE(TRUE);
+	//WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+	VCO_CE(FALSE);
 }
 		
 int TaskControl(int*argv[],int argc)

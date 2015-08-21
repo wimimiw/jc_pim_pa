@@ -330,7 +330,7 @@ BOOL execRFParamQ(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		layer->totLen = 18;								
 		layer->objLen = 16;		
 		
-		*(U8 *)(buf+8 ) = !gLimState;
+		*(U8 *)(buf+8 ) = gLimState;
 		*(U8 *)(buf+9 ) = gRFSW;
 		*(U8 *)(buf+10) = gRFSW;
 		*(U16*)(buf+11) = gPACurrent;

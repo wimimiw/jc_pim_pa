@@ -45,7 +45,7 @@ I (..\app\target.h)(0x55C06F6F)
 I (..\app\rf_protocol.h)(0x55C06F6E)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x55C06F6E)
-F (..\app\rf_control.c)(0x55D1727F)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\ST\STM32F10x-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\rf_control.o --omf_browse .\release\output\rf_control.crf --depend .\release\output\rf_control.d)
+F (..\app\rf_control.c)(0x55D436F6)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\ST\STM32F10x-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\rf_control.o --omf_browse .\release\output\rf_control.crf --depend .\release\output\rf_control.d)
 I (..\app\config.h)(0x55C06F6E)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
@@ -91,7 +91,7 @@ I (..\app\target.h)(0x55C06F6F)
 I (..\app\rf_protocol.h)(0x55C06F6E)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x55C06F6E)
-F (..\app\rf_protocol.c)(0x55D170FF)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\ST\STM32F10x-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\rf_protocol.o --omf_browse .\release\output\rf_protocol.crf --depend .\release\output\rf_protocol.d)
+F (..\app\rf_protocol.c)(0x55D431E9)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\ST\STM32F10x-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\rf_protocol.o --omf_browse .\release\output\rf_protocol.crf --depend .\release\output\rf_protocol.d)
 I (..\app\config.h)(0x55C06F6E)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
