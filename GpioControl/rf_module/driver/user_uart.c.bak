@@ -1,0 +1,377 @@
+/*******************************Copyright (c)***********************************
+ *
+ *              Copyright (C), 1999-2011, Jointcom . Co., Ltd.
+ *
+ *------------------------------------------------------------------------------
+ * @file	:user_uart.c
+ * @author	:mashuai
+ * @version	:v2.0 
+ * @date	:2011.10.20
+ * @brief	:
+ *------------------------------------------------------------------------------
+ * @attention
+ ******************************************************************************/
+#ifndef __USER_UART_C__
+#define __USER_UART_C__
+#endif
+/* Includes ------------------------------------------------------------------*/
+#include "config.h"
+/* Private typedef -----------------------------------------------------------*/
+typedef struct _UART_Q_ {            /* UART GUEUE 结构体    */
+    U8 *buf;                         /* 数据缓冲区指针       */
+    U16 bufInPtr;                    /* 输入数据指针         */
+    U16 bufOutPtr;                   /* 输出数据指针         */
+    U16 bufDataLen;                  /* 数据长度             */
+    U8  bufLen;                      /* 缓冲区长度           */
+} UART_Q_S;
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+U8 				uartBuf			[UART_MAX][UART_CPU_BUF_LEN];
+static UART_Q_S uartBufQS		[UART_MAX];
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
+/*****************************************************************************************************************
+** 函数名称   : initUartBuf()
+** 功能描述   : 写数据到UART缓冲区
+** 输入参数   : buf 缓冲区指针
+**              bus 选择通道
+** 输出参数   : 无
+** 返    回   : 无
+** 创建时间   : 2010.10.09
+** 当前版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+** 描    述   : 初始版本
+** 修改时间   : 2010.10.09
+** 修改版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+*****************************************************************************************************************/
+void InitUartBuf(U8 bus, U8 *buf)
+{
+    if (NULL != buf)
+    {
+        uartBufQS[bus].buf        = buf;
+        uartBufQS[bus].bufDataLen = 0;
+        uartBufQS[bus].bufInPtr   = 0;
+        uartBufQS[bus].bufOutPtr  = 0;
+    }
+}
+/*****************************************************************************************************************
+** 函数名称   : resetUartBuf()
+** 功能描述   : 复位UART Buf数据
+** 输入参数   : bus 选择通道
+** 输出参数   : 无
+** 返    回   : UART BUF数据长度
+** 创建时间   : 2010.10.09
+** 当前版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+** 描    述   : 初始版本
+** 修改时间   : 2010.10.09
+** 修改版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+*****************************************************************************************************************/
+void ResetUartBuf(U8 bus)
+{
+    uartBufQS[bus].bufDataLen = 0;
+    uartBufQS[bus].bufInPtr   = 0;
+    uartBufQS[bus].bufOutPtr  = 0;
+}
+/*****************************************************************************************************************
+** 函数名称   : uartBufDataIn()
+** 功能描述   : 写数据到UART缓冲区
+** 输入参数   : data 入队的数据
+**              bus 选择通道
+** 输出参数   : 无
+** 返    回   : 无
+** 创建时间   : 2010.10.09
+** 当前版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+** 描    述   : 初始版本
+** 修改时间   : 2010.10.09
+** 修改版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+*****************************************************************************************************************/
+static void UartBufDataIn(U8 bus, U8 data)
+{
+    U16	i;
+    uartBufQS[bus].buf[uartBufQS[bus].bufInPtr] = data;                                 /* 数据入队             */
+    uartBufQS[bus].bufInPtr 	= (uartBufQS[bus].bufInPtr + 1) % UART_CPU_BUF_LEN;         /* 调整指针             */
+    uartBufQS[bus].bufDataLen	= (uartBufQS[bus].bufDataLen+1) % UART_CPU_BUF_LEN;
+}
+/*****************************************************************************************************************
+** 函数名称   : uartBufDataOut()
+** 功能描述   : UART缓冲区数据出队
+** 输入参数   : len 出队的数据个数
+**              bus 选择通道
+** 输出参数   : 无
+** 返    回   : TRUE 操作成功
+**              FLASE 操作失败
+** 创建时间   : 2010.10.09
+** 当前版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+** 描    述   : 初始版本
+** 修改时间   : 2010.10.09
+** 修改版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+*****************************************************************************************************************/
+static U8 UartBufDataOut(U8 bus, U8 len)
+{
+    if (len <= uartBufQS[bus].bufDataLen)                                                /* 判断缓冲区数据长度   */
+    {
+        uartBufQS[bus].bufOutPtr = (uartBufQS[bus].bufOutPtr + len) % UART_CPU_BUF_LEN;  /* 调整指针             */
+        uartBufQS[bus].bufDataLen -= len;                                                /* 需要检查是否单指令   */
+        return TRUE;
+    }
+    return FALSE;
+}
+
+/*****************************************************************************************************************
+** 函数名称   : writeUartStr()
+** 功能描述   : UART口发数据
+** 输入参数   : data 发送数据的缓冲区指针
+**              len 需要发送的数据长度
+**              bus 选择通道
+** 输出参数   : 无
+** 返    回   : 无
+** 创建时间   : 2010.10.09
+** 当前版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+** 描    述   : 初始版本
+** 修改时间   : 2010.10.09
+** 修改版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+*****************************************************************************************************************/
+void WriteUartStr(U8 bus, U8 *data, U16 len)
+{
+	U8 residue = 0;
+	U8 sentLen = 0;
+
+	residue = len;
+
+	/* 使用FIFO发送数据 	*/
+    while ( residue > 0 )
+    {
+		//sentLen = (residue > UART_FIFO_LENGTH) ? UART_FIFO_LENGTH : residue;
+		residue -= sentLen;
+
+        //while ( !(UART_LSR(bus) & 0x20) );
+        while ( sentLen > 0 )
+        {
+            //UART_THR(bus) = *data++;
+			sentLen--;
+        }
+    }
+    //while (!(UART_LSR(bus) & 0x40));
+}
+
+
+/*****************************************************************************************************************
+** 函数名称   : writeUartStr()
+** 功能描述   : UART口模式设置
+** 输入参数   : chkBit 校验位
+**              bus 选择通道
+** 输出参数   : 无
+** 返    回   : 无
+** 创建时间   : 2010.10.09
+** 当前版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+** 描    述   : 初始版本
+** 修改时间   : 2010.10.09
+** 修改版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+*****************************************************************************************************************/
+void SetUartMode(U8 bus, U8 chkBit)
+{
+    //UART_LCR(bus) = chkBit | 0x03;
+}
+
+
+/*****************************************************************************************************************
+** 函数名称   : readUartStr()
+** 功能描述   : UART口读数据
+** 输入参数   : offset 读取数据的偏移位置
+**              len 需要读取的数据长度
+**              bus 选择通道
+** 输出参数   : data 读取数据的缓冲区指针
+** 返    回   : TRUE 操作成功
+**              FALSE 操作失败
+** 创建时间   : 2010.10.09
+** 当前版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+** 描    述   : 初始版本
+** 修改时间   : 2010.10.09
+** 修改版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+*****************************************************************************************************************/
+U8 ReadUartStr(U8 bus, U8 *data, U16 offset, U16 len)
+{
+    U16 outPtr;
+	U16 i;
+
+    if (uartBufQS[bus].bufDataLen >= len + offset)
+    {
+        for (i = 0, outPtr = (uartBufQS[bus].bufOutPtr + offset) % UART_CPU_BUF_LEN;		   /* 不移动输出指针               */
+			 i < len; i++, outPtr = (outPtr + 1) % UART_CPU_BUF_LEN)                           /* 循环缓冲区临时输出指针加一   */
+        {																					   /* 从缓冲区读取数据             */
+            *data++ = uartBufQS[bus].buf[outPtr];                                              /* 读取缓冲区                   */
+        }
+        return TRUE;
+    }
+    return FALSE;
+}
+
+
+/*****************************************************************************************************************
+** 函数名称   : readUartBufLen()
+** 功能描述   : 读取UART Buf数据长度
+** 输入参数   : bus 选择通道
+** 输出参数   : 无
+** 返    回   : UART BUF数据长度
+** 创建时间   : 2010.10.09
+** 当前版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+** 描    述   : 初始版本
+** 修改时间   : 2010.10.09
+** 修改版本   : V1.0
+** 作    者   : ZhangXL
+**----------------------------------------------------------------------------------------------------------------
+*****************************************************************************************************************/
+U8 ReadUartBufLen(U8 bus)
+{
+    return uartBufQS[bus].bufDataLen;
+}
+/**
+  * @brief  This function handles USARTy global interrupt request.
+  * @param  None
+  * @retval None
+  */
+void USART1_IRQHandler(void)
+{		
+	static UserTimerDef rxTimer;
+	volatile U8 data;
+
+	if ( SET == USART_GetITStatus(USART1,USART_IT_TC) )
+	{//transmitter interrupt
+		USART_ClearITPendingBit(USART1,USART_IT_TC);
+		data = UartBufDataOut(UART1,1);
+		USART_SendData(USART1,data);		
+//		if ( uartCallback[UART1].txHandle != NULL )
+//		{
+//			data = uartCallback[UART1].txHandle(); 
+//			if (TRUE == txOpen[UART1])
+//			{
+//				USART_SendData(USART1,data);		
+//			}
+//		}
+	}
+	else if ( SET == USART_GetITStatus(USART1,USART_IT_RXNE) )
+	{//receive interrupt
+		if ( TRUE == UserTimerOver(TIM2,&rxTimer,USER_TIMER_1MS(5)) )
+		{
+			ResetUartBuf(UART1);
+		}
+		UserTimerReset(TIM2,&rxTimer);
+			
+		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+		data = USART_ReceiveData(USART1);
+		UartBufDataIn(UART1,data);
+//		if ( uartCallback[UART1].rxHandle != NULL )
+//		{			 
+//			data = USART_ReceiveData(USART1);
+//			uartCallback[UART1].rxHandle(data);					
+//		}		
+	}
+	else
+	{//exception 
+		InitUart();
+		ResetUartBuf(UART1);
+	} 
+	return;
+}
+/**
+  * @brief  :串口通信初始化
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+void InitUart(void)
+{
+	USART_InitTypeDef USART_InitStructure;
+
+	USART_InitStructure.USART_BaudRate = 9600;
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;
+	USART_InitStructure.USART_Parity = USART_Parity_Even;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	
+	/* Configure USART1 */
+	USART_Init(USART1, &USART_InitStructure);
+	//clear the it flag
+	USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+	USART_ClearITPendingBit(USART1,USART_IT_TC);
+	/* Enable USARTz Receive and Transmit interrupts */
+	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);		
+	USART_ITConfig(USART1, USART_IT_TC, ENABLE);
+	/* Enable the USARTy */
+	USART_Cmd(USART1, ENABLE);	
+}
+///**
+//  * @brief  :
+//  * @param  :None
+//  * @retval :None
+//  * @author	:mashuai
+//  * @version:v2.0
+//  * @date	:2011.10.20
+//  */
+//void InitUartProc(USART_TypeDef*USARTx, struct UART_CALLBACK * pt)
+//{
+//	if ( USART1 == USARTx )
+//		memcpy((U8*)&uartCallback[UART1], (U8*)pt, sizeof(struct UART_CALLBACK));
+//	else if ( USART2 == USARTx )
+//		memcpy((U8*)&uartCallback[UART2], (U8*)pt, sizeof(struct UART_CALLBACK));		
+//}
+///**
+//  * @brief  :Open the uart interrupt
+//  * @param  :None
+//  * @retval :None
+//  * @author	:mashuai
+//  * @version:v2.0
+//  * @date	:2011.10.20
+//  */
+//void UartTxOpen(USART_TypeDef* USARTx,U8 msb)
+//{
+//	if ( USART1 == USARTx )txOpen[UART1] = TRUE;
+//	else if ( USART2 == USARTx )txOpen[UART2] = TRUE;
+//	USART_SendData(USART1,msb);return;
+//}
+///**
+//  * @brief  :Close the uart interrupt
+//  * @param  :None
+//  * @retval :None
+//  * @author	:mashuai
+//  * @version:v2.0
+//  * @date	:2011.10.20
+//  */
+//void UartTxClose(USART_TypeDef* USARTx)
+//{
+//	if ( USART1 == USARTx )txOpen[UART1] = FALSE;
+//	else if ( USART2 == USARTx )txOpen[UART2] = FALSE;	
+//}
+/********************************END OF FILE***********************************/

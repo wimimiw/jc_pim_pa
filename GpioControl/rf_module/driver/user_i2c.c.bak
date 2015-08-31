@@ -1,0 +1,323 @@
+/*******************************Copyright (c)***********************************
+ *
+ *              Copyright (C), 1999-2011, Jointcom . Co., Ltd.
+ *
+ *------------------------------------------------------------------------------
+ * @file	:
+ * @author	:mashuai
+ * @version	:v2.0 
+ * @date	:2011.10.20
+ * @brief	:
+ *------------------------------------------------------------------------------
+ * @attention
+ ******************************************************************************/
+#ifndef __USER_I2C_C__
+#define __USER_I2C_C__
+#endif
+/* Includes ------------------------------------------------------------------*/
+#include "config.h"
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+#define I2C_RESET_NUM	3
+#define TIMER_OVER_MAX	10000
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+I2C_SLAVE_HANDLE i2c_slave_handle;
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
+/**
+  * @brief  :debug driver
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+#define __DEBUG_THIS
+#ifdef __DEBUG_THIS 
+int main(void)
+{	
+	U8 	buf[10];
+	U16 addr = 0x0000;
+
+	InitTarget();
+
+	I2cReadDevice(I2C2,0xA0,(U8*)&addr,2,buf,10);	
+	for(;;);
+}
+#endif
+/**
+  * @brief  :This function handles I2C1 global interrupt request.
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+void I2C1_EV_IRQHandler(void)
+{
+	static U16 rxCnt,txCnt,txSum;
+	static U8  *txBuf,rxBuf[UART_CPU_BUF_LEN]; 
+	volatile U32 lastEvent;
+
+	if( NULL == rxBuf ) return;
+
+	switch( lastEvent = I2C_GetLastEvent(I2C1) )
+	{	/* Slave RECEIVER mode --------------------------*/
+		case I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED://EV1
+			rxCnt = 0;
+			break;
+		case I2C_EVENT_SLAVE_BYTE_RECEIVED://EV2
+			rxBuf[rxCnt++%UART_CPU_BUF_LEN] = I2C_ReceiveData(I2C1);
+			break;
+		case I2C_EVENT_SLAVE_STOP_DETECTED://EV4
+			I2C1->CR1 &=~(1<<9); //clear STOPF in CR1
+			if ( NULL != i2c_slave_handle );
+			{
+				i2c_slave_handle(rxBuf,rxCnt,&txBuf,&txSum);
+				rxCnt = 0;
+			}
+			break;
+		/* Slave TRANSMITTER mode -----------------------*/
+		case I2C_EVENT_SLAVE_TRANSMITTER_ADDRESS_MATCHED://EV1
+			txCnt = 0;
+			break;
+		case I2C_EVENT_SLAVE_BYTE_TRANSMITTED://EV3_1
+		case I2C_EVENT_SLAVE_BYTE_TRANSMITTING://EV3	
+			if( NULL != txBuf && txCnt < txSum && NULL != txBuf)
+				I2C_SendData(I2C1,txBuf[txCnt++]);		
+			break;
+		case I2C_EVENT_SLAVE_ACK_FAILURE://EV3_2
+			I2C_ClearITPendingBit(I2C1,I2C_FLAG_AF);
+			txCnt = 0;
+			break;
+		default:
+			txCnt = rxCnt = 0;
+			I2C_ClearITPendingBit(I2C1,lastEvent);
+			break;
+	}	
+}
+/**
+  * @brief  :This function handles I2C2 global interrupt request.
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+void I2C2_EV_IRQHandler(void)
+{
+}
+/**
+  * @brief  :I2C Configuration
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+void InitI2c(void)
+{
+	I2C_InitTypeDef  I2C_InitStructure;
+	//i2c slave mode
+	I2C_DeInit(I2C1);
+	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+	I2C_InitStructure.I2C_OwnAddress1 = I2C_SLAVE_ADDR;
+	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+	I2C_Cmd(I2C1, ENABLE);
+	I2C_Init(I2C1, &I2C_InitStructure);	
+	I2C_ITConfig(I2C1,I2C_IT_EVT,ENABLE);
+	//i2c master mode
+	I2C_DeInit(I2C2);
+	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+	I2C_InitStructure.I2C_ClockSpeed = 100*1000; 	
+	I2C_Cmd(I2C2, ENABLE);
+	I2C_Init(I2C2, &I2C_InitStructure);
+}
+/**
+  * @brief  :Init the I2C slave communication
+  * @param  :const I2C_CALLBACK*i2cSlaveCom
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+void InitI2cProc(I2C_TypeDef* I2Cx, I2C_SLAVE_HANDLE handle)
+{
+	i2c_slave_handle = handle;	 
+}
+/**
+  * @brief  :temp
+  * @param  :
+  * @retval :
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+static BOOL I2cGetFlagPcs(I2C_TypeDef*I2Cx,U32 flag)
+{
+	U16	timerOverCnt;
+
+	for(timerOverCnt=0;
+		timerOverCnt < TIMER_OVER_MAX && I2C_GetFlagStatus(I2Cx,flag)==RESET;
+		timerOverCnt++);
+
+	if(timerOverCnt == TIMER_OVER_MAX)
+		return FALSE;
+	else
+		return TRUE;		
+}
+/**
+  * @brief  :I2C2 master communication process polling
+  * @param  :I2Cx 
+  * @param	:addr				器件地址
+  * @param	:iaddr				器件内部地址
+  * @param	:iaddrLen			器件内部地址类型  
+  * @param	:pbuf				发送数据首地址
+  * @param	:plen				发送数据长度
+  * @retval :BOOL
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+static BOOL I2cMasterWrite(I2C_TypeDef*I2Cx, U8 addr, U8*iaddr, U8 iaddrLen, U8 *pbuf, U8 plen)
+{
+	BOOL result = FALSE;
+	U8 	i,j;
+
+	for(i = 0;i < I2C_RESET_NUM;i ++)
+	{
+		//Reset the i2c
+		//I2C_SoftwareResetCmd(I2Cx,ENABLE);
+		//START transmitter
+		I2C_GenerateSTART(I2Cx,ENABLE);
+		//wait EV5
+		if(!I2cGetFlagPcs(I2Cx,I2C_FLAG_SB))continue;
+		//address transmitter
+		I2C_Send7bitAddress(I2Cx,addr,I2C_Direction_Transmitter);
+		//wait EV6
+		if(!I2cGetFlagPcs(I2Cx,I2C_FLAG_ADDR))continue;
+		//wait EV8_1
+		if(!I2cGetFlagPcs(I2Cx,I2C_FLAG_TXE))continue;
+		//internal address transmitter
+		for(j = 0;j < iaddrLen;j ++)
+		{//wait EV8			
+			I2C_SendData(I2Cx,iaddr[j]);							
+			if(!I2cGetFlagPcs(I2Cx,I2C_FLAG_TXE))break;
+		}
+		if(j < iaddrLen)continue;		
+		//data transmitter
+		for(j = 0;j < plen;j ++)
+		{//wait EV8_1 EV8
+			if(!I2cGetFlagPcs(I2Cx,I2C_FLAG_TXE))break;
+			I2C_SendData(I2Cx,*pbuf++);				
+		}				 
+		if(j < plen)continue;
+		//wait EV8_2
+		if(!I2cGetFlagPcs(I2Cx,I2C_FLAG_TXE)&&!I2cGetFlagPcs(I2Cx,I2C_FLAG_BTF))continue;
+		//stop transmitter
+		I2C_GenerateSTOP(I2Cx,ENABLE);
+		//return result
+		result = TRUE;break;
+	}
+	//I2C_SoftwareResetCmd(I2Cx,DISABLE);
+	return result;
+}
+/**
+  * @brief  :I2C2 slave communication process polling
+  * @param  :I2Cx 
+  * @param	:addr				器件地址
+  * @param	:iaddr				器件内部地址
+  * @param	:iaddrLen			器件内部地址类型
+  * @param	:pbuf				接收数据首地址
+  * @param	:plen				接收数据长度
+  * @retval :BOOL
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+static BOOL I2cMasterRead(I2C_TypeDef* I2Cx,U8 addr, U8 *pbuf, U8 plen)
+{
+	BOOL result = FALSE;
+	U8 	i,j;
+
+	for(i = 0;i < I2C_RESET_NUM;i ++)
+	{
+		//Reset the i2c
+		//I2C_SoftwareResetCmd(I2Cx,ENABLE);
+		//START transmitter
+		I2C_GenerateSTART(I2Cx,ENABLE);
+		//wait EV5
+		if(!I2cGetFlagPcs(I2Cx,I2C_FLAG_SB))continue;
+		//address receiver
+		I2C_Send7bitAddress(I2Cx,addr,I2C_Direction_Receiver);
+		//wait EV6
+		if(!I2cGetFlagPcs(I2Cx,I2C_FLAG_ADDR))continue;				
+		//data transmitter
+		for(j = 0;j < plen;j ++)
+		{			
+//		 	method 1
+			if(1 == plen || j == plen - 1)
+			{//EV6_1,EV7_1
+				I2C_AcknowledgeConfig(I2Cx,DISABLE);
+				I2C_GenerateSTOP(I2Cx,ENABLE);				
+			}
+			//wait EV7
+			if(!I2cGetFlagPcs(I2Cx,I2C_FLAG_RXNE))break;
+			*pbuf++ = I2C_ReceiveData(I2Cx);																				
+		}
+		if(j != plen )continue;		
+		//return result
+		result = TRUE;break;
+	}
+	//I2C_SoftwareResetCmd(I2Cx,DISABLE);
+	I2C_AcknowledgeConfig(I2Cx,ENABLE);
+	return result;
+}
+/**
+  * @brief  :从有子地址器件任意地址开始读取N字节数据
+  * @param	:I2Cx            I2C总线
+  * @param	:addr            器件从地址
+  * @param	:iaddr       	 器件子地址
+  * @param	:iaddrLen        器件子地址类型
+  * @param	:pbuf            数据接收缓冲区指针  
+  * @param	:plen            读取的个数
+  * @retval :返回值为FALSE时表示出错，为TRUE时表示操作正确
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+BOOL I2cReadDevice(I2C_TypeDef* I2Cx, U8 addr, U8*iaddr, U8 iaddrLen, U8*pbuf, U8 plen)
+{
+	if ( TRUE == I2cMasterWrite(I2Cx,addr,iaddr,iaddrLen,NULL,0) )
+	{
+		if ( TRUE == I2cMasterRead(I2Cx,addr,pbuf,plen) )
+		{
+			return TRUE;
+		}
+	}		
+	return FALSE;
+}
+/**
+  * @brief  :向有子地址器件写入N字节数据
+  * @param	:I2Cx            I2C总线
+  * @param	:addr            器件从地址
+  * @param	:iaddr       	 器件子地址
+  * @param	:iaddrLen        器件子地址类型
+  * @param	:pbuf            数据接收缓冲区指针  
+  * @param	:plen            读取的个数
+  * @retval :返回值为FALSE时表示出错，为TRUE时表示操作正确
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+BOOL I2cWriteDevice(I2C_TypeDef* I2Cx, U8 addr, U8*iaddr, U8 iaddrLen, U8*pbuf, U8 plen)
+{	
+	return I2cMasterWrite(I2Cx,addr,iaddr,iaddrLen,pbuf,plen);
+}
+/********************************END OF FILE***********************************/
