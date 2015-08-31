@@ -44,8 +44,11 @@ __inline void usdelay(U16 delayTimer)
 	for(i = 0;i < delayTimer*NUM_NOP_IN_US ;i ++);
 }
 /* Public variables ----------------------------------------------------------*/
+__USER_TIMER_EXT__ U16 __interPeriod;
+__USER_TIMER_EXT__ U16 __interVal;
 /* Public function prototypes ------------------------------------------------*/
 __USER_TIMER_EXT__ void InitTimer(void);
+__USER_TIMER_EXT__ void InitTIM1(void);
 __USER_TIMER_EXT__ void UserTimerReset(TIM_TypeDef* TIMx,UserTimerDef * timer);
 __USER_TIMER_EXT__ BOOL UserTimerOver(TIM_TypeDef* TIMx,UserTimerDef * timer,S32 limit);
 

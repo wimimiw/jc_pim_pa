@@ -153,6 +153,7 @@ static void InitRcc(void)
 								,ENABLE);
 	/* APB2Periph clock enable */
 	RCC_APB2PeriphClockCmd( RCC_APB2Periph_AFIO
+									|RCC_APB2Periph_TIM1
 									|RCC_APB2Periph_GPIOA
 									|RCC_APB2Periph_GPIOB
 									|RCC_APB2Periph_GPIOC
@@ -214,9 +215,15 @@ static void InitNvic(void)
 
 	/* Enable the USART2 Interrupt */
 	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
+	
+	/* Enable the TIM1 Interrupt */
+	NVIC_InitStructure.NVIC_IRQChannel = TIM1_UP_TIM16_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);	
 
 //	/* Enable the USART1 Interrupt */
 //	NVIC_InitStructure.NVIC_IRQChannel = I2C1_EV_IRQn;
@@ -242,6 +249,7 @@ void InitTarget(void)
 	InitUartBuf(UART1);
 	InitUartBuf(UART2);
 	InitI2c();
+	//InitTIM1();
 	InitTimer();
 }
 /********************************END OF FILE***********************************/

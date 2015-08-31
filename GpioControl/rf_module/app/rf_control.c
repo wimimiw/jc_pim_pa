@@ -483,7 +483,30 @@ static int taskSwitchMatrix(U8 port)
 			for(i = 1;i<DATA_LEN-1;i++)
 				check^=buf[i];
 			
-			buf[DATA_LEN-1] = check;						
+			buf[DATA_LEN-1] = check;
+
+			//
+//	//???????
+//				__interVal = uartBufQS[UART1].buf[1] + uartBufQS[UART1].buf[2]*256;
+//				//????
+//				__interPeriod = uartBufQS[UART1].buf[3] + uartBufQS[UART1].buf[4]*256;
+
+//				//?????????
+//				//WriteE2prom(0x0000,&(uartBufQS[UART1].buf[1]),4);
+//				
+//				TIM_Cmd(TIM1,DISABLE);
+//				GPIO_Write(GPIOA,0xFFFF);
+//				GPIO_Write(GPIOB,0xFFFF);
+//				GPIO_Write(GPIOC,0xFFFF);
+//				GPIO_Write(GPIOD,0xFFFF);
+//				GPIO_Write(GPIOE,0xFFFF);
+//				TIM_Cmd(TIM1,ENABLE);				
+//				
+//				check = 0;
+//				for(i = 1;i<DATA_LEN-1;i++)
+//					check^=uartBufQS[UART1].buf[i];							
+//				
+//				uartBufQS[UART1].buf[DATA_LEN-1] = check;							
 		}			
 		
 		UartTxOpen(port,DATA_LEN);

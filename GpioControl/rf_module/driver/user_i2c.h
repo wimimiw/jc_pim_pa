@@ -11,9 +11,8 @@
  *------------------------------------------------------------------------------
  * @attention
  ******************************************************************************/
-#ifndef __USER_I2C_C__
-#define __USER_I2C_C__
-#endif
+#ifndef __USER_I2C_H__
+#define __USER_I2C_H__
 
 #ifndef __USER_I2C_C__
 #define	__USER_I2C_EXT__ 	 extern
@@ -32,3 +31,4 @@ __USER_I2C_EXT__ void InitI2cProc(I2C_TypeDef* I2Cx, I2C_SLAVE_HANDLE handle);
 __USER_I2C_EXT__ BOOL I2cWriteDevice(I2C_TypeDef* I2Cx, U8 addr, U8*iaddr, U8 iaddrLen, U8*pbuf, U8 plen);
 __USER_I2C_EXT__ BOOL I2cReadDevice(I2C_TypeDef* I2Cx, U8 addr, U8*iaddr, U8 iaddrLen, U8*pbuf, U8 plen);
 /********************************END OF FILE***********************************/
+#endif
