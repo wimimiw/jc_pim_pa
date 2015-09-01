@@ -36,6 +36,8 @@
 
 #define EEPROM_ADDR_UPGRADE	0x00FF
 #define EEPROM_ADDR_REBOOT	0x00FE
+
+#define VERSION_GPIO_CONTROL  "3.X"
 /* Public macro --------------------------------------------------------------*/
 /* Public variables ----------------------------------------------------------*/
 __RF_PARAMETER_EXT__ U8 modelAddr;

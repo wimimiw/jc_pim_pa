@@ -461,7 +461,7 @@ static int taskSwitchMatrix(U8 port)
 		}
 		else if (cmd == 'V')
 		{//¶Á°æ±¾
-			sprintf((char*)&buf[1],"2.X");		
+			sprintf((char*)&buf[1],VERSION_GPIO_CONTROL);		
 			
 			check = 0;
 			for(i = 1;i<DATA_LEN-1;i++)
