@@ -27,6 +27,8 @@ typedef struct{
 	U32 cnt;
 	U32 record;
 }UserTimerDef;
+
+typedef void(*TIMER_CALLBACK)() ;
 /* Public define -------------------------------------------------------------*/
 #define TIM_CNT_FREQ		38400						  /*因为晶振为11.0592MHz
 														  	所以以38400为计数频率
@@ -44,11 +46,10 @@ __inline void usdelay(U16 delayTimer)
 	for(i = 0;i < delayTimer*NUM_NOP_IN_US ;i ++);
 }
 /* Public variables ----------------------------------------------------------*/
-__USER_TIMER_EXT__ U16 __interPeriod;
-__USER_TIMER_EXT__ U16 __interVal;
 /* Public function prototypes ------------------------------------------------*/
 __USER_TIMER_EXT__ void InitTimer(void);
 __USER_TIMER_EXT__ void InitTIM1(void);
+__USER_TIMER_EXT__ void Tim1RegisterDelegate(TIMER_CALLBACK callback);
 __USER_TIMER_EXT__ void UserTimerReset(TIM_TypeDef* TIMx,UserTimerDef * timer);
 __USER_TIMER_EXT__ BOOL UserTimerOver(TIM_TypeDef* TIMx,UserTimerDef * timer,S32 limit);
 

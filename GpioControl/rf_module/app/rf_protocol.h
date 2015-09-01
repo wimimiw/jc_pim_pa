@@ -271,6 +271,7 @@ typedef struct __JOINTCOM_EXE_TABLE {
 #define EE_IAP_FALG1		0x0400
 #define EE_IAP_FALG2		0x0401
 #define EE_ADDR				0x0402
+#define EE_PLUS_VALUE		0x0404      //Size = 4
 //应答标志常量列表
 #define	NO_ERR				0x00
 #define	CMDID_ERR			0x02

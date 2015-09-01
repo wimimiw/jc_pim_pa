@@ -20,6 +20,8 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+static TIMER_CALLBACK __Timer1_Callback;
+static TIMER_CALLBACK __Timer2_Callback;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -91,11 +93,11 @@ void InitTIM1(void)
 	
 	//??????TIM1????,??TIM_OC1Init,TIM_OC1PreloadConfig?????
 	//TIM_ClearFlag(TIM1,TIM_FLAG_Update);
-	TIM_ITConfig(TIM1,TIM_IT_Update,ENABLE);	
+	//TIM_ITConfig(TIM1,TIM_IT_Update,ENABLE);	
 	/* TIM1 main Output Enable */
 	//TIM_CtrlPWMOutputs(TIM1,ENABLE);	
  	/* TIM1 counter enable */
-	TIM_Cmd(TIM1,ENABLE);			
+	//TIM_Cmd(TIM1,ENABLE);			
 }
 /**
   * @brief  :Reset the user timer
@@ -158,51 +160,17 @@ BOOL UserTimerOver(TIM_TypeDef* TIMx,UserTimerDef * timer,S32 limit)
 	}	
 }
 
+void Tim1RegisterDelegate(TIMER_CALLBACK callback)
+{
+	__Timer1_Callback = callback;
+}
+
 void TIM1_UP_TIM16_IRQHandler(void)
-{	
-	static U8 f =0;
-	static U16 period1 = 0,period2 = 0;
-	
+{		
 	if (TIM_GetITStatus(TIM1,TIM_IT_Update)!= RESET )
 	{
 		TIM_ClearITPendingBit(TIM1,TIM_FLAG_Update);
-		
-		if( __interPeriod == 0 )
-		{
-			if( --__interVal == 0 )
-			{		
-				GPIO_Write(GPIOA,0);
-				GPIO_Write(GPIOB,0);
-				GPIO_Write(GPIOC,0);
-				GPIO_Write(GPIOD,0);
-				GPIO_Write(GPIOE,0);	
-				
-				TIM_Cmd(TIM1,DISABLE);
-			}	
-		}	
-		else 
-		{		
-			if( (period1++ % __interPeriod) == 0 )
-			{
-				f = 1;
-				period2 = 0;
-				GPIO_Write(GPIOA,0xFFFF);
-				GPIO_Write(GPIOB,0xFFFF);
-				GPIO_Write(GPIOC,0xFFFF);
-				GPIO_Write(GPIOD,0xFFFF);
-				GPIO_Write(GPIOE,0xFFFF);				
-			}
-
-			if( ++period2 >= __interVal && f == 1)
-			{
-				f = 0;
-				GPIO_Write(GPIOA,0);
-				GPIO_Write(GPIOB,0);
-				GPIO_Write(GPIOC,0);
-				GPIO_Write(GPIOD,0);
-				GPIO_Write(GPIOE,0);
-			}				
-		}	
+		if(__Timer1_Callback != NULL)__Timer1_Callback();	
 	}
 }
 /********************************END OF FILE***********************************/

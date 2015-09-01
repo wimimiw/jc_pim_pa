@@ -28,6 +28,8 @@ typedef struct _UART_Q_ {            /* UART GUEUE ½á¹¹Ìå    */
 /* Private variables ---------------------------------------------------------*/
 		U8		uartBuf			[UART_MAX][UART_CPU_BUF_LEN];
 static UART_Q_S uartBufQS		[UART_MAX];
+static UART_CALLBACK __Uart1_Callback;
+static UART_CALLBACK __Uart2_Callback;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -340,5 +342,29 @@ void UartTxOpen(U8 bus,U16 len)
 		else if	(bus == UART2)USART_SendData(USART2,*pt);
 		//DRIVER_DIRECT_DISABLE();
 	}
+}
+/**
+  * @brief  :Open the uart interrupt
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+void Uart1RegisterDelegate(UART_CALLBACK callback)
+{
+	__Uart1_Callback = callback;
+}
+/**
+  * @brief  :Open the uart interrupt
+  * @param  :None
+  * @retval :None
+  * @author	:mashuai
+  * @version:v2.0
+  * @date	:2011.10.20
+  */
+void Uart2RegisterDelegate(UART_CALLBACK callback)
+{
+	__Uart2_Callback = callback;
 }
 /********************************END OF FILE***********************************/

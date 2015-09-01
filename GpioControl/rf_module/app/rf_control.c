@@ -62,6 +62,8 @@ const U8 BootloaderV 	__attribute__((at(ADDR_BYTE_BOOTLOADERV))) = 0x11;
 const U8 SoftwareV 		__attribute__((at(ADDR_BYTE_SOFTWAREV  ))) = 0x62;
 const U8 HardwareV 		__attribute__((at(ADDR_BYTE_HARDWAREV  ))) = 0x50;
 /* Private variables ---------------------------------------------------------*/
+U16 __interPeriod = 0;
+U16 __interVal = 0;
 BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
@@ -469,44 +471,36 @@ static int taskSwitchMatrix(U8 port)
 		}	
 		else if (cmd == 'Z')
 		{//¶ÁÐ´µØÖ·
-			if(buf[1] == 'W')
+			if(buf[1] == 'A' && buf[2] == 'W')
 			{
-				gAddr = buf[2];
+				gAddr = buf[3];
 				WriteE2prom(EE_ADDR,(U8*)&gAddr,sizeof(gAddr));
 			}
-			else if(buf[1] == 'R')
+			else if(buf[1] == 'A' && buf[2] == 'R')
 			{				
-				buf[2] = gAddr;
+				buf[3] = gAddr;
 			}				
+			else if(buf[1] == 'P')
+			{//Âö³å
+				__interVal = buf[2] + buf[3]*256;
+				__interPeriod = buf[4] + buf[5]*256;
+
+				WriteE2prom(EE_PLUS_VALUE,&buf[2],4);
+				
+				TIM_Cmd(TIM1,DISABLE);
+				GPIO_Write(GPIOA,0xFFFF);
+				GPIO_Write(GPIOB,0xFFFF);
+				GPIO_Write(GPIOC,0xFFFF);
+				GPIO_Write(GPIOD,0xFFFF);
+				GPIO_Write(GPIOE,0xFFFF);
+				TIM_Cmd(TIM1,ENABLE);									
+			}	
 			
 			check = 0;
 			for(i = 1;i<DATA_LEN-1;i++)
 				check^=buf[i];
 			
-			buf[DATA_LEN-1] = check;
-
-			//
-//	//???????
-//				__interVal = uartBufQS[UART1].buf[1] + uartBufQS[UART1].buf[2]*256;
-//				//????
-//				__interPeriod = uartBufQS[UART1].buf[3] + uartBufQS[UART1].buf[4]*256;
-
-//				//?????????
-//				//WriteE2prom(0x0000,&(uartBufQS[UART1].buf[1]),4);
-//				
-//				TIM_Cmd(TIM1,DISABLE);
-//				GPIO_Write(GPIOA,0xFFFF);
-//				GPIO_Write(GPIOB,0xFFFF);
-//				GPIO_Write(GPIOC,0xFFFF);
-//				GPIO_Write(GPIOD,0xFFFF);
-//				GPIO_Write(GPIOE,0xFFFF);
-//				TIM_Cmd(TIM1,ENABLE);				
-//				
-//				check = 0;
-//				for(i = 1;i<DATA_LEN-1;i++)
-//					check^=uartBufQS[UART1].buf[i];							
-//				
-//				uartBufQS[UART1].buf[DATA_LEN-1] = check;							
+			buf[DATA_LEN-1] = check;						
 		}			
 		
 		UartTxOpen(port,DATA_LEN);
@@ -515,8 +509,52 @@ static int taskSwitchMatrix(U8 port)
 	return 0;
 }
 
+void TaskPlusDelegate()
+{
+	static U8 f =0;
+	static U16 period1 = 0,period2 = 0;	
+	
+	if( __interPeriod == 0 )
+	{
+		if( --__interVal == 0 )
+		{		
+			GPIO_Write(GPIOA,0);
+			GPIO_Write(GPIOB,0);
+			GPIO_Write(GPIOC,0);
+			GPIO_Write(GPIOD,0);
+			GPIO_Write(GPIOE,0);	
+			
+			TIM_Cmd(TIM1,DISABLE);
+		}	
+	}	
+	else 
+	{		
+		if( (period1++ % __interPeriod) == 0 )
+		{
+			f = 1;
+			period2 = 0;
+			GPIO_Write(GPIOA,0xFFFF);
+			GPIO_Write(GPIOB,0xFFFF);
+			GPIO_Write(GPIOC,0xFFFF);
+			GPIO_Write(GPIOD,0xFFFF);
+			GPIO_Write(GPIOE,0xFFFF);				
+		}
+
+		if( ++period2 >= __interVal && f == 1)
+		{
+			f = 0;
+			GPIO_Write(GPIOA,0);
+			GPIO_Write(GPIOB,0);
+			GPIO_Write(GPIOC,0);
+			GPIO_Write(GPIOD,0);
+			GPIO_Write(GPIOE,0);
+		}				
+	}	
+}
+
 int TaskSwitchMatrix(int*argv[],int argc)
 {
+	Tim1RegisterDelegate(TaskPlusDelegate);
 	taskSwitchMatrix(UART1);
 	taskSwitchMatrix(UART2);
 	

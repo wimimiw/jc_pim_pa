@@ -64,7 +64,7 @@ int main(void)
 	//AddTaskTimer( TaskControl,USER_TIMER_1MS(5) );
 	AddTaskTimer( TaskSwitchMatrix,USER_TIMER_NO_DELAY );
 	AddTaskTimer( TaskProtocol,USER_TIMER_NO_DELAY );	//poll
-	AddTaskTimer( TaskWatchdog,USER_TIMER_1MS(10) );	//poll
+	AddTaskTimer( TaskWatchdog,USER_TIMER_1MS(5) );	//poll
 	InitTaskTimer();   //Initialize the timer of task
 	TaskTimerRoutine();//the task running
 }

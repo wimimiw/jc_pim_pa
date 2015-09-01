@@ -29,8 +29,6 @@ typedef void(*UART_CALLBACK)(U8*,U16) ;
 #define DRIVER_DIRECT_DISABLE()		GPIO_WriteBit(GPIOB,GPIO_Pin_12,Bit_RESET)
 /* Public macro --------------------------------------------------------------*/
 /* Public variables ----------------------------------------------------------*/
-__USER_UART_EXT__ UART_CALLBACK __Uart1_Callback;
-__USER_UART_EXT__ UART_CALLBACK __Uart2_Callback;
 /* Public function prototypes ------------------------------------------------*/
 __USER_UART_EXT__ void InitUart(U8 bus,U32 baud);
 __USER_UART_EXT__ void InitUartBuf(U8 bus);
@@ -39,4 +37,6 @@ __USER_UART_EXT__ void SetUartMode(U8 bus, U8 chkBit);
 __USER_UART_EXT__ void GetUartBufInfo(U8 bus, U8**ppbuf, U16 *plen);
 __USER_UART_EXT__ void SetUartBufInfo(U8 bus, U8*pbuf, U16 len);
 __USER_UART_EXT__ void UartTxOpen(U8 bus,U16 len);
+__USER_UART_EXT__ void Uart1RegisterDelegate(UART_CALLBACK callback);
+__USER_UART_EXT__ void Uart2RegisterDelegate(UART_CALLBACK callback);
 /********************************END OF FILE***********************************/
