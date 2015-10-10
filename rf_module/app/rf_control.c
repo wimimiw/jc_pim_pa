@@ -409,7 +409,7 @@ int TaskControl(int*argv[],int argc)
 	//驻波警报
 	if(IS_ALARM_VSWR())
 	{
-		gPwrRef	= gPwrOut/2;
+		gPwrRef	= gPwrOut-10;
 	}
 	//参数变化后修改
 	if(TRUE == gRFModify)
