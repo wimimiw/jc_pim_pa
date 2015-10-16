@@ -1,0 +1,66 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.13.0.0
+Copyright (C) 2014 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Ma Microsoft, Microsoft, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.13.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.05 update 1 (build 106)
+Assembler:       Armasm.exe V5.05 update 1 (build 106)
+Linker/Locator:  ArmLink.exe V5.05 update 1 (build 106)
+Library Manager: ArmAr.exe V5.05 update 1 (build 106)
+Hex Converter:   FromElf.exe V5.05 update 1 (build 106)
+CPU DLL:         SARMCM3.DLL V5.13.0.0
+Dialog DLL:      DCM.DLL V1.13.1.0
+Target DLL:      UL2CM3.DLL V1.154.12.0
+Dialog DLL:      TCM.DLL V1.14.4.0
+ 
+<h2>Project:</h2>
+D:\Documents\jc_pim_pa\GpioControl\rf_module\rvmdk\rf_module.uvprojx
+Project File Date:  08/25/2015
+
+<h2>Output:</h2>
+Build target 'Release'
+compiling main.c...
+compiling rf_control.c...
+..\app\rf_control.c(398): warning:  #177-D: variable "addr" was declared but never referenced
+        U8 i,check,*buf,addr,cmd,cmdLogic;
+..\app\rf_control.c: 1 warning, 0 errors
+compiling rf_protocol.c...
+compiling rf_parameter.c...
+compiling task.c...
+compiling target.c...
+compiling dev_spi.c...
+compiling dev_att.c...
+compiling dev_e2prom.c...
+compiling dev_temp.c...
+compiling user_timer.c...
+..\driver\user_timer.c(24): warning:  #177-D: variable "__Timer2_Callback" was declared but never referenced
+  static TIMER_CALLBACK __Timer2_Callback;
+..\driver\user_timer.c: 1 warning, 0 errors
+compiling user_adc.c...
+compiling user_i2c.c...
+compiling user_uart.c...
+compiling user_flash.c...
+linking...
+Program Size: Code=22108 RO-data=3772 RW-data=208 ZI-data=4480  
+FromELF: creating hex file...
+After Build - User command #2: mdkConv.exe     \release\output\rf_module.hex  ..\[fw].-.[jc_switch_matrix]
+==>Source HEX : D:\Documents\jc_pim_pa\GpioControl\rf_module\rvmdk\release\output\rf_module.hex
+==>Output HEX : ..\[fw].-.[jc_switch_matrix].-.[2015-09-01-10-01-31].-.[10D0].hex
+==>Output BIN : ..\[fw].-.[jc_switch_matrix].-.[2015-09-01-10-01-31].-.[10D0].bin
+".\release\output\rf_module.axf" - 0 Error(s), 2 Warning(s).
+
+<h2>Collection of Component include folders:</h2>
+  D:\Documents\jc_pim_pa\GpioControl\rf_module\rvmdk\RTE
+  C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include
+
+<h2>Collection of Component Files used:</h2>
+</pre>
+</body>
+</html>
