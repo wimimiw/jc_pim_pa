@@ -258,6 +258,11 @@ typedef struct __JOINTCOM_EXE_TABLE {
 #define	EE_TEMP_VALUE   	0x00D3		//1字节，设置温度补偿的基准值
 #define	EE_BaseTemp_VALUE 	0x00D4		//1字节，上行设置温度补偿的温度基准值
 
+/******Signal Generator********/
+#define	EE_SIG_ATT			0x0160		//1字节，信号衰减补偿
+#define	EE_SIG_POW			0x0162		//2字节，输出功率
+#define	EE_SIG_POW_OFFSET  	0x0164		//4字节，输出功率及定标值
+
 /******version**********/
 #define	EE_VERSION			0x00E0		//2字节，程序版本号
 #define	EE_ALL_CHECKSUM		0x00E2		//2字节，程序校验和

@@ -190,6 +190,10 @@ __RF_CONTROL_EXT__	U16 PaLastAdjDate_month;	//0x00F3	    //1字节，放的最终校准日
 __RF_CONTROL_EXT__	U16 PaLastAdjDate_day;	    //0x00F1	    //1字节，放的最终校准日期(年)
 __RF_CONTROL_EXT__	U16 PaUpLimit;		        //0x00F5		//2字节，功放上限
 __RF_CONTROL_EXT__	U8  AppModel;	            //0x00F7	    //1字节，仪表型号
+/******Signal Generator********/
+__RF_CONTROL_EXT__	U8  gSigAtt;				//1字节，信号衰减补偿
+__RF_CONTROL_EXT__	U16 gSigPower;				//2字节，输出功率
+__RF_CONTROL_EXT__	U32 gSigPowerOffset;		//4字节，输出功率及定标值
 /****************单次脉冲触发变量********************/
 __RF_CONTROL_EXT__	U8 	gPlusSwitchState;     	//脉冲开关状态变量
 __RF_CONTROL_EXT__	U8  gPlusValue[4];

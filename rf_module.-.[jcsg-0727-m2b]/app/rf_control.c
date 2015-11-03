@@ -30,6 +30,62 @@
 /* Includes ------------------------------------------------------------------*/
 #include "config.h"
 /* Private typedef -----------------------------------------------------------*/
+typedef struct 
+{
+	S16 pwr1[11];	//0,1,2,3,4,5,6,7,8,9,10 dBm
+	S16 pwr2[11];	//-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,-0.1 dBm
+	S16 pwr3[11];	//-20,-19,-18,-17,-16,-15,-14,-13,-12,-11,-10.1 dBm
+	S16 pwr4[3];		//-79.9,-80,-90.1dBm
+}ST_SIG_OFFSET;
+
+const ST_SIG_OFFSET gSigOffset = {	{1000,900,800,700,600,500,400,300,200,100,0},
+									{-10,-100,-200,-300,-400,-500,-600,-700,-800,-900,-1000},
+									{-1010,-1100,-1200,-1300,-1400,-1500,1600,-1700,-1800,-1900,-2000},
+									{-7990,-8000,-9010}};
+
+//freq 单位10MHz, power 单位 0.01dBm
+BOOL GetSigOffsetWithPower(U16 freq,S16 pwr100,U16 *offset)
+{
+#define EEPROM_SIG_ADDR_OFFSET 0x0500
+	
+	U8 result = FALSE;
+	U16 net_offset = 0;
+	U16 *ptr = (U16*)&gSigOffset;
+	
+	for(net_offset = 0;net_offset<sizeof(ST_SIG_OFFSET)/sizeof(S16);net_offset++)
+	{
+		if((net_offset+1)< sizeof(ST_SIG_OFFSET)/sizeof(S16) && ptr[net_offset] <= pwr100 && ptr[net_offset+1] >= pwr100)
+		{
+			break;
+		}
+	}	
+
+	result = ReadE2prom(EEPROM_SIG_ADDR_OFFSET + freq*sizeof(ST_SIG_OFFSET) + net_offset,		
+		(U8*)&offset,sizeof(offset));
+	
+	return result;
+}
+//freq 单位10MHz, power 单位 0.01dBm
+BOOL SetSigOffsetWithPower(U16 freq,S16 pwr100,U16 offset)
+{
+	U8 result = FALSE;
+	U16 net_offset = 0;
+	U16 *ptr = (U16*)&gSigOffset;
+	
+	for(net_offset = 0;net_offset<sizeof(ST_SIG_OFFSET)/sizeof(S16);net_offset++)
+	{
+		if(ptr[net_offset] == pwr100)
+		{
+			break;
+		}
+	}
+	
+	result = WriteE2prom(EEPROM_SIG_ADDR_OFFSET + freq*sizeof(ST_SIG_OFFSET) + net_offset,		
+		(U8*)&offset,sizeof(offset));
+	
+	return result;
+}
+
 /* Private define ------------------------------------------------------------*/
 #define AD4350_PWR_LIM			(1)   //-1dBm
 #define IS_ALARM_TEMPERATURE()	(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_3) != Bit_SET)   	//温度警报
@@ -61,13 +117,16 @@ const U8 BootloaderV 	__attribute__((at(ADDR_BYTE_BOOTLOADERV))) = 0x11;
 const U8 SoftwareV 		__attribute__((at(ADDR_BYTE_SOFTWAREV  ))) = 0x62;
 const U8 HardwareV 		__attribute__((at(ADDR_BYTE_HARDWAREV  ))) = 0x50;
 /* Private variables ---------------------------------------------------------*/
-BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
-BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
-BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
-BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
-BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
-BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen);									   
-								   
+static BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+static BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+static BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+static BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+static BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+static BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+static BOOL execSigAtt(U8 flag,U8 *buf,U16 rxLen,U16*txLen);								   
+static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen);
+static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen);
+					   
 const JC_COMMAND tabInfo[] = {	
 //信源选择
 	{ID_FCT_PARAM_WR,EE_SOURCE_SELECT	,0,(U8*)&gRFSrcSel,sizeof(gRFSrcSel)			,0,0,execSwitchSource	},
@@ -118,8 +177,12 @@ const JC_COMMAND tabInfo[] = {
 /*****module*******/
 	{ID_FCT_PARAM_WR,EE_RF_No			,0,(U8*)&gRF_No,sizeof(gRF_No)					,0,0,NULL},//0x00C0		//1字节，射频模块编号		
 	{ID_FCT_PARAM_WR,EE_PASW			,0,(U8*)&gPASW,sizeof(gPASW)					,0,0,NULL},//0x00C1     //1字节，功放开关		
-	{ID_FCT_PARAM_WR,EE_RFSW			,0,(U8*)&gRFSW,sizeof(gRFSW)					,0,0,execRFSW			},//0x00C2     //1字节，射频开?
+	{ID_FCT_PARAM_WR,EE_RFSW			,0,(U8*)&gRFSW,sizeof(gRFSW)					,0,0,execRFSW},//0x00C2     //1字节，射频开?
 	{ID_FCT_PARAM_WR,EE_TEST_MARK		,0,(U8*)&gRFSW,sizeof(gRFSW)					,0,0,NULL},//0x00C2     //1字节，射频开关?	
+/*********Signal Generator Mode************/
+	{ID_FCT_PARAM_WR,EE_SIG_ATT			,0,(U8*)&gSigAtt,sizeof(gSigAtt)				,0,0,execSigAtt},		//0x0160		//信号衰减补偿
+	{ID_FCT_PARAM_WR,EE_SIG_POW			,0,(U8*)&gSigPower,sizeof(gSigPower)			,0,0,execSigPower},		//0x0162		//设置输出功率
+	{ID_FCT_PARAM_WR,EE_SIG_POW_OFFSET	,0,(U8*)&gSigPowerOffset,sizeof(gSigPowerOffset),0,0,execSigCalibrate},	//0x0164		//设置输出功率及定标值	
 /****************other parameter********************/
 //	{ID_FCT_PARAM_WR,0					,0,(U8*)&gAtttempval,sizeof(gAtttempval)		,0,0,NULL},//温度补偿值	
 	{ID_FCT_PARAM_WR,EE_ALL_CHECKSUM	,0,(U8*)&gFWCheck,sizeof(gFWCheck)				,0,0,NULL},//程序校验和
@@ -268,6 +331,43 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
 	counterTemp |= counterN;	
 	//R0
 	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
+}
+
+static BOOL execSigAtt(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	U8 result = FALSE;
+	
+	if(flag == TRUE)
+	{
+		result = WritePe4302(SPI_ATT2,gSigAtt);
+	}
+	
+	return result;
+}
+
+static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	S16 pwr100 = buf[0]*100+buf[1]; //功率值*100（对数）
+	
+	if(flag == TRUE)
+	{
+		
+	}
+	
+	return TRUE;
+}
+
+static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	S16 pwr100 = buf[0]*100+buf[1]; //功率值*100（对数）
+	U16 offset = buf[2]+buf[3]*256;
+	
+	if(flag == TRUE)
+	{
+		
+	}	
+	
+	return TRUE;
 }
 
 void WriteAD5324(U16 value,U8 channel)
