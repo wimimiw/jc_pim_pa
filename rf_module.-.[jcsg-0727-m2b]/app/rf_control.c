@@ -87,7 +87,7 @@ BOOL SetSigOffsetWithPower(U16 freq,S16 pwr100,U16 offset)
 }
 
 /* Private define ------------------------------------------------------------*/
-#define AD4350_PWR_LIM			(1)   //-1dBm
+#define AD4350_PWR_LIM			(3)   //-3dBm
 #define IS_ALARM_TEMPERATURE()	(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_3) != Bit_SET)   	//温度警报
 #define IS_ALARM_CURRENT()		(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4) != Bit_SET)	//电流警报
 #define IS_ALARM_VSWR()			(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_5) != Bit_SET)	//驻波警报
@@ -333,43 +333,6 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
 	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
 }
 
-static BOOL execSigAtt(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
-{
-	U8 result = FALSE;
-	
-	if(flag == TRUE)
-	{
-		result = WritePe4302(SPI_ATT2,gSigAtt);
-	}
-	
-	return result;
-}
-
-static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
-{
-	S16 pwr100 = buf[0]*100+buf[1]; //功率值*100（对数）
-	
-	if(flag == TRUE)
-	{
-		
-	}
-	
-	return TRUE;
-}
-
-static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
-{
-	S16 pwr100 = buf[0]*100+buf[1]; //功率值*100（对数）
-	U16 offset = buf[2]+buf[3]*256;
-	
-	if(flag == TRUE)
-	{
-		
-	}	
-	
-	return TRUE;
-}
-
 void WriteAD5324(U16 value,U8 channel)
 {	
 	SPI_TYPE spiType;
@@ -387,6 +350,49 @@ void WriteAD5324(U16 value,U8 channel)
 	else 				 value |= 0xE000;	
 	
 	WriteSpiOneWord(SPI_DAC,&spiType,value);
+}
+
+static BOOL execSigAtt(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	U8 result = FALSE;
+	
+	if(flag == TRUE)
+	{
+		result = WritePe4302(SPI_ATT2,gSigAtt);
+	}
+	
+	return result;
+}
+
+static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	BOOL result = TRUE;
+	
+	S16 pwr100 = *(S16*)buf[0]; //功率值*100（对数）
+	U16 offset;
+	
+	if(flag == TRUE)
+	{
+		result = GetSigOffsetWithPower(gCenFreq/10000,pwr100,&offset);
+		if(offset<4096)setALCRef(offset);
+	}
+	
+	return result;
+}
+
+static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	BOOL result = TRUE;
+	
+	S16 pwr100 = *(S16*)buf[0]; //功率值*100（对数）
+	U16 offset = *(U16*)buf[2];;
+	
+	if(flag == TRUE)
+	{
+		result = SetSigOffsetWithPower(gCenFreq/10000,pwr100,offset);
+	}	
+	
+	return result;
 }
 
 U16 ReadPowerADC(void)
@@ -551,6 +557,8 @@ void InitTaskControl(void)
 	//VCO_CE(TRUE);
 	//WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
 	VCO_CE(FALSE);
+	
+	//gRFSrcSel = SRC_EXTERNAL;
 }
 		
 int TaskControl(int*argv[],int argc)
