@@ -213,6 +213,7 @@ typedef struct __JOINTCOM_EXE_TABLE {
 #define EE_DA_CHANNEL_D		0x003A		//DACÍ¨µÀ4
 /**Source Select**/
 #define EE_SOURCE_SELECT	0x003C		//Ñ¡ÔñÐÅÔ´Ñ¡Ïî
+#define EE_SOURCE_REFERENCE	0x003D		//Ñ¡Ôñ²Î¿¼Ñ¡Ïî
 
 /***frequency***/
 #define	EE_CenFreq 			0x0140		//4×Ö½Ú£¬ÖÐÐÄÆµÂÊ,³¤ÕûÐÍÊý¾Ý
@@ -261,7 +262,7 @@ typedef struct __JOINTCOM_EXE_TABLE {
 /******Signal Generator********/
 #define	EE_SIG_ATT			0x0160		//1×Ö½Ú£¬ÐÅºÅË¥¼õ²¹³¥
 #define	EE_SIG_POW			0x0162		//2×Ö½Ú£¬Êä³ö¹¦ÂÊ
-#define	EE_SIG_POW_OFFSET  	0x0164		//4×Ö½Ú£¬Êä³ö¹¦ÂÊ¼°¶¨±êÖµ
+#define	EE_SIG_POW_OFFSET  	0x0164		//4×Ö½Ú£¬Êä³ö¹¦ÂÊ¼°¶¨±êÖµµ
 
 /******version**********/
 #define	EE_VERSION			0x00E0		//2×Ö½Ú£¬³ÌÐò°æ±¾ºÅ
@@ -273,6 +274,7 @@ typedef struct __JOINTCOM_EXE_TABLE {
 #define EE_FREQ_ADD_POWEWR	0x0040		//Í¬Ê±ÉèÖÃÆµÂÊºÍ¹¦ÂÊ
 #define EE_DOWN_FLAG        0x01FF		//1×Ö½Ú£¬Èí¼þÏÂÔØ±êÖ¾
 
+#define EEPROM_SIG_START 	0x0500
 //Ó¦´ð±êÖ¾³£Á¿ÁÐ±í
 #define	NO_ERR				0x00
 #define	CMDID_ERR			0x02

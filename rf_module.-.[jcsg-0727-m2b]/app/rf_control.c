@@ -35,57 +35,13 @@ typedef struct
 	S16 pwr1[11];	//0,1,2,3,4,5,6,7,8,9,10 dBm
 	S16 pwr2[11];	//-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,-0.1 dBm
 	S16 pwr3[11];	//-20,-19,-18,-17,-16,-15,-14,-13,-12,-11,-10.1 dBm
-	S16 pwr4[3];		//-79.9,-80,-90.1dBm
+	S16 pwr4[1];	//-80dBm
 }ST_SIG_OFFSET;
 
 const ST_SIG_OFFSET gSigOffset = {	{1000,900,800,700,600,500,400,300,200,100,0},
 									{-10,-100,-200,-300,-400,-500,-600,-700,-800,-900,-1000},
 									{-1010,-1100,-1200,-1300,-1400,-1500,1600,-1700,-1800,-1900,-2000},
-									{-7990,-8000,-9010}};
-
-//freq 单位10MHz, power 单位 0.01dBm
-BOOL GetSigOffsetWithPower(U16 freq,S16 pwr100,U16 *offset)
-{
-#define EEPROM_SIG_ADDR_OFFSET 0x0500
-	
-	U8 result = FALSE;
-	U16 net_offset = 0;
-	U16 *ptr = (U16*)&gSigOffset;
-	
-	for(net_offset = 0;net_offset<sizeof(ST_SIG_OFFSET)/sizeof(S16);net_offset++)
-	{
-		if((net_offset+1)< sizeof(ST_SIG_OFFSET)/sizeof(S16) && ptr[net_offset] <= pwr100 && ptr[net_offset+1] >= pwr100)
-		{
-			break;
-		}
-	}	
-
-	result = ReadE2prom(EEPROM_SIG_ADDR_OFFSET + freq*sizeof(ST_SIG_OFFSET) + net_offset,		
-		(U8*)&offset,sizeof(offset));
-	
-	return result;
-}
-//freq 单位10MHz, power 单位 0.01dBm
-BOOL SetSigOffsetWithPower(U16 freq,S16 pwr100,U16 offset)
-{
-	U8 result = FALSE;
-	U16 net_offset = 0;
-	U16 *ptr = (U16*)&gSigOffset;
-	
-	for(net_offset = 0;net_offset<sizeof(ST_SIG_OFFSET)/sizeof(S16);net_offset++)
-	{
-		if(ptr[net_offset] == pwr100)
-		{
-			break;
-		}
-	}
-	
-	result = WriteE2prom(EEPROM_SIG_ADDR_OFFSET + freq*sizeof(ST_SIG_OFFSET) + net_offset,		
-		(U8*)&offset,sizeof(offset));
-	
-	return result;
-}
-
+									{-8000}};
 /* Private define ------------------------------------------------------------*/
 #define AD4350_PWR_LIM			(3)   //-3dBm
 #define IS_ALARM_TEMPERATURE()	(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_3) != Bit_SET)   	//温度警报
@@ -112,6 +68,7 @@ BOOL SetSigOffsetWithPower(U16 freq,S16 pwr100,U16 offset)
 
 //#define setAtt(att)     		(WritePe4302(&attBus[1],(att)))
 #define setALCRef(x)			(WriteAD5324((x),'B'))
+#define GET_SIG_TABLE_MEMCNT()	(sizeof(ST_SIG_OFFSET)/sizeof(S16))
 /* Private macro -------------------------------------------------------------*/
 const U8 BootloaderV 	__attribute__((at(ADDR_BYTE_BOOTLOADERV))) = 0x11;
 const U8 SoftwareV 		__attribute__((at(ADDR_BYTE_SOFTWAREV  ))) = 0x62;
@@ -119,6 +76,7 @@ const U8 HardwareV 		__attribute__((at(ADDR_BYTE_HARDWAREV  ))) = 0x50;
 /* Private variables ---------------------------------------------------------*/
 static BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 static BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+static BOOL execSwitchReference(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 static BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 static BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 static BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
@@ -128,6 +86,8 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen);
 static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen);
 					   
 const JC_COMMAND tabInfo[] = {	
+//参考选择	
+	{ID_FCT_PARAM_WR,EE_SOURCE_REFERENCE,0,(U8*)&gRFSrcRef,sizeof(gRFSrcRef)			,0,0,execSwitchReference},
 //信源选择
 	{ID_FCT_PARAM_WR,EE_SOURCE_SELECT	,0,(U8*)&gRFSrcSel,sizeof(gRFSrcSel)			,0,0,execSwitchSource	},
 /****gain*****/
@@ -209,7 +169,14 @@ JC_COMMAND*GetTable(void)
 {
 	return (JC_COMMAND*)tabInfo;
 }
-//快速排序
+/**
+  * @brief  :快速排序
+  * @param  :
+  * @retval :
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 static void QuickSort(U16 *a, int left, int right)
 {
     int i = left;
@@ -250,11 +217,119 @@ static void QuickSort(U16 *a, int left, int right)
                        /*当然最后可能会出现很多分左右，直到每一组的i=j为止*/
 }
 
+/**
+  * @brief  :获取与指定频率和功率下的定标值
+  * @param  :freq 单位10MHz, power 单位 0.01dBm
+  * @retval :
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
+BOOL GetSigOffsetWithPower(U16 freq,S16 pwr100,U16 *offset,BOOL *norFlag)
+{	
+	/*信号源定标有两种思路：
+	  1、使用指定功率值列表进行精确定标。 定标数量 = 功率列表成员数量*定标次数
+	  2、使用估计功率值序列进行定标。	  定标数量 = 功率列表成员数量 + 功率边界定标次数
+	*/	
+	
+	U8 result = FALSE;
+	U16 net_offset = 0,of[2]={0};
+	S16 *ptr = (S16*)&gSigOffset,k;	
+	
+	if(offset == NULL) return FALSE;
+	
+	for(net_offset = 0;net_offset<GET_SIG_TABLE_MEMCNT();net_offset++)
+	{
+		if(((net_offset+1)< GET_SIG_TABLE_MEMCNT()) && (ptr[net_offset] >= pwr100) && (ptr[net_offset+1] < pwr100))
+		{
+			break;
+		}		
+	}	
+
+	if(net_offset == 34)net_offset-=1;
+	
+	result = ReadE2prom(EEPROM_SIG_START + freq*sizeof(ST_SIG_OFFSET) + net_offset*sizeof(S16),		
+		(U8*)of,sizeof(of));
+	
+	if( net_offset == 32 || net_offset == 33 )//-20,-80
+	{
+		if((of[0]&(U16)(1<<15))!=0)*norFlag = FALSE;
+		of[0] &=~(1<<15);
+		*offset = of[0];
+	}
+	else
+	{	
+		if(of[0] == 0xFFFF || of[1] == 0xFFFF)
+		{
+			of[0] = 0;
+			of[1] = 0;
+			*norFlag = FALSE;
+		}
+			
+		if((of[0]&(U16)(1<<15))!=0)*norFlag = FALSE;
+		if((of[1]&(U16)(1<<15))!=0)*norFlag = FALSE;
+		
+		of[0] &=~(1<<15);
+		of[1] &=~(1<<15);		
+		
+		if(ptr[net_offset] == ptr[net_offset+1])return FALSE;
+		k = (100*((S16)of[0]-(S16)of[1]))/(ptr[net_offset] - ptr[net_offset+1]);
+		*offset = k * (pwr100 - ptr[net_offset])/100 + of[0];
+	}	
+	
+	return result;
+}
+/**
+  * @brief  :设置与指定频率和功率下的定标值
+  * @param  :freq 单位10MHz, power 单位 0.01dBm
+  * @retval :
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
+BOOL SetSigOffsetWithPower(U16 freq,S16 pwr100,U16 offset,BOOL norFlag)
+{
+	U8 result = FALSE;
+	U16 net_offset = 0;
+	S16 *ptr = (S16*)&gSigOffset;
+	
+	for(net_offset = 0;net_offset<GET_SIG_TABLE_MEMCNT();net_offset++)
+	{
+		if(ptr[net_offset] == pwr100)
+		{
+			break;
+		}
+	}
+	
+	offset &= 0x0FFF;
+	
+	if(norFlag == FALSE)offset |= 1<<15;
+	
+	result = WriteE2prom(EEPROM_SIG_START + freq*sizeof(ST_SIG_OFFSET) + net_offset*sizeof(S16),		
+		(U8*)&offset,sizeof(offset));
+	
+	return result;
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 int GetTableMebCnt(void)
 {	
 	return sizeof(tabInfo)/sizeof(JC_COMMAND);
 }
-
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
 {
 	#define R0_INIT		0x00000000L
@@ -332,7 +407,14 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
 	//R0
 	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
 }
-
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 void WriteAD5324(U16 value,U8 channel)
 {	
 	SPI_TYPE spiType;
@@ -351,50 +433,14 @@ void WriteAD5324(U16 value,U8 channel)
 	
 	WriteSpiOneWord(SPI_DAC,&spiType,value);
 }
-
-static BOOL execSigAtt(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
-{
-	U8 result = FALSE;
-	
-	if(flag == TRUE)
-	{
-		result = WritePe4302(SPI_ATT2,gSigAtt);
-	}
-	
-	return result;
-}
-
-static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
-{
-	BOOL result = TRUE;
-	
-	S16 pwr100 = *(S16*)buf[0]; //功率值*100（对数）
-	U16 offset;
-	
-	if(flag == TRUE)
-	{
-		result = GetSigOffsetWithPower(gCenFreq/10000,pwr100,&offset);
-		if(offset<4096)setALCRef(offset);
-	}
-	
-	return result;
-}
-
-static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
-{
-	BOOL result = TRUE;
-	
-	S16 pwr100 = *(S16*)buf[0]; //功率值*100（对数）
-	U16 offset = *(U16*)buf[2];;
-	
-	if(flag == TRUE)
-	{
-		result = SetSigOffsetWithPower(gCenFreq/10000,pwr100,offset);
-	}	
-	
-	return result;
-}
-
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 U16 ReadPowerADC(void)
 {
 	U8 i;
@@ -431,7 +477,135 @@ U16 ReadPowerADC(void)
 		
 	return adcValue/4;
 }
-
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
+BOOL SetSigPowerAtt(S16 pwr100)
+{
+	U8 att1;
+	BOOL result;
+	
+	if(pwr100 <= 1000 && pwr100 >= 0)
+	{
+		gAtt1 = 25;att1=0;
+	}
+	else if(pwr100 <= -10 && pwr100 >= -1000)
+	{
+		gAtt1 = 25;att1=0;
+	}
+	else if(pwr100 <= -1010 && pwr100 >= -2000)
+	{
+		gAtt1 = 20;att1=10;
+	}
+	else
+	{
+		gAtt1 = 63;att1=63;
+		WritePLL(gCenFreq,gRefFreq,gFreqStep,0,FALSE);
+	}	
+	
+	result = WritePe4302(SPI_ATT3,gAtt1)&WritePe4302(SPI_ATT1,att1);
+	
+	return result;
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
+static BOOL execSigAtt(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	U8 result = FALSE;
+	
+	if(flag == TRUE)
+	{
+		result = WritePe4302(SPI_ATT2,gSigAtt);
+	}
+	
+	return result;
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
+static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	BOOL result = TRUE;
+	BOOL norFlag;
+	
+	S16 pwr100 = *(S16*)&buf[13]; //功率值*100（对数）
+	U16 offset;
+	
+	if(flag == TRUE)
+	{
+		SetSigPowerAtt(pwr100);	
+		
+		result = GetSigOffsetWithPower(gCenFreq/10000,pwr100,&offset,&norFlag);
+		
+		if(norFlag == FALSE)*(S16*)buf[13] = -10001;					
+		
+		//memcpy(buf+13,(U8*)&offset,2);
+		
+		if(offset<4096)setALCRef(offset);
+	}
+	
+	return result;
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
+static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	BOOL result = TRUE;
+	BOOL norFlag;
+	
+	S16 pwr100 = *(S16*)(buf+13); //功率值*100（对数）
+	U16 offset = *(U16*)(buf+15);
+	
+	if(flag == TRUE)
+	{		
+		result = SetSigPowerAtt(pwr100);//memcpy(buf+13,(U8*)&result,2);
+				
+		result = SetSigOffsetWithPower(gCenFreq/10000,pwr100,offset&0xfff,((offset&(1<<15))==0?TRUE:FALSE));
+		
+		//memcpy(buf+13,(U8*)&result,2);
+		
+		if(offset<4096)setALCRef(offset);
+	}
+	else
+	{
+		result = GetSigOffsetWithPower(gCenFreq/10000,pwr100,&offset,&norFlag);
+		//if(norFlag == FALSE)*(S16*)buf[15] = -10001;	
+		memcpy(buf+13,(U8*)&pwr100,sizeof(pwr100));	
+		memcpy(buf+15,(U8*)&offset,sizeof(offset));		
+	}		
+	
+	return result;
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {	
 	if(flag == TRUE)
@@ -453,7 +627,14 @@ BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	}
 	return TRUE;
 }
-
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {
 	if(flag == TRUE)
@@ -465,7 +646,30 @@ BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	}
 	return TRUE;
 }
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
+BOOL execSwitchReference(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	if(flag == TRUE)
+	{	
 
+	}
+	return TRUE;	
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {		
 	if(flag == TRUE)
@@ -476,7 +680,14 @@ BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	}
 	return TRUE;
 }
-
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {		
 	if(flag == TRUE)
@@ -486,7 +697,14 @@ BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	}
 	return TRUE;
 }
-
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {		
 //	UserTimerDef Timer;
@@ -511,7 +729,14 @@ BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	}
 	return TRUE;
 }
-
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {	
 	if(flag == TRUE)
@@ -531,7 +756,14 @@ BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	}
 	return TRUE;
 }
-
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
 void InitTaskControl(void)
 {		
 	gRFModify = FALSE;
@@ -547,12 +779,13 @@ void InitTaskControl(void)
 	
 	PA_POWER_SWITCH(FALSE);
 	
-	WritePe4302(SPI_ATT1, 0);
-	WritePe4302(SPI_ATT2, 0);
-	WritePe4302(SPI_ATT3,63);
+	//WritePe4302(SPI_ATT1, 0);
+	//WritePe4302(SPI_ATT2, 0);
+	//WritePe4302(SPI_ATT3,63);
 	
 	//setAtt(gAtt1);
 	setALCRef(0);
+	WritePe4302(SPI_ATT2,40);
 	
 	//VCO_CE(TRUE);
 	//WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
@@ -560,7 +793,14 @@ void InitTaskControl(void)
 	
 	//gRFSrcSel = SRC_EXTERNAL;
 }
-		
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */		
 int TaskControl(int*argv[],int argc)
 {		
 	//限幅状态
