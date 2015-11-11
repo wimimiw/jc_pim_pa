@@ -237,7 +237,7 @@ BOOL GetSigOffsetWithPower(U16 freq,S16 pwr100,U16 *offset,BOOL *norFlag)
 	S16 *ptr = (S16*)&gSigOffset,k;	
 	
 	if(offset == NULL) return FALSE;
-	
+		
 	for(net_offset = 0;net_offset<GET_SIG_TABLE_MEMCNT();net_offset++)
 	{
 		if(((net_offset+1)< GET_SIG_TABLE_MEMCNT()) && (ptr[net_offset] >= pwr100) && (ptr[net_offset+1] < pwr100))
@@ -543,18 +543,32 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {
 	BOOL result = TRUE;
 	BOOL norFlag;
-	
+	S16 k;
 	S16 pwr100 = *(S16*)&buf[13]; //功率值*100（对数）
-	U16 offset;
+	U16 offset,offsetH,offsetL;
+	U32 freq;
+	
+	if( pwr100 > 1000 || (pwr100 < -2000 && pwr100 > -8000) || pwr100 < -8000)
+	{
+		k = -10002;
+		memcpy(buf+13,(U8*)&k,sizeof(k));
+		return TRUE;
+	}
+	
+	freq = gCenFreq/10000;
 	
 	if(flag == TRUE)
 	{
 		SetSigPowerAtt(pwr100);	
 		
-		result = GetSigOffsetWithPower(gCenFreq/10000,pwr100,&offset,&norFlag);
-		
+		result = GetSigOffsetWithPower(freq,pwr100,&offsetL,&norFlag);
+		if(norFlag == FALSE)*(S16*)buf[13] = -10001;	
+		result = GetSigOffsetWithPower(freq+1,pwr100,&offsetH,&norFlag);		
 		if(norFlag == FALSE)*(S16*)buf[13] = -10001;					
 		
+		k = 100*(offsetH - offsetL)/100;//斜率*100然后除100=10MHz/100Khz
+		
+		offset = k*(gCenFreq/100 - freq*100)/100+offsetL;
 		//memcpy(buf+13,(U8*)&offset,2);
 		
 		if(offset<4096)setALCRef(offset);
@@ -577,6 +591,13 @@ static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	
 	S16 pwr100 = *(S16*)(buf+13); //功率值*100（对数）
 	U16 offset = *(U16*)(buf+15);
+	
+	if( pwr100 > 1000 || (pwr100 < -2000 && pwr100 > -8000) || pwr100 < -8000)
+	{
+		pwr100 = -10002;
+		memcpy(buf+13,(U8*)&pwr100,sizeof(pwr100));
+		return TRUE;
+	}	
 	
 	if(flag == TRUE)
 	{		
