@@ -35,13 +35,13 @@ typedef struct
 	S16 pwr1[11];	//0,1,2,3,4,5,6,7,8,9,10 dBm
 	S16 pwr2[11];	//-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,-0.1 dBm
 	S16 pwr3[11];	//-20,-19,-18,-17,-16,-15,-14,-13,-12,-11,-10.1 dBm
-	S16 pwr4[1];	//-80dBm
+	//S16 pwr4[1];	//-80dBm
 }ST_SIG_OFFSET;
 
 const ST_SIG_OFFSET gSigOffset = {	{1000,900,800,700,600,500,400,300,200,100,0},
 									{-10,-100,-200,-300,-400,-500,-600,-700,-800,-900,-1000},
-									{-1010,-1100,-1200,-1300,-1400,-1500,1600,-1700,-1800,-1900,-2000},
-									{-8000}};
+									{-1010,-1100,-1200,-1300,-1400,-1500,1600,-1700,-1800,-1900,-2000},};
+									//{-8000}};
 /* Private define ------------------------------------------------------------*/
 #define AD4350_PWR_LIM			(3)   //-3dBm
 #define IS_ALARM_TEMPERATURE()	(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_3) != Bit_SET)   	//温度警报
@@ -219,7 +219,7 @@ static void QuickSort(U16 *a, int left, int right)
 
 /**
   * @brief  :获取与指定频率和功率下的定标值
-  * @param  :freq 单位10MHz, power 单位 0.01dBm
+  * @param  :freq 单位1MHz, power 单位 0.01dBm
   * @retval :
   * @author :mashuai
   * @version:
@@ -233,11 +233,23 @@ BOOL GetSigOffsetWithPower(U16 freq,S16 pwr100,U16 *offset,BOOL *norFlag)
 	*/	
 	
 	U8 result = FALSE;
-	U16 net_offset = 0,of[2]={0};
+	U16 net_offset = 0,of[2]={0},freqMHz,freq10MHz;
 	S16 *ptr = (S16*)&gSigOffset,k;	
 	
 	if(offset == NULL) return FALSE;
-		
+	
+	freqMHz = freq;
+	freq10MHz = freq/10;
+	
+	if( pwr100 == -8000 )
+	{
+		result = ReadE2prom(EEPROM_SIG1_START + freqMHz*sizeof(U16),(U8*)of,sizeof(U16));
+		if((of[0]&(U16)(1<<15))!=0)*norFlag = FALSE;
+		of[0] &=~(1<<15);
+		*offset = of[0];
+		return result;
+	}	
+	
 	for(net_offset = 0;net_offset<GET_SIG_TABLE_MEMCNT();net_offset++)
 	{
 		if(((net_offset+1)< GET_SIG_TABLE_MEMCNT()) && (ptr[net_offset] >= pwr100) && (ptr[net_offset+1] < pwr100))
@@ -246,12 +258,11 @@ BOOL GetSigOffsetWithPower(U16 freq,S16 pwr100,U16 *offset,BOOL *norFlag)
 		}		
 	}	
 
-	if(net_offset == 34)net_offset-=1;
+	if(net_offset == GET_SIG_TABLE_MEMCNT())net_offset-=1;
 	
-	result = ReadE2prom(EEPROM_SIG_START + freq*sizeof(ST_SIG_OFFSET) + net_offset*sizeof(S16),		
-		(U8*)of,sizeof(of));
+	result = ReadE2prom(EEPROM_SIG2_START + freq10MHz*sizeof(ST_SIG_OFFSET) + net_offset*sizeof(S16),(U8*)of,sizeof(of));
 	
-	if( net_offset == 32 || net_offset == 33 )//-20,-80
+	if( pwr100 == -2000 )
 	{
 		if((of[0]&(U16)(1<<15))!=0)*norFlag = FALSE;
 		of[0] &=~(1<<15);
@@ -281,7 +292,7 @@ BOOL GetSigOffsetWithPower(U16 freq,S16 pwr100,U16 *offset,BOOL *norFlag)
 }
 /**
   * @brief  :设置与指定频率和功率下的定标值
-  * @param  :freq 单位10MHz, power 单位 0.01dBm
+  * @param  :freq 单位1MHz, power 单位 0.01dBm
   * @retval :
   * @author :mashuai
   * @version:
@@ -293,20 +304,28 @@ BOOL SetSigOffsetWithPower(U16 freq,S16 pwr100,U16 offset,BOOL norFlag)
 	U16 net_offset = 0;
 	S16 *ptr = (S16*)&gSigOffset;
 	
-	for(net_offset = 0;net_offset<GET_SIG_TABLE_MEMCNT();net_offset++)
-	{
-		if(ptr[net_offset] == pwr100)
-		{
-			break;
-		}
-	}
-	
 	offset &= 0x0FFF;
 	
 	if(norFlag == FALSE)offset |= 1<<15;
 	
-	result = WriteE2prom(EEPROM_SIG_START + freq*sizeof(ST_SIG_OFFSET) + net_offset*sizeof(S16),		
-		(U8*)&offset,sizeof(offset));
+	if(pwr100 == -8000)
+	{		
+		result = WriteE2prom(EEPROM_SIG1_START + freq*sizeof(offset),(U8*)&offset,sizeof(offset));				
+	}
+	else
+	{
+		freq /= 10;
+		
+		for(net_offset = 0;net_offset<GET_SIG_TABLE_MEMCNT();net_offset++)
+		{
+			if(ptr[net_offset] == pwr100)
+			{
+				result = WriteE2prom(EEPROM_SIG2_START + freq*sizeof(ST_SIG_OFFSET) + net_offset*sizeof(S16),		
+				(U8*)&offset,sizeof(offset));			
+				break;
+			}
+		}
+	}
 	
 	return result;
 }
@@ -546,7 +565,7 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	S16 k;
 	S16 pwr100 = *(S16*)&buf[13]; //功率值*100（对数）
 	U16 offset,offsetH,offsetL;
-	U32 freq;
+	U32 freqMHz;
 	
 	if( pwr100 > 1000 || (pwr100 < -2000 && pwr100 > -8000) || pwr100 < -8000)
 	{
@@ -555,21 +574,30 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		return TRUE;
 	}
 	
-	freq = gCenFreq/10000;
+	freqMHz = gCenFreq/1000;
 	
 	if(flag == TRUE)
 	{
 		SetSigPowerAtt(pwr100);	
 		
-		result = GetSigOffsetWithPower(freq,pwr100,&offsetL,&norFlag);
-		if(norFlag == FALSE)*(S16*)buf[13] = -10001;	
-		result = GetSigOffsetWithPower(freq+1,pwr100,&offsetH,&norFlag);		
-		if(norFlag == FALSE)*(S16*)buf[13] = -10001;					
-		
-		k = 100*(offsetH - offsetL)/100;//斜率*100然后除100=10MHz/100Khz
-		
-		offset = k*(gCenFreq/100 - freq*100)/100+offsetL;
-		//memcpy(buf+13,(U8*)&offset,2);
+		if(pwr100 == -8000)
+		{
+			result = GetSigOffsetWithPower(freqMHz,pwr100,&offset,&norFlag);
+			if(norFlag == FALSE)*(S16*)buf[13] = -10001;
+			//memcpy(buf+13,(U8*)&offset,2);
+		}
+		else
+		{			
+			result = GetSigOffsetWithPower(freqMHz,pwr100,&offsetL,&norFlag);
+			if(norFlag == FALSE)*(S16*)buf[13] = -10001;	
+			result = GetSigOffsetWithPower(freqMHz+10,pwr100,&offsetH,&norFlag);		
+			if(norFlag == FALSE)*(S16*)buf[13] = -10001;					
+			
+			k = 100*(offsetH - offsetL)/100;//斜率*100然后除100=10MHz/100Khz
+			
+			offset = k*(gCenFreq/100 - freqMHz/10*100)/100+offsetL;
+			//memcpy(buf+13,(U8*)&offset,2);
+		}
 		
 		if(offset<4096)setALCRef(offset);
 	}
@@ -603,7 +631,7 @@ static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	{		
 		result = SetSigPowerAtt(pwr100);//memcpy(buf+13,(U8*)&result,2);
 				
-		result = SetSigOffsetWithPower(gCenFreq/10000,pwr100,offset&0xfff,((offset&(1<<15))==0?TRUE:FALSE));
+		result = SetSigOffsetWithPower(gCenFreq/1000,pwr100,offset&0xfff,((offset&(1<<15))==0?TRUE:FALSE));
 		
 		//memcpy(buf+13,(U8*)&result,2);
 		
@@ -611,7 +639,7 @@ static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	}
 	else
 	{
-		result = GetSigOffsetWithPower(gCenFreq/10000,pwr100,&offset,&norFlag);
+		result = GetSigOffsetWithPower(gCenFreq/1000,pwr100,&offset,&norFlag);
 		//if(norFlag == FALSE)*(S16*)buf[15] = -10001;	
 		memcpy(buf+13,(U8*)&pwr100,sizeof(pwr100));	
 		memcpy(buf+15,(U8*)&offset,sizeof(offset));		

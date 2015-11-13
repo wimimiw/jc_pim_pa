@@ -274,7 +274,8 @@ typedef struct __JOINTCOM_EXE_TABLE {
 #define EE_FREQ_ADD_POWEWR	0x0040		//同时设置频率和功率
 #define EE_DOWN_FLAG        0x01FF		//1字节，软件下载标志
 
-#define EEPROM_SIG_START 	0x0500
+#define EEPROM_SIG1_START 	0x0500
+#define EEPROM_SIG2_START 	0x3000
 //应答标志常量列表
 #define	NO_ERR				0x00
 #define	CMDID_ERR			0x02

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\release\output\rf_module.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\release\output\rf_module.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Wed Nov 11 09:36:41 2015
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Fri Nov 13 09:49:09 2015
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -180,14 +180,14 @@ Global Symbols
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitParam
 </UL>
 
-<P><STRONG><a name="[89]"></a>GetSigOffsetWithPower</STRONG> (Thumb, 264 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[89]"></a>GetSigOffsetWithPower</STRONG> (Thumb, 296 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadE2prom
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execSigCalibrate
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execSigPower
 </UL>
 
-<P><STRONG><a name="[8b]"></a>SetSigOffsetWithPower</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[8b]"></a>SetSigOffsetWithPower</STRONG> (Thumb, 102 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteE2prom
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execSigCalibrate
@@ -1579,19 +1579,19 @@ Local Symbols
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;QuickSort
 </UL>
 
-<P><STRONG><a name="[44]"></a>execSigAtt</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[44]"></a>execSigAtt</STRONG> (Thumb, 62 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePe4302
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
-<P><STRONG><a name="[45]"></a>execSigPower</STRONG> (Thumb, 246 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[45]"></a>execSigPower</STRONG> (Thumb, 250 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAtt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetSigOffsetWithPower
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
-<P><STRONG><a name="[46]"></a>execSigCalibrate</STRONG> (Thumb, 166 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[46]"></a>execSigCalibrate</STRONG> (Thumb, 164 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAtt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigOffsetWithPower
