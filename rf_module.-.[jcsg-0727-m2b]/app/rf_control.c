@@ -506,28 +506,30 @@ U16 ReadPowerADC(void)
   */
 BOOL SetSigPowerAtt(S16 pwr100)
 {
-	U8 att1;
-	BOOL result;
+	U8 att1,att2;
+	BOOL result = FALSE;
 	
 	if(pwr100 <= 1000 && pwr100 >= 0)
 	{
-		gAtt1 = 25;att1=0;
+		gAtt1 = 25;att1=0;att2=0;
 	}
 	else if(pwr100 <= -10 && pwr100 >= -1000)
 	{
-		gAtt1 = 25;att1=0;
+		gAtt1 = 25;att1=10;att2=0;
 	}
 	else if(pwr100 <= -1010 && pwr100 >= -2000)
 	{
-		gAtt1 = 20;att1=10;
+		gAtt1 = 25;att1=20;att2=0;
 	}
 	else
 	{
-		gAtt1 = 63;att1=63;
+		gAtt1 = 0;att1=30;att2=30;
 		WritePLL(gCenFreq,gRefFreq,gFreqStep,0,FALSE);
 	}	
-	
-	result = WritePe4302(SPI_ATT3,gAtt1)&WritePe4302(SPI_ATT1,att1);
+		
+	result|= WritePe4302(SPI_ATT1,att1);
+	result|= WritePe4302(SPI_ATT2,att2);
+	result|= WritePe4302(SPI_ATT3,gAtt1);
 	
 	return result;
 }
@@ -595,7 +597,14 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 			
 			k = 100*(offsetH - offsetL)/100;//Ð±ÂÊ*100È»ºó³ý100=10MHz/100Khz
 			
-			offset = k*(gCenFreq/100 - freqMHz/10*100)/100+offsetL;
+			if(k>=0)
+				offset = offsetL + (abs(k)*(gCenFreq/100 - freqMHz/10*100)/100);
+			else
+				offset = offsetL - (abs(k)*(gCenFreq/100 - freqMHz/10*100)/100);
+			
+			//memcpy(buf+13,(U8*)&offset,2);
+			//k = k*(gCenFreq/100 - freqMHz/10*100);
+			//offset = (S16)(-50*(gCenFreq/100 - freqMHz/10*100)/100 + 100);
 			//memcpy(buf+13,(U8*)&offset,2);
 		}
 		
@@ -834,7 +843,7 @@ void InitTaskControl(void)
 	
 	//setAtt(gAtt1);
 	setALCRef(0);
-	WritePe4302(SPI_ATT2,40);
+	//WritePe4302(SPI_ATT2,40);
 	
 	//VCO_CE(TRUE);
 	//WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);

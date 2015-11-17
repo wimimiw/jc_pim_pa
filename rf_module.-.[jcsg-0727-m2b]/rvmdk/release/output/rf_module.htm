@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\release\output\rf_module.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\release\output\rf_module.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Fri Nov 13 12:39:30 2015
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Tue Nov 17 16:48:54 2015
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -223,7 +223,7 @@ Global Symbols
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;QuickSort
 </UL>
 
-<P><STRONG><a name="[93]"></a>SetSigPowerAtt</STRONG> (Thumb, 94 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[93]"></a>SetSigPowerAtt</STRONG> (Thumb, 156 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePe4302
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
 </UL>
@@ -231,9 +231,8 @@ Global Symbols
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execSigPower
 </UL>
 
-<P><STRONG><a name="[81]"></a>InitTaskControl</STRONG> (Thumb, 112 bytes, Stack size 0 bytes, rf_control.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePe4302
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
+<P><STRONG><a name="[81]"></a>InitTaskControl</STRONG> (Thumb, 102 bytes, Stack size 0 bytes, rf_control.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
 </UL>
 <BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -498,7 +497,6 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAtt
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execAtt1Set
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execSigAtt
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitTaskControl
 </UL>
 
 <P><STRONG><a name="[8c]"></a>WriteE2prom</STRONG> (Thumb, 104 bytes, Stack size 0 bytes, dev_e2prom.o(.text))
@@ -1579,12 +1577,12 @@ Local Symbols
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;QuickSort
 </UL>
 
-<P><STRONG><a name="[44]"></a>execSigAtt</STRONG> (Thumb, 62 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[44]"></a>execSigAtt</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePe4302
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
-<P><STRONG><a name="[45]"></a>execSigPower</STRONG> (Thumb, 250 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[45]"></a>execSigPower</STRONG> (Thumb, 270 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAtt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetSigOffsetWithPower
