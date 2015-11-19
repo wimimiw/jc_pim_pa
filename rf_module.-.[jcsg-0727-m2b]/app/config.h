@@ -84,8 +84,10 @@ extern const U8 HardwareV 	;
 /* Public variables ----------------------------------------------------------*/
 /* Public function prototypes ------------------------------------------------*/
 /* Includes ------------------------------------------------------------------*/
-#include "string.h"
-#include "math.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
 #include "stm32f10x.h"
 

@@ -1,6 +1,8 @@
 .\release\output\dev_e2prom.o: ..\device\dev_e2prom.c
 .\release\output\dev_e2prom.o: ..\app\config.h
 .\release\output\dev_e2prom.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\release\output\dev_e2prom.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\release\output\dev_e2prom.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\release\output\dev_e2prom.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\output\dev_e2prom.o: ..\cpu\stm32f10x.h
 .\release\output\dev_e2prom.o: ..\cpu\core_cm3.h

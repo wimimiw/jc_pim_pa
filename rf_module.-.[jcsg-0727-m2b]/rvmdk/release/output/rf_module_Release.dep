@@ -1,7 +1,9 @@
 Dependencies for Project 'rf_module', Target 'Release': (DO NOT MODIFY !)
 F (..\app\main.c)(0x55C414B0)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\main.o --omf_browse .\release\output\main.crf --depend .\release\output\main.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -45,9 +47,11 @@ I (..\app\target.h)(0x562DB7CE)
 I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
-F (..\app\rf_control.c)(0x564AE9F5)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\rf_control.o --omf_browse .\release\output\rf_control.crf --depend .\release\output\rf_control.d)
-I (..\app\config.h)(0x55C06F6E)
+F (..\app\rf_control.c)(0x564C2671)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\rf_control.o --omf_browse .\release\output\rf_control.crf --depend .\release\output\rf_control.d)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -92,8 +96,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\app\rf_protocol.c)(0x55D431E9)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\rf_protocol.o --omf_browse .\release\output\rf_protocol.crf --depend .\release\output\rf_protocol.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -138,8 +144,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\app\rf_parameter.c)(0x55C06F6E)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\rf_parameter.o --omf_browse .\release\output\rf_parameter.crf --depend .\release\output\rf_parameter.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -184,8 +192,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\app\task.c)(0x55C06F6F)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\task.o --omf_browse .\release\output\task.crf --depend .\release\output\task.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -230,8 +240,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\app\target.c)(0x562DBB7D)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\target.o --omf_browse .\release\output\target.crf --depend .\release\output\target.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -335,8 +347,10 @@ I (..\driver\inc\stm32f10x_usart.h)(0x55C06F71)
 I (..\driver\inc\stm32f10x_wwdg.h)(0x55C06F71)
 I (..\driver\inc\misc.h)(0x55C06F70)
 F (..\device\dev_spi.c)(0x55C06F6F)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\dev_spi.o --omf_browse .\release\output\dev_spi.crf --depend .\release\output\dev_spi.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -381,8 +395,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\device\dev_att.c)(0x55C06F6F)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\dev_att.o --omf_browse .\release\output\dev_att.crf --depend .\release\output\dev_att.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -427,8 +443,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\device\dev_e2prom.c)(0x55C06F6F)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\dev_e2prom.o --omf_browse .\release\output\dev_e2prom.crf --depend .\release\output\dev_e2prom.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -473,8 +491,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\device\dev_temp.c)(0x55C06F70)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\dev_temp.o --omf_browse .\release\output\dev_temp.crf --depend .\release\output\dev_temp.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -519,8 +539,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\driver\user_timer.c)(0x55C06F73)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\user_timer.o --omf_browse .\release\output\user_timer.crf --depend .\release\output\user_timer.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -565,8 +587,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\driver\user_adc.c)(0x55C06F73)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\user_adc.o --omf_browse .\release\output\user_adc.crf --depend .\release\output\user_adc.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -611,8 +635,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\driver\user_i2c.c)(0x55C06F73)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\user_i2c.o --omf_browse .\release\output\user_i2c.crf --depend .\release\output\user_i2c.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -657,8 +683,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\driver\user_uart.c)(0x55C06F73)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\user_uart.o --omf_browse .\release\output\user_uart.crf --depend .\release\output\user_uart.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)
@@ -703,8 +731,10 @@ I (..\app\rf_protocol.h)(0x564539D8)
 I (..\app\rf_parameter.h)(0x55C06F6E)
 I (..\app\rf_control.h)(0x564031A9)
 F (..\driver\user_flash.c)(0x55C06F73)(-c --cpu Cortex-M3 -D__EVAL -O2 --apcs=interwork -I..\app -I..\device -I..\driver\inc -I..\driver -I..\cpu-I D:\Documents\jc_pim_pa\rf_module.-.[jcsg-0727-m2b]\rvmdk\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="513" -DSTM32F10X_MD_VL -DSTM32F10X_MD_VL -DUSE_STDPERIPH_DRIVER -DWATCHDOG_EN-o .\release\output\user_flash.o --omf_browse .\release\output\user_flash.crf --depend .\release\output\user_flash.d)
-I (..\app\config.h)(0x55C06F6E)
+I (..\app\config.h)(0x564C0531)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\cpu\stm32f10x.h)(0x55C06F6F)
 I (..\cpu\core_cm3.h)(0x55C06F6F)

@@ -241,6 +241,13 @@ BOOL GetSigOffsetWithPower(U16 freq,S16 pwr100,U16 *offset,BOOL *norFlag)
 	freqMHz = freq;
 	freq10MHz = freq/10;
 	
+	if( (pwr100 < 0 && pwr100 > -10 ) || ( pwr100 < -1000 && pwr100 > -1010 ))
+	{
+		*offset = 0;
+		*norFlag = FALSE;
+		return TRUE;
+	}
+	
 	if( pwr100 == -8000 )
 	{
 		result = ReadE2prom(EEPROM_SIG1_START + freqMHz*sizeof(U16),(U8*)of,sizeof(U16));
@@ -511,15 +518,36 @@ BOOL SetSigPowerAtt(S16 pwr100)
 	
 	if(pwr100 <= 1000 && pwr100 >= 0)
 	{
-		gAtt1 = 25;att1=0;att2=0;
+		if(gCenFreq < 2000000)
+		{
+			gAtt1 = 40;att1=0;att2=0;
+		}
+		else
+		{
+			gAtt1 = 10;att1=0;att2=0;
+		}
 	}
 	else if(pwr100 <= -10 && pwr100 >= -1000)
 	{
-		gAtt1 = 25;att1=10;att2=0;
+		if(gCenFreq < 2000000)
+		{
+			gAtt1 = 40;att1=20;att2=0;
+		}
+		else
+		{
+			gAtt1 = 10;att1=10;att2=0;
+		}
 	}
 	else if(pwr100 <= -1010 && pwr100 >= -2000)
 	{
-		gAtt1 = 25;att1=20;att2=0;
+		if(gCenFreq < 2000000)
+		{
+			gAtt1 = 40;att1=40;att2=0;
+		}
+		else
+		{
+			gAtt1 = 10;att1=20;att2=0;
+		}
 	}
 	else
 	{
@@ -585,17 +613,17 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		if(pwr100 == -8000)
 		{
 			result = GetSigOffsetWithPower(freqMHz,pwr100,&offset,&norFlag);
-			if(norFlag == FALSE)*(S16*)buf[13] = -10001;
+			if(norFlag == FALSE)*(S16*)&buf[13] = -10001;
 			//memcpy(buf+13,(U8*)&offset,2);
 		}
 		else
 		{			
 			result = GetSigOffsetWithPower(freqMHz,pwr100,&offsetL,&norFlag);
-			if(norFlag == FALSE)*(S16*)buf[13] = -10001;	
+			if(norFlag == FALSE)*(S16*)&buf[13] = -10001;	
 			result = GetSigOffsetWithPower(freqMHz+10,pwr100,&offsetH,&norFlag);		
-			if(norFlag == FALSE)*(S16*)buf[13] = -10001;					
+			if(norFlag == FALSE)*(S16*)&buf[13] = -10001;					
 			
-			k = 100*(offsetH - offsetL)/100;//斜率*100然后除100=10MHz/100Khz
+			k = 100*((S16)offsetH - (S16)offsetL)/100;//斜率*100然后除100=10MHz/100Khz			
 			
 			if(k>=0)
 				offset = offsetL + (abs(k)*(gCenFreq/100 - freqMHz/10*100)/100);
@@ -649,7 +677,7 @@ static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	else
 	{
 		result = GetSigOffsetWithPower(gCenFreq/1000,pwr100,&offset,&norFlag);
-		//if(norFlag == FALSE)*(S16*)buf[15] = -10001;	
+		//if(norFlag == FALSE)*(S16*)&buf[15] = -10001;	
 		memcpy(buf+13,(U8*)&pwr100,sizeof(pwr100));	
 		memcpy(buf+15,(U8*)&offset,sizeof(offset));		
 	}		

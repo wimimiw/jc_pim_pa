@@ -1,6 +1,8 @@
 .\release\output\main.o: ..\app\main.c
 .\release\output\main.o: ..\app\config.h
 .\release\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\release\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\release\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\release\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\output\main.o: ..\cpu\stm32f10x.h
 .\release\output\main.o: ..\cpu\core_cm3.h

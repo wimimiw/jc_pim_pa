@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\release\output\rf_module.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\release\output\rf_module.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Tue Nov 17 16:48:54 2015
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Wed Nov 18 15:20:14 2015
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -180,7 +180,7 @@ Global Symbols
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitParam
 </UL>
 
-<P><STRONG><a name="[89]"></a>GetSigOffsetWithPower</STRONG> (Thumb, 296 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[89]"></a>GetSigOffsetWithPower</STRONG> (Thumb, 324 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadE2prom
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execSigCalibrate
@@ -223,7 +223,7 @@ Global Symbols
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;QuickSort
 </UL>
 
-<P><STRONG><a name="[93]"></a>SetSigPowerAtt</STRONG> (Thumb, 156 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[93]"></a>SetSigPowerAtt</STRONG> (Thumb, 192 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePe4302
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
 </UL>
@@ -238,7 +238,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[37]"></a>TaskControl</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[37]"></a>TaskControl</STRONG> (Thumb, 78 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadInternalTemperatureSensor
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
 </UL>
@@ -1577,12 +1577,12 @@ Local Symbols
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;QuickSort
 </UL>
 
-<P><STRONG><a name="[44]"></a>execSigAtt</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[44]"></a>execSigAtt</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePe4302
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
-<P><STRONG><a name="[45]"></a>execSigPower</STRONG> (Thumb, 270 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[45]"></a>execSigPower</STRONG> (Thumb, 268 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAtt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetSigOffsetWithPower

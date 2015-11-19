@@ -1,6 +1,8 @@
 .\release\output\user_i2c.o: ..\driver\user_i2c.c
 .\release\output\user_i2c.o: ..\app\config.h
 .\release\output\user_i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\release\output\user_i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\release\output\user_i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\release\output\user_i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\output\user_i2c.o: ..\cpu\stm32f10x.h
 .\release\output\user_i2c.o: ..\cpu\core_cm3.h

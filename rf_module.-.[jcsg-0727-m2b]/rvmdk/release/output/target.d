@@ -1,6 +1,8 @@
 .\release\output\target.o: ..\app\target.c
 .\release\output\target.o: ..\app\config.h
 .\release\output\target.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\release\output\target.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\release\output\target.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\release\output\target.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\output\target.o: ..\cpu\stm32f10x.h
 .\release\output\target.o: ..\cpu\core_cm3.h

@@ -1,6 +1,8 @@
 .\release\output\dev_spi.o: ..\device\dev_spi.c
 .\release\output\dev_spi.o: ..\app\config.h
 .\release\output\dev_spi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\release\output\dev_spi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\release\output\dev_spi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\release\output\dev_spi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\output\dev_spi.o: ..\cpu\stm32f10x.h
 .\release\output\dev_spi.o: ..\cpu\core_cm3.h

@@ -1,6 +1,8 @@
 .\release\output\rf_protocol.o: ..\app\rf_protocol.c
 .\release\output\rf_protocol.o: ..\app\config.h
 .\release\output\rf_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\release\output\rf_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\release\output\rf_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\release\output\rf_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\output\rf_protocol.o: ..\cpu\stm32f10x.h
 .\release\output\rf_protocol.o: ..\cpu\core_cm3.h
