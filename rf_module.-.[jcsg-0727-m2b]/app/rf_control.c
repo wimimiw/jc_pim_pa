@@ -143,6 +143,7 @@ const JC_COMMAND tabInfo[] = {
 	{ID_FCT_PARAM_WR,EE_SIG_ATT			,0,(U8*)&gSigAtt,sizeof(gSigAtt)				,0,0,execSigAtt},		//0x0160		//信号衰减补偿
 	{ID_FCT_PARAM_WR,EE_SIG_POW			,0,(U8*)&gSigPower,sizeof(gSigPower)			,0,0,execSigPower},		//0x0162		//设置输出功率
 	{ID_FCT_PARAM_WR,EE_SIG_POW_OFFSET	,0,(U8*)&gSigPowerOffset,sizeof(gSigPowerOffset),0,0,execSigCalibrate},	//0x0164		//设置输出功率及定标值	
+	{ID_FCT_PARAM_WR,EE_SIG_FREQ_STEP	,0,(U8*)&gSigFreqStep,sizeof(gSigFreqStep)		,0,0,NULL},				//0x0168		//设置定标频率步进	
 /****************other parameter********************/
 //	{ID_FCT_PARAM_WR,0					,0,(U8*)&gAtttempval,sizeof(gAtttempval)		,0,0,NULL},//温度补偿值	
 	{ID_FCT_PARAM_WR,EE_ALL_CHECKSUM	,0,(U8*)&gFWCheck,sizeof(gFWCheck)				,0,0,NULL},//程序校验和
@@ -594,8 +595,8 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	BOOL norFlag;
 	S16 k;
 	S16 pwr100 = *(S16*)&buf[13]; //功率值*100（对数）
-	U16 offset,offsetH,offsetL;
-	U32 freqMHz;
+	U16 offset,offsetH,offsetL,temp16;
+	U32 freqMHz,freqTemp;
 	
 	if( pwr100 > 1000 || (pwr100 < -2000 && pwr100 > -8000) || pwr100 < -8000)
 	{
@@ -618,9 +619,14 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		}
 		else
 		{			
-			result = GetSigOffsetWithPower(freqMHz,pwr100,&offsetL,&norFlag);
+			if(gSigFreqStep == 0xFF)gSigFreqStep = 1;
+			
+			temp16 = gSigFreqStep*10;
+			freqTemp = freqMHz/temp16*temp16;
+			
+			result = GetSigOffsetWithPower(freqTemp,pwr100,&offsetL,&norFlag);
 			if(norFlag == FALSE)*(S16*)&buf[13] = -10001;	
-			result = GetSigOffsetWithPower(freqMHz+10,pwr100,&offsetH,&norFlag);		
+			result = GetSigOffsetWithPower(freqTemp+temp16,pwr100,&offsetH,&norFlag);		
 			if(norFlag == FALSE)*(S16*)&buf[13] = -10001;					
 			
 			k = 100*((S16)offsetH - (S16)offsetL)/100;//斜率*100然后除100=10MHz/100Khz			
@@ -856,7 +862,7 @@ void InitTaskControl(void)
 	gPlusSwitchState = CLOSE;
 	gPASW = CLOSE;
 	gRFSW = CLOSE;
-	gRFSrcSel = SRC_INTERNAL;
+	gRFSrcSel = SRC_INTERNAL;	
 	
 	//前向功率检测切换至射频 输入模式
 	PWR_DET_SELECT(0);

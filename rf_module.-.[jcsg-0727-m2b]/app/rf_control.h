@@ -194,6 +194,7 @@ __RF_CONTROL_EXT__	U8  AppModel;	            //0x00F7	    //1字节，仪表型号
 __RF_CONTROL_EXT__	U8  gSigAtt;				//1字节，信号衰减补偿
 __RF_CONTROL_EXT__	U16 gSigPower;				//2字节，输出功率
 __RF_CONTROL_EXT__	U32 gSigPowerOffset;		//4字节，输出功率及定标值
+__RF_CONTROL_EXT__	U8  gSigFreqStep;			//1字节，定标频率步进
 /****************单次脉冲触发变量********************/
 __RF_CONTROL_EXT__	U8 	gPlusSwitchState;     	//脉冲开关状态变量
 __RF_CONTROL_EXT__	U8  gPlusValue[4];

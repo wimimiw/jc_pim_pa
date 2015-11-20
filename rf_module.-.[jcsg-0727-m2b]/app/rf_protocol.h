@@ -263,6 +263,7 @@ typedef struct __JOINTCOM_EXE_TABLE {
 #define	EE_SIG_ATT			0x0160		//1×Ö½Ú£¬ÐÅºÅË¥¼õ²¹³¥
 #define	EE_SIG_POW			0x0162		//2×Ö½Ú£¬Êä³ö¹¦ÂÊ
 #define	EE_SIG_POW_OFFSET  	0x0164		//4×Ö½Ú£¬Êä³ö¹¦ÂÊ¼°¶¨±êÖµµ
+#define	EE_SIG_FREQ_STEP  	0x0168		//1×Ö½Ú£¬¶¨±êÆµÂÊ²½½ø
 
 /******version**********/
 #define	EE_VERSION			0x00E0		//2×Ö½Ú£¬³ÌÐò°æ±¾ºÅ
