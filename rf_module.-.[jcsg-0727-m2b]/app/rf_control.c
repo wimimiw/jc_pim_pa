@@ -617,6 +617,14 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 			if(norFlag == FALSE)*(S16*)&buf[13] = -10001;
 			//memcpy(buf+13,(U8*)&offset,2);
 		}
+		else if (pwr100 < 0 && pwr100 > -10)
+		{
+			result = GetSigOffsetWithPower(freqTemp,0,&offsetL,&norFlag);
+		}
+		else if (pwr100 < -1000 && pwr100 > -1010)
+		{
+			result = GetSigOffsetWithPower(freqTemp,-1000,&offsetL,&norFlag);
+		}
 		else
 		{			
 			if(gSigFreqStep == 0xFF)gSigFreqStep = 1;
