@@ -789,9 +789,15 @@ BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
   * @date	:2015.11.9
   */
 BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
-{		
+{	
+	U8  tbuf[20];
+	U16 len;	
+	
 	if(flag == TRUE)
 	{	
+		//根据频率和功率调出定标值	
+		*(S16*)(tbuf+13) = gSigPower;
+		execSigPower(TRUE,tbuf,sizeof(tbuf),&len);
 		//写VCO
 		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
 	}
