@@ -519,7 +519,7 @@ BOOL SetSigPowerAtt(S16 pwr100)
 	
 	if(pwr100 <= 1000 && pwr100 >= 0)
 	{
-		if(gCenFreq < 2000000)
+		if(gCenFreq < 1800000)
 		{
 			gAtt1 = 40;att1=0;att2=0;
 		}
@@ -530,7 +530,7 @@ BOOL SetSigPowerAtt(S16 pwr100)
 	}
 	else if(pwr100 <= -10 && pwr100 >= -1000)
 	{
-		if(gCenFreq < 2000000)
+		if(gCenFreq < 1800000)
 		{
 			gAtt1 = 40;att1=20;att2=0;
 		}
@@ -541,7 +541,7 @@ BOOL SetSigPowerAtt(S16 pwr100)
 	}
 	else if(pwr100 <= -1010 && pwr100 >= -2000)
 	{
-		if(gCenFreq < 2000000)
+		if(gCenFreq < 1800000)
 		{
 			gAtt1 = 40;att1=40;att2=0;
 		}
@@ -692,7 +692,7 @@ static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	{
 		result = GetSigOffsetWithPower(gCenFreq/1000,pwr100,&offset,&norFlag);
 		//if(norFlag == FALSE)*(S16*)&buf[15] = -10001;	
-		memcpy(buf+13,(U8*)&pwr100,sizeof(pwr100));	
+		//memcpy(buf+13,(U8*)&pwr100,sizeof(pwr100));	
 		memcpy(buf+15,(U8*)&offset,sizeof(offset));		
 	}		
 	
