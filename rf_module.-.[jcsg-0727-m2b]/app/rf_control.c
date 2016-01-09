@@ -74,6 +74,8 @@ const ST_SIG_OFFSET gSigOffset = {	{1000,900,800,700,600,500,400,300,200,100,0},
 #define CALIB_ERR_LOW			(-10002)
 #define CALIB_ERR_VLOW			(-10003)
 #define CALIB_ERR_VHIGH			(-10004)
+
+#define SIGNAL_POWER_LOW		(-8000)
 /* Private macro -------------------------------------------------------------*/
 const U8 BootloaderV 	__attribute__((at(ADDR_BYTE_BOOTLOADERV))) = 0x11;
 const U8 SoftwareV 		__attribute__((at(ADDR_BYTE_SOFTWAREV  ))) = 0x62;
@@ -256,7 +258,7 @@ BOOL GetSigOffsetWithPower(U16 freq,S16 pwr100,U16 *offset,BOOL *norFlag)
 //		return TRUE;
 //	}
 	
-	if( pwr100 == -8000 )
+	if( pwr100 == SIGNAL_POWER_LOW )
 	{
 		result = ReadE2prom(EEPROM_SIG1_START + freqMHz*sizeof(U16),(U8*)of,sizeof(U16));
 		if((of[0]&(U16)(1<<15))!=0)*norFlag = FALSE;
@@ -323,7 +325,7 @@ BOOL SetSigOffsetWithPower(U16 freq,S16 pwr100,U16 offset,BOOL norFlag)
 	
 	if(norFlag == FALSE)offset |= 1<<15;
 	
-	if(pwr100 == -8000)
+	if(pwr100 == SIGNAL_POWER_LOW)
 	{		
 		result = WriteE2prom(EEPROM_SIG1_START + freq*sizeof(offset),(U8*)&offset,sizeof(offset));				
 	}
@@ -559,7 +561,15 @@ BOOL SetSigPowerAtt(S16 pwr100)
 	}
 	else
 	{
-		gAtt1 = 0;att1=30;att2=30;
+		if(gCenFreq < 700000)
+		{
+			gAtt1 = 0;att1=20;att2=20;			
+		}
+		else
+		{
+			gAtt1 = 0;att1=30;att2=30;
+		}
+		
 		WritePLL(gCenFreq,gRefFreq,gFreqStep,0,FALSE);
 	}	
 		
@@ -568,6 +578,35 @@ BOOL SetSigPowerAtt(S16 pwr100)
 	result|= WritePe4302(SPI_ATT3,gAtt1);
 	
 	return result;
+}
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
+BOOL SetSigPowerAttLow(u16 att)
+{
+	//att (0~126)
+	BOOL result = FALSE;
+	
+	if(att > 126)att = 126;
+		
+	if((att%2) == 0)
+	{
+		result|= WritePe4302(SPI_ATT1,(u8)att/2);
+		result|= WritePe4302(SPI_ATT2,(u8)att/2);
+	}
+	else
+	{
+		result|= WritePe4302(SPI_ATT1,(u8)att/2);
+		result|= WritePe4302(SPI_ATT2,(u8)(att/2)+1);	
+	}
+	
+	result|= WritePe4302(SPI_ATT3,0);	
+	return result;	
 }
 /**
   * @brief  :
@@ -605,7 +644,7 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	U16 offset,offsetH,offsetL,temp16;
 	U32 freqMHz,freqTemp;
 	
-	if( pwr100 > 1000 || (pwr100 < -2000 && pwr100 > -8000) || pwr100 < -8000)
+	if( pwr100 > 1000 || (pwr100 < -2000 && pwr100 > SIGNAL_POWER_LOW) || pwr100 < SIGNAL_POWER_LOW)
 	{
 		k = CALIB_OUT_RANGEL;
 		memcpy(buf+13,(U8*)&k,sizeof(k));
@@ -627,10 +666,12 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	{		
 		SetSigPowerAtt(pwr100);	
 		
-		if(pwr100 == -8000)
+		if(pwr100 == SIGNAL_POWER_LOW)
 		{
 			result = GetSigOffsetWithPower(freqMHz,pwr100,&offset,&norFlag);
 			if(norFlag == FALSE)*(S16*)&buf[13] = CALIB_ERR_LOW;
+			SetSigPowerAttLow(offset);
+			offset = 4000;
 			//memcpy(buf+13,(U8*)&offset,2);
 		}
 		else
@@ -679,7 +720,7 @@ static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	S16 pwr100 = *(S16*)(buf+13); //功率值*100（对数）
 	U16 offset = *(U16*)(buf+15);
 	
-	if( pwr100 > 1000 || (pwr100 < -2000 && pwr100 > -8000) || pwr100 < -8000)
+	if( pwr100 > 1000 || (pwr100 < -2000 && pwr100 > SIGNAL_POWER_LOW) || pwr100 < SIGNAL_POWER_LOW)
 	{
 		pwr100 = CALIB_OUT_RANGEL;
 		memcpy(buf+13,(U8*)&pwr100,sizeof(pwr100));
@@ -692,6 +733,10 @@ static BOOL execSigCalibrate(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 				
 		result = SetSigOffsetWithPower(gCenFreq/1000,pwr100,offset&0xfff,((offset&(1<<15))==0?TRUE:FALSE));
 				
+		if(pwr100 == SIGNAL_POWER_LOW)
+		{
+			SetSigPowerAttLow(offset);offset = 4000;
+		}
 		//memcpy(buf+13,(U8*)&result,2);
 		
 		if(offset<4096)setALCRef(offset);

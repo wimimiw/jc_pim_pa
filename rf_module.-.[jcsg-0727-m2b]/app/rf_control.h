@@ -104,8 +104,8 @@ typedef struct
 #define SRC_INTERNAL	0
 #define SRC_EXTERNAL 	1
 
-#define	FW_VERSION_H  	0x06
-#define FW_VERSION_L  	0x01
+#define	FW_VERSION_H  	0x07
+#define FW_VERSION_L  	0x00
 
 //在这里选择使用的ADC通道
 #define CHANNEL_0		0x01
