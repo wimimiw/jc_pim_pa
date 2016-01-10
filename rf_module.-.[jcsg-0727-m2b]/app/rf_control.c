@@ -44,6 +44,7 @@ const ST_SIG_OFFSET gSigOffset = {	{1000,900,800,700,600,500,400,300,200,100,0},
 									//{-8000}};
 /* Private define ------------------------------------------------------------*/	
 #define AD4350_PWR_LIM			(3)   //-3dBm
+#define AD4350_REQ_CNT			(3)   //VCO失锁尝试次数
 #define IS_ALARM_TEMPERATURE()	(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_3) != Bit_SET)   	//温度警报
 #define IS_ALARM_CURRENT()		(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4) != Bit_SET)	//电流警报
 #define IS_ALARM_VSWR()			(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_5) != Bit_SET)	//驻波警报
@@ -366,7 +367,7 @@ int GetTableMebCnt(void)
   * @version:
   * @date	:2015.11.9
   */
-void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
+void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 {
 	#define R0_INIT		0x00000000L
 	//
@@ -397,8 +398,9 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
 	//				 LD-PIN[1:0]											 
 	//DB31 ~ DB24   DB23 DB22   DB21 DB20 DB19 DB18 DB17 DB16 DB15 ~ DB4 DB3 DB2 DB1 DB0
 	//0    0		 5					   8                   0 0 0       5
-	//0    ~ 0      0    1    	 0	  1	   1    0    0    0    0    ~ 0   0   1   0   1	  
+	//0    ~ 0      0    1    	 0	  1	   1    0    0    0    0    ~ 0   0   1   0   1	
 	u32 counterTemp,counterN,divSel;
+	u16 step = freqStep;
 	u8 value,i;
 	SPI_TYPE spiType;
 
@@ -418,7 +420,7 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
 	 
 	divSel = i;	
 	counterN <<= divSel;							
-	freqStep <<= divSel;
+	step <<= divSel;
 	
 	//R5
 	WriteSpiOneWord(SPI_VCO,&spiType,R5_INIT);
@@ -432,16 +434,28 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
 	//R2
 	WriteSpiOneWord(SPI_VCO,&spiType,R2_INIT);
 						  						
-	counterTemp = (freqRef/freqStep)<<3;
+	counterTemp = (freqRef/step)<<3;
 	counterTemp|= R1_INIT;
 	//R1
 	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
 		
-	counterTemp  = ((counterN%freqRef)/freqStep)<<3;
+	counterTemp  = ((counterN%freqRef)/step)<<3;
 	counterN  	 = (counterN/freqRef)<<15;											
 	counterTemp |= counterN;	
 	//R0
 	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
+	
+	if(--reqCnt <= 0)
+	{
+		return;
+	}
+	
+	for(i = 0;i < 25;i++);  //等待锁定
+	
+	if(IS_VCO_LOCK() == FALSE)
+	{//失锁进行递归
+		WritePLL(freq,freqRef,freqStep,power,enable,reqCnt);
+	}	
 }
 /**
   * @brief  :
@@ -570,7 +584,7 @@ BOOL SetSigPowerAtt(S16 pwr100)
 			gAtt1 = 0;att1=30;att2=30;
 		}
 		
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,0,FALSE);
+		WritePLL(gCenFreq,gRefFreq,gFreqStep,0,FALSE,AD4350_REQ_CNT);
 	}	
 		
 	result|= WritePe4302(SPI_ATT1,att1);
@@ -845,7 +859,7 @@ BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	if(flag == TRUE)
 	{	
 		//写VCO
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,AD4350_REQ_CNT);
 	}
 	return TRUE;
 }
@@ -875,7 +889,7 @@ BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 //		}
 
 		VCO_CE(gRFSW);		
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW);
+		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW,AD4350_REQ_CNT);
 		
 		PA_POWER_SWITCH(gRFSW);
 	}
@@ -906,7 +920,7 @@ BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 			setALCRef(gPALim*4);			
 		}			
 		//写VCO
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,AD4350_REQ_CNT);
 		//根据频率和功率调出定标值	
 		*(S16*)(tbuf+13) = gSigPower;
 		execSigPower(TRUE,tbuf,sizeof(tbuf),&len);				

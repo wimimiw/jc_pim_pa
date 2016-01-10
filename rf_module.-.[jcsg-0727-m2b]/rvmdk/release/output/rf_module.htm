@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\release\output\rf_module.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\release\output\rf_module.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Sat Jan 09 15:54:50 2016
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Sun Jan 10 21:16:40 2016
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -16,6 +16,7 @@ Mutually Recursive functions
  <LI><a href="#[7]">BusFault_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[7]">BusFault_Handler</a><BR>
  <LI><a href="#[8]">UsageFault_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[8]">UsageFault_Handler</a><BR>
  <LI><a href="#[1f]">ADC1_IRQHandler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[1f]">ADC1_IRQHandler</a><BR>
+ <LI><a href="#[8d]">WritePLL</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[8d]">WritePLL</a><BR>
 </UL>
 <P>
 <H3>
@@ -198,16 +199,19 @@ Global Symbols
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitParam
 </UL>
 
-<P><STRONG><a name="[8d]"></a>WritePLL</STRONG> (Thumb, 176 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[8d]"></a>WritePLL</STRONG> (Thumb, 232 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
+<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
 </UL>
 <BR>[Called By]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAtt
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execVCOLim
 <LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execRFSW
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execVCO
 </UL>
 
-<P><STRONG><a name="[8f]"></a>WriteAD5324</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[90]"></a>WriteAD5324</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
 </UL>
 <BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execVCOLim
@@ -217,9 +221,9 @@ Global Symbols
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitTaskControl
 </UL>
 
-<P><STRONG><a name="[90]"></a>ReadPowerADC</STRONG> (Thumb, 126 bytes, Stack size 0 bytes, rf_control.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcValue
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<P><STRONG><a name="[91]"></a>ReadPowerADC</STRONG> (Thumb, 126 bytes, Stack size 0 bytes, rf_control.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcValue
+<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;QuickSort
 </UL>
 
@@ -238,16 +242,16 @@ Global Symbols
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execSigPower
 </UL>
 
-<P><STRONG><a name="[81]"></a>InitTaskControl</STRONG> (Thumb, 102 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[81]"></a>InitTaskControl</STRONG> (Thumb, 104 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
 </UL>
 <BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[37]"></a>TaskControl</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[37]"></a>TaskControl</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadInternalTemperatureSensor
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.text)
 </UL>
@@ -494,7 +498,7 @@ Global Symbols
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteGpioPin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePe4302
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
 </UL>
 
@@ -596,13 +600,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitTarget
 </UL>
 
-<P><STRONG><a name="[91]"></a>ReadAdcValue</STRONG> (Thumb, 96 bytes, Stack size 0 bytes, user_adc.o(.text), UNUSED)
+<P><STRONG><a name="[92]"></a>ReadAdcValue</STRONG> (Thumb, 96 bytes, Stack size 0 bytes, user_adc.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_SoftwareStartConvCmd
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_RegularChannelConfig
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_GetFlagStatus
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_GetConversionValue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPowerADC
+<BR>[Called By]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPowerADC
 </UL>
 
 <P><STRONG><a name="[cf]"></a>ReadAdcTemperature</STRONG> (Thumb, 150 bytes, Stack size 0 bytes, user_adc.o(.text))
@@ -832,18 +836,18 @@ Global Symbols
 
 <P><STRONG><a name="[e1]"></a>ADC_SoftwareStartConvCmd</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, stm32f10x_adc.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcTemperature
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcValue
+<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcValue
 </UL>
 
 <P><STRONG><a name="[db]"></a>ADC_RegularChannelConfig</STRONG> (Thumb, 116 bytes, Stack size 0 bytes, stm32f10x_adc.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcTemperature
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitAdc
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcValue
+<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcValue
 </UL>
 
 <P><STRONG><a name="[e3]"></a>ADC_GetConversionValue</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f10x_adc.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcTemperature
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcValue
+<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcValue
 </UL>
 
 <P><STRONG><a name="[e4]"></a>ADC_TempSensorVrefintCmd</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f10x_adc.o(.text))
@@ -852,7 +856,7 @@ Global Symbols
 
 <P><STRONG><a name="[e2]"></a>ADC_GetFlagStatus</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f10x_adc.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcTemperature
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcValue
+<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcValue
 </UL>
 
 <P><STRONG><a name="[10c]"></a>GPIO_DeInit</STRONG> (Thumb, 152 bytes, Stack size 0 bytes, stm32f10x_gpio.o(.text), UNUSED)
@@ -867,8 +871,9 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitTarget
 </UL>
 
-<P><STRONG><a name="[92]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f10x_gpio.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPowerADC
+<P><STRONG><a name="[8f]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f10x_gpio.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPowerADC
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
 <LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskControl
 </UL>
 
@@ -1581,7 +1586,7 @@ Local Symbols
 <P><STRONG><a name="[88]"></a>QuickSort</STRONG> (Thumb, 96 bytes, Stack size 0 bytes, rf_control.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;QuickSort
 </UL>
-<BR>[Called By]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPowerADC
+<BR>[Called By]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPowerADC
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;QuickSort
 </UL>
 
@@ -1593,7 +1598,7 @@ Local Symbols
 <P><STRONG><a name="[45]"></a>execSigPower</STRONG> (Thumb, 352 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAttLow
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAtt
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetSigOffsetWithPower
 </UL>
 <BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execVCOLim
@@ -1603,7 +1608,7 @@ Local Symbols
 <P><STRONG><a name="[46]"></a>execSigCalibrate</STRONG> (Thumb, 198 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAttLow
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAtt
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigOffsetWithPower
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetSigOffsetWithPower
 </UL>
@@ -1623,24 +1628,24 @@ Local Symbols
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
 <P><STRONG><a name="[40]"></a>execALC</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, rf_control.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
+<BR><BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
-<P><STRONG><a name="[41]"></a>execVCO</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[41]"></a>execVCO</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
-<P><STRONG><a name="[43]"></a>execRFSW</STRONG> (Thumb, 70 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[43]"></a>execRFSW</STRONG> (Thumb, 104 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
-<P><STRONG><a name="[42]"></a>execVCOLim</STRONG> (Thumb, 136 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[42]"></a>execVCOLim</STRONG> (Thumb, 112 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteE2prom
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
+<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execSigPower
 </UL>
