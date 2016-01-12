@@ -192,7 +192,7 @@ __RF_CONTROL_EXT__	U16 PaUpLimit;		        //0x00F5		//2字节，功放上限
 __RF_CONTROL_EXT__	U8  AppModel;	            //0x00F7	    //1字节，仪表型号
 /******Signal Generator********/
 __RF_CONTROL_EXT__	U8  gSigAtt;				//1字节，信号衰减补偿
-__RF_CONTROL_EXT__	U16 gSigPower;				//2字节，输出功率
+__RF_CONTROL_EXT__	S16 gSigPower;				//2字节，输出功率
 __RF_CONTROL_EXT__	U32 gSigPowerOffset;		//4字节，输出功率及定标值
 __RF_CONTROL_EXT__	U8  gSigFreqStep;			//1字节，定标频率步进
 /****************单次脉冲触发变量********************/

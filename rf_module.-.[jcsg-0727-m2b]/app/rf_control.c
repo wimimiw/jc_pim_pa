@@ -889,7 +889,11 @@ BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 //		}
 
 		VCO_CE(gRFSW);		
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW,AD4350_REQ_CNT);
+		
+		if(gSigPower == SIGNAL_POWER_LOW)
+			WritePLL(gCenFreq,gRefFreq,gFreqStep,0,FALSE,AD4350_REQ_CNT);
+		else
+			WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW,AD4350_REQ_CNT);
 		
 		PA_POWER_SWITCH(gRFSW);
 	}
