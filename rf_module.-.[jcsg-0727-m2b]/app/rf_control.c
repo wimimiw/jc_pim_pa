@@ -288,12 +288,12 @@ BOOL GetSigOffsetWithPower(U16 freq,S16 pwr100,U16 *offset,BOOL *norFlag)
 	}
 	else
 	{	
-		if(of[0] == 0xFFFF || of[1] == 0xFFFF)
-		{
-			of[0] = 0;
-			of[1] = 0;
-			*norFlag = FALSE;
-		}
+//		if(of[0] == 0xFFFF || of[1] == 0xFFFF)
+//		{
+//			of[0] = 0;
+//			of[1] = 0;
+//			*norFlag = FALSE;
+//		}
 			
 		if((of[0]&(U16)(1<<15))!=0)*norFlag = FALSE;
 		if((of[1]&(U16)(1<<15))!=0)*norFlag = FALSE;
@@ -548,7 +548,7 @@ BOOL SetSigPowerAtt(S16 pwr100)
 		}
 		else
 		{
-			gAtt1 = 10;att1=0;att2=0;
+			gAtt1 = 28;att1=0;att2=0;
 		}
 	}
 	else if(pwr100 <= -10 && pwr100 >= -1000)
@@ -559,7 +559,7 @@ BOOL SetSigPowerAtt(S16 pwr100)
 		}
 		else
 		{
-			gAtt1 = 10;att1=10;att2=0;
+			gAtt1 = 28;att1=10;att2=0;
 		}
 	}
 	else if(pwr100 <= -1010 && pwr100 >= -2000)
@@ -570,7 +570,7 @@ BOOL SetSigPowerAtt(S16 pwr100)
 		}
 		else
 		{
-			gAtt1 = 10;att1=20;att2=0;
+			gAtt1 = 28;att1=20;att2=0;
 		}
 	}
 	else
@@ -698,7 +698,12 @@ static BOOL execSigPower(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 			result = GetSigOffsetWithPower(freqTemp,pwr100,&offsetL,&norFlag);
 			if(norFlag == FALSE)*(S16*)&buf[13] = CALIB_ERR_VLOW;	
 			result = GetSigOffsetWithPower(freqTemp+temp16,pwr100,&offsetH,&norFlag);		
-			if(norFlag == FALSE)*(S16*)&buf[13] = CALIB_ERR_VHIGH;					
+			if(norFlag == FALSE)*(S16*)&buf[13] = CALIB_ERR_VHIGH;
+
+			if( freqMHz > 1790 && freqMHz < 1800)
+			{//拐点处理
+				offsetH = offsetL;
+			}
 			
 			k = 100*((S16)offsetH - (S16)offsetL)/100;//斜率*100然后除100=10MHz/100Khz			
 			
