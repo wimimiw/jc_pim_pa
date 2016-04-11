@@ -546,6 +546,10 @@ BOOL SetSigPowerAtt(S16 pwr100)
 		{
 			gAtt1 = 40;att1=0;att2=0;
 		}
+		else if(gCenFreq >= 1800000 && gCenFreq < 2200)
+		{
+			gAtt1 = 28;att1=0;att2=0;
+		}
 		else
 		{
 			gAtt1 = 28;att1=0;att2=0;
@@ -557,10 +561,14 @@ BOOL SetSigPowerAtt(S16 pwr100)
 		{
 			gAtt1 = 40;att1=20;att2=0;
 		}
-		else
+		else if(gCenFreq >= 1800000 && gCenFreq < 2200)
 		{
 			gAtt1 = 28;att1=10;att2=0;
 		}
+		else
+		{
+			gAtt1 = 28;att1=14;att2=0;
+		}		
 	}
 	else if(pwr100 <= -1010 && pwr100 >= -2000)
 	{
@@ -568,10 +576,14 @@ BOOL SetSigPowerAtt(S16 pwr100)
 		{
 			gAtt1 = 40;att1=40;att2=0;
 		}
-		else
+		else if(gCenFreq >= 1800000 && gCenFreq < 2200)
 		{
 			gAtt1 = 28;att1=20;att2=0;
 		}
+		else
+		{
+			gAtt1 = 28;att1=24;att2=0;
+		}			
 	}
 	else
 	{
