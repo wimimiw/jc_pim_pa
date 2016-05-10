@@ -196,7 +196,8 @@ __RF_CONTROL_EXT__	U8  gPlusValue[4];
 __RF_CONTROL_EXT__	S8	gTempValue[6];			//温补操作队列   
 __RF_CONTROL_EXT__	U8	gFreqLim[6];
 //控制参数
-__RF_CONTROL_EXT__ U8	gRFSrcSel;
+__RF_CONTROL_EXT__ U8	gRFSrcSel;				//信源选择
+__RF_CONTROL_EXT__ U8	gRFOscSel;				//参考晶振选择
 __RF_CONTROL_EXT__ U8 	gLNAState;				//低噪放故障状态
 __RF_CONTROL_EXT__ U8 	gLimState;				//限幅状态
 __RF_CONTROL_EXT__ U8 	gPLLLock;				//中频失锁状态

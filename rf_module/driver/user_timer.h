@@ -44,8 +44,12 @@ typedef struct{
 /* Public macro --------------------------------------------------------------*/
 __inline void usdelay(U16 delayTimer)
 {
+	//实测当delayTimer = 1时该函数耗时5us
 	U16 i;
-	for(i = 0;i < delayTimer*NUM_NOP_IN_US ;i ++);
+	for(i = 0;i < delayTimer;i++)
+	{		
+		__NOP();__NOP();//NUM_NOP_IN_US
+	}	
 }
 /* Public variables ----------------------------------------------------------*/
 /* Public function prototypes ------------------------------------------------*/

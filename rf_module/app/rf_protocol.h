@@ -213,7 +213,7 @@ typedef struct __JOINTCOM_EXE_TABLE {
 #define EE_DA_CHANNEL_D		0x003A		//DAC通道4
 /**Source Select**/
 #define EE_SOURCE_SELECT	0x003C		//选择信源选项
-
+#define EE_OSCREF_SELECT	0x003D		//选择参考选项
 /***frequency***/
 #define	EE_CenFreq 			0x0140		//4字节，中心频率,长整型数据
 #define EE_BandWidth		0x0044		//4字节，带宽

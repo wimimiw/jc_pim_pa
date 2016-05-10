@@ -48,7 +48,9 @@
 //前向功率电平读取
 #define PWRDTADJ_RO(x)			(ReadAdcValue(ADC_Channel_1,&(x)))
 //信源切换
-#define SOURCE_SWITCH(x)		do{GPIO_WriteBit(GPIOA,GPIO_Pin_14,(x == SRC_INTERNAL)?Bit_SET:Bit_RESET);\
+#define SOURCE_SWITCH(x)
+//参考切换
+#define OSCREF_SWITCH(x)		do{GPIO_WriteBit(GPIOA,GPIO_Pin_14,(x == SRC_INTERNAL)?Bit_SET:Bit_RESET);\
 								   GPIO_WriteBit(GPIOA,GPIO_Pin_15,(x != SRC_INTERNAL)?Bit_SET:Bit_RESET);}while(0)
 
 #define PA_POWER_SWITCH(x)		(GPIO_WriteBit(GPIOB,GPIO_Pin_8,(x) == TRUE ? Bit_SET : Bit_RESET))
@@ -56,21 +58,26 @@
 
 #define setAtt(att)     		(WritePe4302(&attBus[1],(att)))
 #define setALCRef(x)			(WriteAD5324((x),'B'))
+								   
+#define SPI_VCO					(&attBus[0])
+#define VCO_TRY_LOCK_CNT		(3)								   
 /* Private macro -------------------------------------------------------------*/
 const U8 BootloaderV 	__attribute__((at(ADDR_BYTE_BOOTLOADERV))) = 0x11;
-const U8 SoftwareV 		__attribute__((at(ADDR_BYTE_SOFTWAREV  ))) = 0x62;
+const U8 SoftwareV 		__attribute__((at(ADDR_BYTE_SOFTWAREV  ))) = 0x63;
 const U8 HardwareV 		__attribute__((at(ADDR_BYTE_HARDWAREV  ))) = 0x50;
 /* Private variables ---------------------------------------------------------*/
 BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+BOOL execSwitchOscRef(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen);									   
 								   
 const JC_COMMAND tabInfo[] = {	
-//信源选择
+//信源参考选择
 	{ID_FCT_PARAM_WR,EE_SOURCE_SELECT	,0,(U8*)&gRFSrcSel,sizeof(gRFSrcSel)			,0,0,execSwitchSource	},
+	{ID_FCT_PARAM_WR,EE_OSCREF_SELECT	,0,(U8*)&gRFOscSel,sizeof(gRFOscSel)			,0,0,execSwitchOscRef	},	
 /****gain*****/
 	{ID_FCT_PARAM_WR,EE_TEMPER_BUCHANG	,0,(U8*)&gTempValue,sizeof(gTempValue)			,0,0,NULL				},
 	{ID_FCT_PARAM_WR,EE_AtteVal			,0,(U8*)&gAtteVal,sizeof(gAtteVal)				,0,0,NULL				},//0x0001     //1字节，增益设定值
@@ -192,7 +199,93 @@ int GetTableMebCnt(void)
 	return sizeof(tabInfo)/sizeof(JC_COMMAND);
 }
 
-void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
+//void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
+//{
+//	#define R0_INIT		0x00000000L
+//	//
+//	//DB31             ~                  DB4 DB3 DB2 DB1 DB0
+//	//0    0    0    0    0    0    0          0
+//	//0                ~                  0   0   0   0   0
+//	#define R1_INIT		0x08008001L
+//	//			  PRESCALER
+//	//DB31~DB28  DB27       DB26 DB25 DB24 DB23  ~ DB16 DB15 DB14 DB13 DB12 DB11 ~ DB4 DB3 DB2 DB1 DB0
+//	//0			  8			 	   			0     0		  8					  0    0      1
+//	//0   ~0     1			 0    0    0    0    ~   0   1    0    0    0    0    ~ 0	  0	  0   0   1 
+//	#define R2_INIT		0x18004FC2L
+//	//     NOISE-MODE[1:0] MUXOUT[2:0]	   REF-DOU RDIV2    					 DOUB-BUFF	CHARGE-PUMP[3:0]  LDF LDP PD-POLA PD  CP-THR  COUNT-RESET
+//	//DB31 DB30 DB29       DB28 DB27 DB26  DB25    DB24   DB23 ~ DB16 DB15 DB14 DB13       DB12 DB11 B10 DB9 DB8 DB7 DB6     DB5 DB4     DB3         DB2 DB1 DB0
+//	//1							8						  0	   0	   4						 E				  C						  2
+//	//0    0    0          1    1    0     0       0      0    ~ 0    0    1    0			0	 1	  1	  1	  1	  1	  1	      0	  0		  0           0   1   0
+//	#define R3_INIT		0x000004B3L
+//	//					CSR		  CLK-DIV[1:0]
+//	//DB31 ~ DB20 DB19 DB18 DB17 DB16 DB15    DB14 DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
+//	//0  0  0	   0                   0                      4  				B				3
+//	//0    ~ 0    0    0    0    0    0       0    0    0    0	   1    0   0   1   0   1   1   0   0   1   1 	
+//	#define R4_INIT		0x00850404L				//0x00850414
+//	//				 FEEDBACK DIV-SEL[2:0]	     BAND-SELECT-CLOCK-DIVIDER-VALUE[7:0]        VCO-POW  MTLD AUXOUT-SEL AUXOUT-EN	AUXOUT-POW[1:0]	RFOUT-EN OUTPOW[1:0]
+//	//DB31 ~ DB24   DB23     DB22 DB21 DB20     DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12     DB11     B10  DB9        DB8       DB7 DB6         DB5      DB4 DB3     DB2 DB1 DB0
+//	//0    0		 8							 5					 0						 4									1							 C
+//	//0    ~ 0      1        0    0    0        0    1    0    1    0    0    0    0		 0		  1	   0		  0			0	0			0		 0	 0		 1	 0	 0
+//	#define R5_INIT		0x00580005L
+//	//				 LD-PIN[1:0]											 
+//	//DB31 ~ DB24   DB23 DB22   DB21 DB20 DB19 DB18 DB17 DB16 DB15 ~ DB4 DB3 DB2 DB1 DB0
+//	//0    0		 5					   8                   0 0 0       5
+//	//0    ~ 0      0    1    	 0	  1	   1    0    0    0    0    ~ 0   0   1   0   1	  
+//	u32 counterTemp,counterN,divSel;
+//	u8 value,i;
+//	SPI_TYPE spiType;
+
+//	spiType.len   = 32;
+//	spiType.order = MSB_FIRST;
+//	spiType.type  = SPI_LEVEL_LOW;
+//	spiType.mask  = 0x80000000;	
+//  
+//	counterN = freq;
+//	value 	 = 4400000 / counterN;
+
+//	for(i=7;i>0;i--)
+//	{
+//		if((value & 0x80)==0x80)break;
+//		value <<= 1;
+//	}
+//	 
+//	divSel = i;	
+//	counterN <<= divSel;							
+//	freqStep <<= divSel;
+//	
+//	//R5
+//	WriteSpiOneWord(&attBus[0],&spiType,R5_INIT);
+
+//	counterTemp = divSel << 20;
+//	counterTemp|= R4_INIT|(enable << 5)|(power<<3);
+//	//R4
+//	WriteSpiOneWord(&attBus[0],&spiType,counterTemp);
+//	//R3
+//	WriteSpiOneWord(&attBus[0],&spiType,R3_INIT);
+//	//R2
+//	WriteSpiOneWord(&attBus[0],&spiType,R2_INIT);
+//						  						
+//	counterTemp = (freqRef/freqStep)<<3;
+//	counterTemp|= R1_INIT;
+//	//R1
+//	WriteSpiOneWord(&attBus[0],&spiType,counterTemp);
+//		
+//	counterTemp  = ((counterN%freqRef)/freqStep)<<3;
+//	counterN  	 = (counterN/freqRef)<<15;											
+//	counterTemp |= counterN;	
+//	//R0
+//	WriteSpiOneWord(&attBus[0],&spiType,counterTemp);
+//}
+
+/**
+  * @brief  :
+  * @param  :None
+  * @retval :None
+  * @author :mashuai
+  * @version:
+  * @date	:2015.11.9
+  */
+void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 {
 	#define R0_INIT		0x00000000L
 	//
@@ -223,11 +316,13 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
 	//				 LD-PIN[1:0]											 
 	//DB31 ~ DB24   DB23 DB22   DB21 DB20 DB19 DB18 DB17 DB16 DB15 ~ DB4 DB3 DB2 DB1 DB0
 	//0    0		 5					   8                   0 0 0       5
-	//0    ~ 0      0    1    	 0	  1	   1    0    0    0    0    ~ 0   0   1   0   1	  
+	//0    ~ 0      0    1    	 0	  1	   1    0    0    0    0    ~ 0   0   1   0   1	
 	u32 counterTemp,counterN,divSel;
+	u16 step = freqStep;
 	u8 value,i;
 	SPI_TYPE spiType;
-
+//	static U32 stk_r0=(U32)-1,stk_r1 = (U32)-1,stk_r2=(U32)-1,stk_r3=(U32)-1,stk_r4=(U32)-1,stk_r5=(U32)-1;
+	
 	spiType.len   = 32;
 	spiType.order = MSB_FIRST;
 	spiType.type  = SPI_LEVEL_LOW;
@@ -244,30 +339,77 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable)
 	 
 	divSel = i;	
 	counterN <<= divSel;							
-	freqStep <<= divSel;
+	step <<= divSel;
 	
 	//R5
-	WriteSpiOneWord(&attBus[0],&spiType,R5_INIT);
+//	if(stk_r5 != R5_INIT)
+//	{
+//		stk_r5 = R5_INIT;
+//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r5);
+//	}
+	WriteSpiOneWord(SPI_VCO,&spiType,R5_INIT);
 
 	counterTemp = divSel << 20;
 	counterTemp|= R4_INIT|(enable << 5)|(power<<3);
+	
 	//R4
-	WriteSpiOneWord(&attBus[0],&spiType,counterTemp);
+//	if(stk_r4 != counterTemp)
+//	{
+//		stk_r4 = counterTemp;
+//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r4);
+//	}
+	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
+	
 	//R3
-	WriteSpiOneWord(&attBus[0],&spiType,R3_INIT);
+//	if(stk_r3 != R3_INIT)
+//	{
+//		stk_r3 = R3_INIT;		
+//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r3);
+//	}
+	WriteSpiOneWord(SPI_VCO,&spiType,R3_INIT);
+	
 	//R2
-	WriteSpiOneWord(&attBus[0],&spiType,R2_INIT);
+//	if(stk_r2 != R2_INIT)
+//	{
+//		stk_r2 = R2_INIT;		
+//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r2);
+//	}	
+	WriteSpiOneWord(SPI_VCO,&spiType,R2_INIT);
 						  						
-	counterTemp = (freqRef/freqStep)<<3;
+	counterTemp = (freqRef/step)<<3;
 	counterTemp|= R1_INIT;
 	//R1
-	WriteSpiOneWord(&attBus[0],&spiType,counterTemp);
+//	if(stk_r1 != counterTemp)
+//	{
+//		stk_r1 = counterTemp;
+//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r1);
+//	}	
+	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
 		
-	counterTemp  = ((counterN%freqRef)/freqStep)<<3;
+	counterTemp  = ((counterN%freqRef)/step)<<3;
 	counterN  	 = (counterN/freqRef)<<15;											
 	counterTemp |= counterN;	
 	//R0
-	WriteSpiOneWord(&attBus[0],&spiType,counterTemp);
+//	if(stk_r0 != counterTemp)
+//	{
+//		stk_r0 = counterTemp;
+//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r0);
+//	}
+	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);	
+	
+	if(--reqCnt <= 0)
+	{
+		return;
+	}
+	
+	//此处锁相时间测试为100us(示波器实测),因此等待时间必须大于100us
+	usdelay(150);//wait lock	
+	//实测锁相需要的时间为4ms，即配置R0-R56个寄存器加锁定需要的时间。
+	//R0~R5中有些寄存器可能由于相同的值不需要再次进行配置，由于其操作时间快，这里就还是进行了再次配置。
+	if(!IS_VCO_LOCK()&&!IS_VCO_LOCK()&&!IS_VCO_LOCK()&&!IS_VCO_LOCK())
+	{//失锁重试
+		WritePLL(freq,freqRef,freqStep,power,enable,reqCnt);
+	}	
 }
 
 void WriteAD5324(U16 value,U8 channel)
@@ -288,7 +430,7 @@ void WriteAD5324(U16 value,U8 channel)
 	
 	WriteSpiOneWord(&attBus[2],&spiType,value);
 }
-
+//
 U16 ReadPowerADC(void)
 {
 	U8 i;
@@ -325,7 +467,7 @@ U16 ReadPowerADC(void)
 		
 	return adcValue/4;
 }
-
+//
 BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {	
 	if(flag == TRUE)
@@ -335,19 +477,29 @@ BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	}
 	return TRUE;
 }
-
+//
 BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {
 	if(flag == TRUE)
 	{	
-		//切换信源
+		//操作信源SPDT开关
 		SOURCE_SWITCH(gRFSrcSel);
-		//设置信源
+		//操作内部信源开闭
 		VCO_CE(gRFSrcSel == SRC_INTERNAL && gRFSW == TRUE);	
 	}
 	return TRUE;
 }
-
+//
+BOOL execSwitchOscRef(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	if(flag == TRUE)
+	{	
+		//切换参考晶振
+		OSCREF_SWITCH(gRFOscSel);
+	}
+	return TRUE;
+}
+//
 BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {		
 	if(flag == TRUE)
@@ -358,17 +510,20 @@ BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	}
 	return TRUE;
 }
-
+//
 BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {		
+	//static U32 x = 1800000;
 	if(flag == TRUE)
 	{	
 		//写VCO
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,VCO_TRY_LOCK_CNT);
+		//x = (x == 1800000)?900000:1800000;
+		//WritePLL(x,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,1);		
 	}
 	return TRUE;
 }
-
+//
 BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {		
 	UserTimerDef Timer;
@@ -387,7 +542,7 @@ BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		}
 
 		VCO_CE(gRFSW);		
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW);
+		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW,VCO_TRY_LOCK_CNT);
 		
 		PA_POWER_SWITCH(gRFSW);
 	}
@@ -409,7 +564,7 @@ BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		}		
 	
 		//写VCO
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,VCO_TRY_LOCK_CNT);
 	}
 	return TRUE;
 }
@@ -425,7 +580,8 @@ void InitTaskControl(void)
 	//前向功率检测切换至射频 输入模式
 	PWR_DET_SELECT(0);
 	
-	SOURCE_SWITCH(gRFSrcSel);		
+	SOURCE_SWITCH(gRFSrcSel);	
+	OSCREF_SWITCH(gRFOscSel);	
 	
 	PA_POWER_SWITCH(FALSE);
 	
