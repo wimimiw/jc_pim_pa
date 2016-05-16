@@ -83,6 +83,7 @@ extern const U8 SoftwareV 	;
 extern const U8 HardwareV 	;
 /* Public variables ----------------------------------------------------------*/
 /* Public function prototypes ------------------------------------------------*/
+extern int TaskWatchdog(int*argv[],int argc);
 /* Includes ------------------------------------------------------------------*/
 #include "string.h"
 #include "math.h"

@@ -26,24 +26,6 @@ typedef struct
 	U8 ack;
 	U8 para[1];
 }SLAYER2;
-
-typedef struct 
-{
-	U8 rev1;
-	U8 totLen;
-	U8 pm1;
-	U8 pm2;
-	U8 objLen;
-	U8 mode;
-	U8 ack;
-	U8 get;
-	U8 upgrade1;	
-	U8 upgrade2;
-	U8 id1;
-	U8 id2;
-	U8 idLen;
-	U8 idBuf[1];
-}JC_LAYER1;
 /* Private define ------------------------------------------------------------*/
 #define MODE_Nocheck					0x00
 #define MODE_UseChecksum				0x06

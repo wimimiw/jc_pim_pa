@@ -41,6 +41,24 @@ typedef struct __JOINTCOM_EXE_TABLE {
     __callback void (*set)(U8*pt,U16 len);
     __callback void (*get)(U8*pt,U16 len);
 } JOINTCOM_EXE_TABLE;
+
+typedef struct 
+{
+	U8 rev1;
+	U8 totLen;
+	U8 pm1;
+	U8 pm2;
+	U8 objLen;
+	U8 mode;
+	U8 ack;
+	U8 get;
+	U8 upgrade1;	
+	U8 upgrade2;
+	U8 id1;
+	U8 id2;
+	U8 idLen;
+	U8 idBuf[1];
+}JC_LAYER1;
 /* Public define -------------------------------------------------------------*/
 //AISG 1.1
 #define AISG_V11_GLOBAL_Reserved       				0x01 
@@ -266,6 +284,7 @@ typedef struct __JOINTCOM_EXE_TABLE {
 #define EE_PLUS_TRIGER 		0x0100		//触发单次脉冲信号 
 #define EE_TEMPER_BUCHANG	0x0110		//温补命令
 #define EE_FREQ_ADD_POWEWR	0x0040		//同时设置频率和功率
+#define EE_SET_FREQPOWER_GET_SAMPLE 0x0120 //同时设置频率和功率返回采样数据
 #define EE_DOWN_FLAG        0x01FF		//1字节，软件下载标志
 
 //应答标志常量列表

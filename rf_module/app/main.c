@@ -39,7 +39,6 @@
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 static void InitWatchdog(void);
-static int TaskWatchdog(int*argv[],int argc);
 static int TaskDebug(int*argv[],int argc);
 /* Private functions ---------------------------------------------------------*/
 
@@ -148,7 +147,7 @@ static int TaskDebug(int*argv[],int argc)
   * @version:v2.0
   * @date	:2011.10.20
   */
-static int TaskWatchdog(int*argv[],int argc)
+int TaskWatchdog(int*argv[],int argc)
 {
 #ifdef	WATCHDOG_EN
     /* Reload IWDG counter */

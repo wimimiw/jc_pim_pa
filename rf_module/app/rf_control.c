@@ -72,6 +72,7 @@ BOOL execSwitchOscRef(U8 flag,U8 *buf,U16 rxLen,U16*txLen);
 BOOL execALC(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
+BOOL execVCOLimSample(U8 flag,U8 *buf,U16 rxLen,U16*txLen);								   
 BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen);									   
 								   
 const JC_COMMAND tabInfo[] = {	
@@ -109,7 +110,8 @@ const JC_COMMAND tabInfo[] = {
 	{ID_FCT_PARAM_WR,EE_Freq			,0,(U8*)&gFreq,sizeof(gFreq)					,0,0,NULL},//0x0050		//4字节，本振频率
 	{ID_FCT_PARAM_WR,EE_RefFreq			,0,(U8*)&gRefFreq,sizeof(gRefFreq)				,0,0,NULL},//0x0054		//4字节，参考频?
 	
-	{ID_FCT_PARAM_WR,EE_FREQ_ADD_POWEWR	,0,(U8*)&gFreqLim[0],sizeof(gFreqLim)			,0,0,execVCOLim			},//0x0020		//6字节，中心频率+限幅值
+	{ID_FCT_PARAM_WR,EE_FREQ_ADD_POWEWR	,0,(U8*)&gFreqLim[0],sizeof(gFreqLim)			,0,0,execVCOLim			},//0x0040		//6字节，中心频率+限幅值
+	{ID_FCT_PARAM_WR,EE_SET_FREQPOWER_GET_SAMPLE	,0,(U8*)&gFreqLim[0],sizeof(gFreqLim)			,0,0,execVCOLimSample},//0x0120		//6字节，中心频率+限幅值   返回采样数据
 /*****current*****/
 	{ID_FCT_PARAM_WR,EE_CURRENT_TEMP	,0,(U8*)&gCurRfTemp,sizeof(gCurRfTemp)			,0,0,NULL},//0x0080		//2字节，当前电流
 	{ID_FCT_PARAM_WR,EE_CurCo			,0,(U8*)&gCurCo,sizeof(gCurCo)					,0,0,NULL},//0x0080		//2字节，电流斜率
@@ -321,6 +323,7 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 	u16 step = freqStep;
 	u8 value,i;
 	SPI_TYPE spiType;
+//	static BOOL result = FALSE;
 //	static U32 stk_r0=(U32)-1,stk_r1 = (U32)-1,stk_r2=(U32)-1,stk_r3=(U32)-1,stk_r4=(U32)-1,stk_r5=(U32)-1;
 	
 	spiType.len   = 32;
@@ -532,7 +535,7 @@ BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	{	
 		//温度警报	电流警报 驻波警报
 		if(IS_ALARM_TEMPERATURE()||IS_ALARM_CURRENT()||IS_ALARM_VSWR())
-		{
+		{//当侦测到警报后对目标系统进行复位
 			PA_RESET(TRUE);
 			
 			UserTimerReset(TIM2,&Timer);
@@ -546,15 +549,18 @@ BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		
 		PA_POWER_SWITCH(gRFSW);
 	}
+	
 	return TRUE;
 }
 
 BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 {	
+	BOOL result = TRUE;
+	
 	if(flag == TRUE)
 	{	
 		gCenFreq = *(U32*)&gFreqLim[0];
-		WriteE2prom(EE_CenFreq,(U8*)&gCenFreq,sizeof(gCenFreq));
+		result = WriteE2prom(EE_CenFreq,(U8*)&gCenFreq,sizeof(gCenFreq));
 					
 		if( buf[12] == 6 )
 		{
@@ -566,7 +572,24 @@ BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		//写VCO
 		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,VCO_TRY_LOCK_CNT);
 	}
-	return TRUE;
+	
+	return result;
+}
+
+BOOL execVCOLimSample(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
+{
+	BOOL result = TRUE;
+	JC_LAYER1 *layer = (JC_LAYER1*)buf;
+	UserTimerDef Timer;
+	
+	layer->get = 0;
+	result = execVCOLim(flag,buf,rxLen,txLen);	
+	//Wait 50ms to ensure ALC is Lock?
+	UserTimerReset(TIM2,&Timer);
+	while(FALSE == UserTimerOver(TIM2,&Timer,USER_TIMER_10MS(5))){usdelay(100);TaskWatchdog(NULL,NULL);}
+	result&= execRFParamQ(flag,buf,rxLen,txLen);
+	
+	return result;
 }
 
 void InitTaskControl(void)
