@@ -31,7 +31,7 @@
 #include "config.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define AD4350_PWR_LIM			(1)   //-1dBm
+#define AD4350_PWR_LIM			(3)   //+5dBm
 #define IS_ALARM_TEMPERATURE()	(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_3) != Bit_SET)   	//温度警报
 #define IS_ALARM_CURRENT()		(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4) != Bit_SET)	//电流警报
 #define IS_ALARM_VSWR()			(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_5) != Bit_SET)	//驻波警报
@@ -280,8 +280,13 @@ int GetTableMebCnt(void)
 //}
 
 /**
-  * @brief  :
-  * @param  :None
+  * @brief  :	Operator to the ADF4350
+  * @param  :	u32 freq 		= frequency center unit:khz
+				u32 freqRef 	= frequency reference unit:khz
+				u32 freqStep 	= frequency step(minium step) unit:khz
+				u8  power       = 0(-1dBm),1(0dBm),2(2dBm),3(5dBm)
+				BOOL enable		= rf power on/off
+				U8 reqCnt		= lock try counter
   * @retval :None
   * @author :mashuai
   * @version:
@@ -299,11 +304,11 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 	//DB31~DB28  DB27       DB26 DB25 DB24 DB23  ~ DB16 DB15 DB14 DB13 DB12 DB11 ~ DB4 DB3 DB2 DB1 DB0
 	//0			  8			 	   			0     0		  8					  0    0      1
 	//0   ~0     1			 0    0    0    0    ~   0   1    0    0    0    0    ~ 0	  0	  0   0   1 
-	#define R2_INIT		0x18004FC2L
+	#define R2_INIT		0x18004EC2L
 	//     NOISE-MODE[1:0] MUXOUT[2:0]	   REF-DOU RDIV2    					 DOUB-BUFF	CHARGE-PUMP[3:0]  LDF LDP PD-POLA PD  CP-THR  COUNT-RESET
 	//DB31 DB30 DB29       DB28 DB27 DB26  DB25    DB24   DB23 ~ DB16 DB15 DB14 DB13       DB12 DB11 B10 DB9 DB8 DB7 DB6     DB5 DB4     DB3         DB2 DB1 DB0
 	//1							8						  0	   0	   4						 E				  C						  2
-	//0    0    0          1    1    0     0       0      0    ~ 0    0    1    0			0	 1	  1	  1	  1	  1	  1	      0	  0		  0           0   1   0
+	//0    0    0          1    1    0     0       0      0    ~ 0    0    1    0			0	 1	  1	  1	  0	  1	  1	      0	  0		  0           0   1   0
 	#define R3_INIT		0x000004B3L
 	//					CSR		  CLK-DIV[1:0]
 	//DB31 ~ DB20 DB19 DB18 DB17 DB16 DB15    DB14 DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
@@ -319,31 +324,54 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 	//DB31 ~ DB24   DB23 DB22   DB21 DB20 DB19 DB18 DB17 DB16 DB15 ~ DB4 DB3 DB2 DB1 DB0
 	//0    0		 5					   8                   0 0 0       5
 	//0    ~ 0      0    1    	 0	  1	   1    0    0    0    0    ~ 0   0   1   0   1	
-	u32 counterTemp,counterN,divSel;
-	u16 step = freqStep;
-	u8 value,i;
+	u32 spiValue,counterN,fPFD;
+	u16 R,MOD,INT,FRAC;
+	u8 value,i,divSel;
 	SPI_TYPE spiType;
 //	static BOOL result = FALSE;
 //	static U32 stk_r0=(U32)-1,stk_r1 = (U32)-1,stk_r2=(U32)-1,stk_r3=(U32)-1,stk_r4=(U32)-1,stk_r5=(U32)-1;
 	
+	//选择合适的SPI参数
 	spiType.len   = 32;
 	spiType.order = MSB_FIRST;
 	spiType.type  = SPI_LEVEL_LOW;
 	spiType.mask  = 0x80000000;	
   
-	counterN = freq;
-	value 	 = 4400000 / counterN;
-
+	/*======小数分频的计算公式========
+	*   RFout = fPFD*(INT+FRAC/MOD)
+	*   fPFD = REFin * [(1+D)/(R*(1+T)]
+	*	
+	*INT is the preset divide ratio of the binary 16-bit counter
+	*MOD is the preset fractional modulus (2 to 4095).
+	*FRAC is the numerator of the fractional division (0 to MOD - 1).
+	*REFIN is the reference input frequency.
+	*D is the REFIN doubler bit.
+	*T is the REFIN divide-by-2 bit (0 or 1)
+	*R is the preset divide ratio of the binary 10-bit programmable reference counter (1 to 1023)
+	*PFD = PHASE FREQUENCY DETECTOR
+	*
+	*We use R = 1,
+			T = 0,
+			D = 0,
+		    fPFD = REFin * [(1+0)/1*(1+0)
+			
+	 注：较高的鉴相频率fPFD可以获得较好的相噪。
+	**********************************/
+	
+	/*选择合适的VCO分频系数2^n(RF divider)
+	 *ADF4350 VCO(2200MHz~4400MHz)	 
+	 */	
+	value = 4400000 / freq;
+	
 	for(i=7;i>0;i--)
 	{
 		if((value & 0x80)==0x80)break;
 		value <<= 1;
 	}
 	 
-	divSel = i;	
-	counterN <<= divSel;							
-	step <<= divSel;
-	
+	divSel = i;	//  1/2/4/8/16							
+	MOD = freqRef / freqStep;
+	R = 1;//RECOMMENDED
 	//R5
 //	if(stk_r5 != R5_INIT)
 //	{
@@ -352,8 +380,7 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 //	}
 	WriteSpiOneWord(SPI_VCO,&spiType,R5_INIT);
 
-	counterTemp = divSel << 20;
-	counterTemp|= R4_INIT|(enable << 5)|(power<<3);
+	spiValue = R4_INIT|(enable<<5)|(power<<3)|(divSel<<20);
 	
 	//R4
 //	if(stk_r4 != counterTemp)
@@ -361,7 +388,7 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 //		stk_r4 = counterTemp;
 //		WriteSpiOneWord(SPI_VCO,&spiType,stk_r4);
 //	}
-	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
+	WriteSpiOneWord(SPI_VCO,&spiType,spiValue);
 	
 	//R3
 //	if(stk_r3 != R3_INIT)
@@ -379,26 +406,28 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 //	}	
 	WriteSpiOneWord(SPI_VCO,&spiType,R2_INIT);
 						  						
-	counterTemp = (freqRef/step)<<3;
-	counterTemp|= R1_INIT;
+	spiValue = R1_INIT | (R<<15) | (MOD<<3);
 	//R1
 //	if(stk_r1 != counterTemp)
 //	{
 //		stk_r1 = counterTemp;
 //		WriteSpiOneWord(SPI_VCO,&spiType,stk_r1);
 //	}	
-	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
+	WriteSpiOneWord(SPI_VCO,&spiType,spiValue);
 		
-	counterTemp  = ((counterN%freqRef)/step)<<3;
-	counterN  	 = (counterN/freqRef)<<15;											
-	counterTemp |= counterN;	
+	spiValue = 0;
+	counterN = (freq<<divSel);
+	fPFD  = freqRef/R;
+	FRAC  = ((counterN%fPFD)*MOD/fPFD)<<3;
+	INT   = (counterN/fPFD)<<15;											
+	spiValue = INT|FRAC;
 	//R0
 //	if(stk_r0 != counterTemp)
 //	{
 //		stk_r0 = counterTemp;
 //		WriteSpiOneWord(SPI_VCO,&spiType,stk_r0);
 //	}
-	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);	
+	WriteSpiOneWord(SPI_VCO,&spiType,spiValue);	
 	
 	if(--reqCnt <= 0)
 	{
