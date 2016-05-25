@@ -370,7 +370,7 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 	}
 	 
 	divSel = i;	//  1/2/4/8/16							
-	MOD = freqRef / freqStep;
+	MOD = freqRef/(freqStep<<divSel);
 	R = 1;//RECOMMENDED
 	//R5
 //	if(stk_r5 != R5_INIT)
@@ -418,9 +418,9 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 	spiValue = 0;
 	counterN = (freq<<divSel);
 	fPFD  = freqRef/R;
-	FRAC  = ((counterN%fPFD)*MOD/fPFD)<<3;
-	INT   = (counterN/fPFD)<<15;											
-	spiValue = INT|FRAC;
+	FRAC  = (counterN%fPFD)*MOD/fPFD;
+	INT   = counterN/fPFD;											
+	spiValue = (INT<<15)|(FRAC<<3);
 	//R0
 //	if(stk_r0 != counterTemp)
 //	{
