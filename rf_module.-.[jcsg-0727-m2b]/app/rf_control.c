@@ -81,6 +81,10 @@ const ST_SIG_OFFSET gSigOffset = {	{1000,900,800,700,600,500,400,300,200,100,0},
 const U8 BootloaderV 	__attribute__((at(ADDR_BYTE_BOOTLOADERV))) = 0x11;
 const U8 SoftwareV 		__attribute__((at(ADDR_BYTE_SOFTWAREV  ))) = 0x62;
 const U8 HardwareV 		__attribute__((at(ADDR_BYTE_HARDWAREV  ))) = 0x50;
+
+static U8 __gAtt1 = 0;
+static U8 __gAtt2 = 0;
+static U8 __gAtt3 = 0;
 /* Private variables ---------------------------------------------------------*/
 static BOOL execAtt1Set(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
 static BOOL execSwitchSource(U8 flag,U8 *buf,U16 rxLen,U16*txLen);	
@@ -450,7 +454,7 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 		return;
 	}
 	
-	for(i = 0;i < 25;i++);  //等待锁定
+	usdelay(500);
 	
 	if(IS_VCO_LOCK() == FALSE)
 	{//失锁进行递归
@@ -602,6 +606,10 @@ BOOL SetSigPowerAtt(S16 pwr100)
 	result|= WritePe4302(SPI_ATT1,att1);
 	result|= WritePe4302(SPI_ATT2,att2);
 	result|= WritePe4302(SPI_ATT3,gAtt1);
+	
+	__gAtt1 = att1;
+	__gAtt2 = att2;
+	__gAtt3 = gAtt1;
 	
 	return result;
 }
@@ -905,12 +913,22 @@ BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 //			PA_RESET(FALSE);
 //		}
 
+		WritePe4302(SPI_ATT2,40);
+		usdelay(20000);
+		
 		VCO_CE(gRFSW);		
 		
 		if(gSigPower == SIGNAL_POWER_LOW)
 			WritePLL(gCenFreq,gRefFreq,gFreqStep,0,FALSE,AD4350_REQ_CNT);
 		else
 			WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW,AD4350_REQ_CNT);
+		
+		usdelay(5000);
+		WritePe4302(SPI_ATT2,20);
+		usdelay(5000);
+		WritePe4302(SPI_ATT2,10);
+		usdelay(5000);
+		WritePe4302(SPI_ATT2,__gAtt2);
 		
 		PA_POWER_SWITCH(gRFSW);
 	}
