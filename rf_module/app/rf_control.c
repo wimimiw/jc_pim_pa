@@ -292,7 +292,7 @@ int GetTableMebCnt(void)
   * @version:
   * @date	:2015.11.9
   */
-void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
+void SynthesizerADF4350(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 {
 	#define R0_INIT		0x00000000L
 	//
@@ -304,17 +304,17 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 	//DB31~DB28  DB27       DB26 DB25 DB24 DB23  ~ DB16 DB15 DB14 DB13 DB12 DB11 ~ DB4 DB3 DB2 DB1 DB0
 	//0			  8			 	   			0     0		  8					  0    0      1
 	//0   ~0     1			 0    0    0    0    ~   0   1    0    0    0    0    ~ 0	  0	  0   0   1 
-	#define R2_INIT		0x18004EC2L
+	#define R2_INIT		0x18001E42L
 	//     NOISE-MODE[1:0] MUXOUT[2:0]	   REF-DOU RDIV2    					 DOUB-BUFF	CHARGE-PUMP[3:0]  LDF LDP PD-POLA PD  CP-THR  COUNT-RESET
 	//DB31 DB30 DB29       DB28 DB27 DB26  DB25    DB24   DB23 ~ DB16 DB15 DB14 DB13       DB12 DB11 B10 DB9 DB8 DB7 DB6     DB5 DB4     DB3         DB2 DB1 DB0
 	//1							8						  0	   0	   4						 E				  C						  2
-	//0    0    0          1    1    0     0       0      0    ~ 0    0    1    0			0	 1	  1	  1	  0	  1	  1	      0	  0		  0           0   1   0
+	//0    0    0          1    1    0     0       0      0    ~ 0    0    1    0			1	 1	  1	  1	  0	  1	  1	      0	  0		  0           0   1   0
 	#define R3_INIT		0x000004B3L
 	//					CSR		  CLK-DIV[1:0]
 	//DB31 ~ DB20 DB19 DB18 DB17 DB16 DB15    DB14 DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
 	//0  0  0	   0                   0                      4  				B				3
 	//0    ~ 0    0    0    0    0    0       0    0    0    0	   1    0   0   1   0   1   1   0   0   1   1 	
-	#define R4_INIT		0x00850404L				//0x00850414
+	#define R4_INIT		0x00800404L				//0x00850414
 	//				 FEEDBACK DIV-SEL[2:0]	     BAND-SELECT-CLOCK-DIVIDER-VALUE[7:0]        VCO-POW  MTLD AUXOUT-SEL AUXOUT-EN	AUXOUT-POW[1:0]	RFOUT-EN OUTPOW[1:0]
 	//DB31 ~ DB24   DB23     DB22 DB21 DB20     DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12     DB11     B10  DB9        DB8       DB7 DB6         DB5      DB4 DB3     DB2 DB1 DB0
 	//0    0		 8							 5					 0						 4									1							 C
@@ -324,12 +324,10 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 	//DB31 ~ DB24   DB23 DB22   DB21 DB20 DB19 DB18 DB17 DB16 DB15 ~ DB4 DB3 DB2 DB1 DB0
 	//0    0		 5					   8                   0 0 0       5
 	//0    ~ 0      0    1    	 0	  1	   1    0    0    0    0    ~ 0   0   1   0   1	
-	u32 spiValue,counterN,fPFD;
+	u32 spiValue,VCO,PFD;
 	u16 R,MOD,INT,FRAC;
-	u8 value,i,divSel;
+	u8 value,i,divSel,divBand;
 	SPI_TYPE spiType;
-//	static BOOL result = FALSE;
-//	static U32 stk_r0=(U32)-1,stk_r1 = (U32)-1,stk_r2=(U32)-1,stk_r3=(U32)-1,stk_r4=(U32)-1,stk_r5=(U32)-1;
 	
 	//选择合适的SPI参数
 	spiType.len   = 32;
@@ -350,7 +348,7 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 	*R is the preset divide ratio of the binary 10-bit programmable reference counter (1 to 1023)
 	*PFD = PHASE FREQUENCY DETECTOR
 	*
-	*We use R = 1,
+	*We use R = 10,
 			T = 0,
 			D = 0,
 		    fPFD = REFin * [(1+0)/1*(1+0)
@@ -368,66 +366,32 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 		if((value & 0x80)==0x80)break;
 		value <<= 1;
 	}
-	 
-	divSel = i;	//  1/2/4/8/16							
-	MOD = freqRef/(freqStep<<divSel);
-	R = 1;//RECOMMENDED
-	//R5
-//	if(stk_r5 != R5_INIT)
-//	{
-//		stk_r5 = R5_INIT;
-//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r5);
-//	}
-	WriteSpiOneWord(SPI_VCO,&spiType,R5_INIT);
-
-	spiValue = R4_INIT|(enable<<5)|(power<<3)|(divSel<<20);
 	
-	//R4
-//	if(stk_r4 != counterTemp)
-//	{
-//		stk_r4 = counterTemp;
-//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r4);
-//	}
-	WriteSpiOneWord(SPI_VCO,&spiType,spiValue);
-	
-	//R3
-//	if(stk_r3 != R3_INIT)
-//	{
-//		stk_r3 = R3_INIT;		
-//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r3);
-//	}
-	WriteSpiOneWord(SPI_VCO,&spiType,R3_INIT);
-	
-	//R2
-//	if(stk_r2 != R2_INIT)
-//	{
-//		stk_r2 = R2_INIT;		
-//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r2);
-//	}	
-	WriteSpiOneWord(SPI_VCO,&spiType,R2_INIT);
-						  						
-	spiValue = R1_INIT | (R<<15) | (MOD<<3);
-	//R1
-//	if(stk_r1 != counterTemp)
-//	{
-//		stk_r1 = counterTemp;
-//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r1);
-//	}	
-	WriteSpiOneWord(SPI_VCO,&spiType,spiValue);
+	//Output divider
+	divSel = i;	//1/2/4/8/16			
 		
-	spiValue = 0;
-	counterN = (freq<<divSel);
-	fPFD  = freqRef/R;
-	FRAC  = (counterN%fPFD)*MOD/fPFD;
-	INT   = counterN/fPFD;											
-	spiValue = (INT<<15)|(FRAC<<3);
-	//R0
-//	if(stk_r0 != counterTemp)
-//	{
-//		stk_r0 = counterTemp;
-//		WriteSpiOneWord(SPI_VCO,&spiType,stk_r0);
-//	}
-	WriteSpiOneWord(SPI_VCO,&spiType,spiValue);	
+	if(freqStep >= 10)
+		R = 1;
+	else if(freqStep >= 1 && freqStep < 10)
+		R = 10;
+	else if(freqStep == 0)
+		R = 200;//Support 20Hz Step,Not support <20Hz Step(INT,MOD bit is not enough)
+	
+	PFD  = freqRef/R;				/*鉴相频率			*/
+	divBand = (PFD+124)/125;		/*带宽分频器		*/
+	VCO  = (freq<<divSel);			/*VCO频率			*/
+	MOD  = (PFD/(freqStep<<divSel));/*小数分母			*/
+	FRAC = ((VCO%PFD)*MOD/PFD);		/*小数分子			*/
+	INT  = (VCO/PFD);				/*整数				*/	
+
+	if(FRAC == 0)MOD=2;//低杂散模式下，MOD需大于50
+		
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R5_INIT);
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R4_INIT|(divSel<<20)|(divBand<<12)|(enable<<5)|(power<<3));
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R3_INIT);
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R2_INIT|(R<<14));
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R1_INIT|(MOD<<3));
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R0_INIT|(INT<<15)|(FRAC<<3)); 	
 	
 	if(--reqCnt <= 0)
 	{
@@ -440,7 +404,7 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 	//R0~R5中有些寄存器可能由于相同的值不需要再次进行配置，由于其操作时间快，这里就还是进行了再次配置。
 	if(!IS_VCO_LOCK()&&!IS_VCO_LOCK()&&!IS_VCO_LOCK()&&!IS_VCO_LOCK())
 	{//失锁重试
-		WritePLL(freq,freqRef,freqStep,power,enable,reqCnt);
+		SynthesizerADF4350(freq,freqRef,freqStep,power,enable,reqCnt);
 	}	
 }
 
@@ -549,9 +513,9 @@ BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	if(flag == TRUE)
 	{	
 		//写VCO
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,VCO_TRY_LOCK_CNT);
+		SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,VCO_TRY_LOCK_CNT);
 		//x = (x == 1800000)?900000:1800000;
-		//WritePLL(x,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,1);		
+		//SynthesizerADF4350(x,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,1);		
 	}
 	return TRUE;
 }
@@ -574,7 +538,7 @@ BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		}
 
 		VCO_CE(gRFSW);		
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW,VCO_TRY_LOCK_CNT);
+		SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW,VCO_TRY_LOCK_CNT);
 		
 		PA_POWER_SWITCH(gRFSW);
 	}
@@ -599,7 +563,7 @@ BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		}		
 	
 		//写VCO
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,VCO_TRY_LOCK_CNT);
+		SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,VCO_TRY_LOCK_CNT);
 	}
 	
 	return result;
@@ -641,12 +605,12 @@ void InitTaskControl(void)
 	setALCRef(0);
 	
 	//VCO_CE(TRUE);
-	//WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+	//SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,VCO_TRY_LOCK_CNT);
 	VCO_CE(FALSE);
 }
 		
 int TaskControl(int*argv[],int argc)
-{		
+{	
 	//限幅状态
 	gLimState = IS_ALC_LOCK();
 	//VCO锁定状态
@@ -690,7 +654,7 @@ int TaskControl(int*argv[],int argc)
 		//VCO_CE(gRFSrcSel == SRC_INTERNAL && gRFSW == TRUE);		
 		//ALC参数限辐
 		//setALCRef(gPALim*4);		
-		//WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+		//SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
 	}
 	
 	GPIO_WriteBit(GPIOB,GPIO_Pin_12,(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_2) == Bit_RESET) ? Bit_SET : Bit_RESET );

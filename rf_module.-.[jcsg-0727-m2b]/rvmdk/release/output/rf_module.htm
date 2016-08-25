@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\release\output\rf_module.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\release\output\rf_module.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Sat Jun 25 13:45:12 2016
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Thu Aug 25 13:48:52 2016
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -16,7 +16,7 @@ Mutually Recursive functions
  <LI><a href="#[7]">BusFault_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[7]">BusFault_Handler</a><BR>
  <LI><a href="#[8]">UsageFault_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[8]">UsageFault_Handler</a><BR>
  <LI><a href="#[1f]">ADC1_IRQHandler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[1f]">ADC1_IRQHandler</a><BR>
- <LI><a href="#[8d]">WritePLL</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[8d]">WritePLL</a><BR>
+ <LI><a href="#[8d]">SynthesizerADF4350</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[8d]">SynthesizerADF4350</a><BR>
 </UL>
 <P>
 <H3>
@@ -199,21 +199,21 @@ Global Symbols
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitParam
 </UL>
 
-<P><STRONG><a name="[8d]"></a>WritePLL</STRONG> (Thumb, 230 bytes, Stack size 0 bytes, rf_control.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
+<P><STRONG><a name="[8d]"></a>SynthesizerADF4350</STRONG> (Thumb, 368 bytes, Stack size 0 bytes, rf_control.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SynthesizerADF4350
 </UL>
 <BR>[Called By]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAtt
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SynthesizerADF4350
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execVCOLim
 <LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execRFSW
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execVCO
 </UL>
 
 <P><STRONG><a name="[91]"></a>WriteAD5324</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, rf_control.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
+<BR><BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
 </UL>
 <BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execVCOLim
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execALC
@@ -222,15 +222,15 @@ Global Symbols
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitTaskControl
 </UL>
 
-<P><STRONG><a name="[92]"></a>ReadPowerADC</STRONG> (Thumb, 126 bytes, Stack size 0 bytes, rf_control.o(.text), UNUSED)
+<P><STRONG><a name="[92]"></a>ReadPowerADC</STRONG> (Thumb, 164 bytes, Stack size 0 bytes, rf_control.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadAdcValue
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;QuickSort
 </UL>
 
-<P><STRONG><a name="[94]"></a>SetSigPowerAtt</STRONG> (Thumb, 270 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[94]"></a>SetSigPowerAtt</STRONG> (Thumb, 224 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePe4302
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SynthesizerADF4350
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execSigCalibrate
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execSigPower
@@ -492,19 +492,19 @@ Global Symbols
 <P><STRONG><a name="[3b]"></a>SystemInit</STRONG> (Thumb, 60 bytes, Stack size 0 bytes, system_stm32f10x.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_md_vl.o(.text)
 </UL>
-<P><STRONG><a name="[8e]"></a>WriteSpiOneWord</STRONG> (Thumb, 122 bytes, Stack size 0 bytes, dev_spi.o(.text))
+<P><STRONG><a name="[8f]"></a>WriteSpiOneWord</STRONG> (Thumb, 122 bytes, Stack size 0 bytes, dev_spi.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EndSpiBus
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartSpiBus
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteGpioPin
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePe4302
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SynthesizerADF4350
 </UL>
 
 <P><STRONG><a name="[95]"></a>WritePe4302</STRONG> (Thumb, 58 bytes, Stack size 0 bytes, dev_att.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
+<BR><BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
 </UL>
 <BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAttLow
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSigPowerAtt
@@ -515,7 +515,7 @@ Global Symbols
 
 <P><STRONG><a name="[8c]"></a>WriteE2prom</STRONG> (Thumb, 104 bytes, Stack size 0 bytes, dev_e2prom.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2cWriteDevice
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RebootFlagSet
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RebootFlagCheck
@@ -875,7 +875,7 @@ Global Symbols
 
 <P><STRONG><a name="[90]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f10x_gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPowerADC
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SynthesizerADF4350
 <LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskControl
 </UL>
 
@@ -1305,12 +1305,12 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_exit_exit
 </UL>
 
-<P><STRONG><a name="[8f]"></a>usdelay</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, rf_control.o(i.usdelay))
+<P><STRONG><a name="[8e]"></a>usdelay</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, rf_control.o(i.usdelay))
 <BR><BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EndSpiBus
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartSpiBus
-<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
+<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
 <LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteE2prom
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SynthesizerADF4350
 <LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execRFSW
 </UL>
 
@@ -1623,7 +1623,7 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
-<P><STRONG><a name="[3e]"></a>execSwitchSource</STRONG> (Thumb, 78 bytes, Stack size 0 bytes, rf_control.o(.text))
+<P><STRONG><a name="[3e]"></a>execSwitchSource</STRONG> (Thumb, 108 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
@@ -1636,23 +1636,23 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
-<P><STRONG><a name="[41]"></a>execVCO</STRONG> (Thumb, 64 bytes, Stack size 0 bytes, rf_control.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
+<P><STRONG><a name="[41]"></a>execVCO</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, rf_control.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SynthesizerADF4350
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
 <P><STRONG><a name="[43]"></a>execRFSW</STRONG> (Thumb, 154 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePe4302
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SynthesizerADF4350
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
 </UL>
 <P><STRONG><a name="[42]"></a>execVCOLim</STRONG> (Thumb, 112 bytes, Stack size 0 bytes, rf_control.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteE2prom
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteAD5324
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WritePLL
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SynthesizerADF4350
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;execSigPower
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rf_control.o(.constdata)
@@ -1683,21 +1683,21 @@ Local Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EndSpiBus
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartSpiBus
-<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
+<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
 </UL>
 
 <P><STRONG><a name="[cb]"></a>StartSpiBus</STRONG> (Thumb, 94 bytes, Stack size 0 bytes, dev_spi.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteGpioPin
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
+<BR>[Called By]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
 </UL>
 
 <P><STRONG><a name="[cc]"></a>EndSpiBus</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, dev_spi.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteGpioPin
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usdelay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
+<BR>[Called By]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSpiOneWord
 </UL>
 
 <P><STRONG><a name="[f3]"></a>I2cMasterWrite</STRONG> (Thumb, 182 bytes, Stack size 0 bytes, user_i2c.o(.text))

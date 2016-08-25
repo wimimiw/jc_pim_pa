@@ -364,14 +364,19 @@ int GetTableMebCnt(void)
 	return sizeof(tabInfo)/sizeof(JC_COMMAND);
 }
 /**
-  * @brief  :
-  * @param  :None
+  * @brief  :	Operator to the ADF4350
+  * @param  :	u32 freq 		= frequency center unit:khz
+				u32 freqRef 	= frequency reference unit:khz
+				u32 freqStep 	= frequency step(minium step) unit:khz
+				u8  power       = 0(-1dBm),1(0dBm),2(2dBm),3(5dBm)
+				BOOL enable		= rf power on/off
+				U8 reqCnt		= lock try counter
   * @retval :None
   * @author :mashuai
   * @version:
   * @date	:2015.11.9
   */
-void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
+void SynthesizerADF4350(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 {
 	#define R0_INIT		0x00000000L
 	//
@@ -383,17 +388,17 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 	//DB31~DB28  DB27       DB26 DB25 DB24 DB23  ~ DB16 DB15 DB14 DB13 DB12 DB11 ~ DB4 DB3 DB2 DB1 DB0
 	//0			  8			 	   			0     0		  8					  0    0      1
 	//0   ~0     1			 0    0    0    0    ~   0   1    0    0    0    0    ~ 0	  0	  0   0   1 
-	#define R2_INIT		0x18004FC2L
+	#define R2_INIT		0x18001E42L
 	//     NOISE-MODE[1:0] MUXOUT[2:0]	   REF-DOU RDIV2    					 DOUB-BUFF	CHARGE-PUMP[3:0]  LDF LDP PD-POLA PD  CP-THR  COUNT-RESET
 	//DB31 DB30 DB29       DB28 DB27 DB26  DB25    DB24   DB23 ~ DB16 DB15 DB14 DB13       DB12 DB11 B10 DB9 DB8 DB7 DB6     DB5 DB4     DB3         DB2 DB1 DB0
 	//1							8						  0	   0	   4						 E				  C						  2
-	//0    0    0          1    1    0     0       0      0    ~ 0    0    1    0			0	 1	  1	  1	  1	  1	  1	      0	  0		  0           0   1   0
+	//0    0    0          1    1    0     0       0      0    ~ 0    0    1    0			1	 1	  1	  1	  0	  1	  1	      0	  0		  0           0   1   0
 	#define R3_INIT		0x000004B3L
 	//					CSR		  CLK-DIV[1:0]
 	//DB31 ~ DB20 DB19 DB18 DB17 DB16 DB15    DB14 DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
 	//0  0  0	   0                   0                      4  				B				3
 	//0    ~ 0    0    0    0    0    0       0    0    0    0	   1    0   0   1   0   1   1   0   0   1   1 	
-	#define R4_INIT		0x00850404L				//0x00850414
+	#define R4_INIT		0x00800404L				//0x00850414
 	//				 FEEDBACK DIV-SEL[2:0]	     BAND-SELECT-CLOCK-DIVIDER-VALUE[7:0]        VCO-POW  MTLD AUXOUT-SEL AUXOUT-EN	AUXOUT-POW[1:0]	RFOUT-EN OUTPOW[1:0]
 	//DB31 ~ DB24   DB23     DB22 DB21 DB20     DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12     DB11     B10  DB9        DB8       DB7 DB6         DB5      DB4 DB3     DB2 DB1 DB0
 	//0    0		 8							 5					 0						 4									1							 C
@@ -403,62 +408,87 @@ void WritePLL(u32 freq,u32 freqRef,u16 freqStep,u8 power,BOOL enable,U8 reqCnt)
 	//DB31 ~ DB24   DB23 DB22   DB21 DB20 DB19 DB18 DB17 DB16 DB15 ~ DB4 DB3 DB2 DB1 DB0
 	//0    0		 5					   8                   0 0 0       5
 	//0    ~ 0      0    1    	 0	  1	   1    0    0    0    0    ~ 0   0   1   0   1	
-	u32 counterTemp,counterN,divSel;
-	u16 step = freqStep;
-	u8 value,i;
+	u32 spiValue,VCO,PFD;
+	u16 R,MOD,INT,FRAC;
+	u8 value,i,divSel,divBand;
 	SPI_TYPE spiType;
-
+	
+	//?????SPI??
 	spiType.len   = 32;
 	spiType.order = MSB_FIRST;
 	spiType.type  = SPI_LEVEL_LOW;
 	spiType.mask  = 0x80000000;	
   
-	counterN = freq;
-	value 	 = 4400000 / counterN;
-
+	/*======?????????========
+	*   RFout = fPFD*(INT+FRAC/MOD)
+	*   fPFD = REFin * [(1+D)/(R*(1+T)]
+	*	
+	*INT is the preset divide ratio of the binary 16-bit counter
+	*MOD is the preset fractional modulus (2 to 4095).
+	*FRAC is the numerator of the fractional division (0 to MOD - 1).
+	*REFIN is the reference input frequency.
+	*D is the REFIN doubler bit.
+	*T is the REFIN divide-by-2 bit (0 or 1)
+	*R is the preset divide ratio of the binary 10-bit programmable reference counter (1 to 1023)
+	*PFD = PHASE FREQUENCY DETECTOR
+	*
+	*We use R = 10,
+			T = 0,
+			D = 0,
+		    fPFD = REFin * [(1+0)/1*(1+0)?
+			
+	 ?:???????fPFD??????????
+	**********************************/
+	
+	/*?????VCO????2^n(RF divider)
+	 *ADF4350 VCO(2200MHz~4400MHz)	 
+	 */	
+	value = 4400000 / freq;
+	
 	for(i=7;i>0;i--)
 	{
 		if((value & 0x80)==0x80)break;
 		value <<= 1;
 	}
-	 
-	divSel = i;	
-	counterN <<= divSel;							
-	step <<= divSel;
 	
-	//R5
-	WriteSpiOneWord(SPI_VCO,&spiType,R5_INIT);
-
-	counterTemp = divSel << 20;
-	counterTemp|= R4_INIT|(enable << 5)|(power<<3);
-	//R4
-	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
-	//R3
-	WriteSpiOneWord(SPI_VCO,&spiType,R3_INIT);
-	//R2
-	WriteSpiOneWord(SPI_VCO,&spiType,R2_INIT);
-						  						
-	counterTemp = (freqRef/step)<<3;
-	counterTemp|= R1_INIT;
-	//R1
-	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
+	//Output divider
+	divSel = i;	//1/2/4/8/16			
 		
-	counterTemp  = ((counterN%freqRef)/step)<<3;
-	counterN  	 = (counterN/freqRef)<<15;											
-	counterTemp |= counterN;	
-	//R0
-	WriteSpiOneWord(SPI_VCO,&spiType,counterTemp);
+	if(freqStep >= 10)
+		R = 1;
+	else if(freqStep >= 1 && freqStep < 10)
+		R = 10;
+	else if(freqStep == 0)
+		R = 200;//Support 20Hz Step,Not support <20Hz Step(INT,MOD bit is not enough)
+	
+	PFD  = freqRef/R;				/*????			*/
+	divBand = (PFD+124)/125;		/*?????		*/
+	VCO  = (freq<<divSel);			/*VCO??			*/
+	MOD  = (PFD/(freqStep<<divSel));/*????			*/
+	FRAC = ((VCO%PFD)*MOD/PFD);		/*????			*/
+	INT  = (VCO/PFD);				/*??				*/	
+
+	if(FRAC == 0)MOD=2;//??????,MOD???50
+		
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R5_INIT);
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R4_INIT|(divSel<<20)|(divBand<<12)|(enable<<5)|(power<<3));
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R3_INIT);
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R2_INIT|(R<<14));
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R1_INIT|(MOD<<3));
+	usdelay(10);WriteSpiOneWord(SPI_VCO,&spiType,R0_INIT|(INT<<15)|(FRAC<<3)); 	
 	
 	if(--reqCnt <= 0)
 	{
 		return;
 	}
 	
-	usdelay(500);
-	
-	if(IS_VCO_LOCK() == FALSE)
-	{//失锁进行递归
-		WritePLL(freq,freqRef,freqStep,power,enable,reqCnt);
+	//?????????100us(?????),??????????100us
+	usdelay(150);//wait lock	
+	//??????????4ms,???R0-R56?????????????
+	//R0~R5???????????????????????,????????,?????????????
+	if(!IS_VCO_LOCK()&&!IS_VCO_LOCK()&&!IS_VCO_LOCK()&&!IS_VCO_LOCK())
+	{//????
+		SynthesizerADF4350(freq,freqRef,freqStep,power,enable,reqCnt);
 	}	
 }
 /**
@@ -600,7 +630,7 @@ BOOL SetSigPowerAtt(S16 pwr100)
 			gAtt1 = 0;att1=30;att2=30;
 		}
 		
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,0,FALSE,AD4350_REQ_CNT);
+		SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,0,FALSE,AD4350_REQ_CNT);
 	}	
 		
 	result|= WritePe4302(SPI_ATT1,att1);
@@ -884,7 +914,7 @@ BOOL execVCO(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 	if(flag == TRUE)
 	{	
 		//写VCO
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,AD4350_REQ_CNT);
+		SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,AD4350_REQ_CNT);
 	}
 	return TRUE;
 }
@@ -919,9 +949,9 @@ BOOL execRFSW(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 		VCO_CE(gRFSW);		
 		
 		if(gSigPower == SIGNAL_POWER_LOW)
-			WritePLL(gCenFreq,gRefFreq,gFreqStep,0,FALSE,AD4350_REQ_CNT);
+			SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,0,FALSE,AD4350_REQ_CNT);
 		else
-			WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW,AD4350_REQ_CNT);
+			SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSW,AD4350_REQ_CNT);
 		
 		usdelay(5000);
 		WritePe4302(SPI_ATT2,20);
@@ -959,7 +989,7 @@ BOOL execVCOLim(U8 flag,U8 *buf,U16 rxLen,U16*txLen)
 			setALCRef(gPALim*4);			
 		}			
 		//写VCO
-		WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,AD4350_REQ_CNT);
+		SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE,AD4350_REQ_CNT);
 		//根据频率和功率调出定标值	
 		*(S16*)(tbuf+13) = gSigPower;
 		execSigPower(TRUE,tbuf,sizeof(tbuf),&len);				
@@ -998,7 +1028,7 @@ void InitTaskControl(void)
 	//WritePe4302(SPI_ATT2,40);
 	
 	//VCO_CE(TRUE);
-	//WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+	//SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
 	VCO_CE(FALSE);
 	
 	//gRFSrcSel = SRC_EXTERNAL;
@@ -1056,7 +1086,7 @@ int TaskControl(int*argv[],int argc)
 //		//VCO_CE(gRFSrcSel == SRC_INTERNAL && gRFSW == TRUE);		
 //		//ALC参数限辐
 //		//setALCRef(gPALim*4);		
-//		//WritePLL(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
+//		//SynthesizerADF4350(gCenFreq,gRefFreq,gFreqStep,AD4350_PWR_LIM,gRFSrcSel == SRC_INTERNAL?TRUE:FALSE);
 //	}
 	
 //	GPIO_WriteBit(GPIOB,GPIO_Pin_12,(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_2) == Bit_RESET) ? Bit_SET : Bit_RESET );
